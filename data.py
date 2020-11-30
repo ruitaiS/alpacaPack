@@ -4,6 +4,7 @@
 import requests
 import pandas_market_calendars as mcal
 import time
+import pickle
 
 class Data:
     def __init__(self, key, secret_key): 
@@ -36,31 +37,3 @@ class Data:
         # return the bars for the date
         return date_bars
 
-    def get_all_bars(self, ticker_symbol, start_date='2015-01-01', end_date='2020-08-31'):
-
-        # get a list of market opens and closes for each trading day from 2015 onwards
-        trading_days = mcal.get_calendar('NYSE').schedule(start_date, end_date)
-
-        # initialize an empty list of all bars
-        all_bars = []
-
-        # for each day in our list of trading days...
-        for i in range(len(trading_days)):
-
-            # get the time at the start of the request
-            request_time = time.time()
-
-            # get the list of bars for the next day
-            next_bars = self.get_date_bars(ticker_symbol, trading_days['market_open'][i], trading_days['market_close'][i])
-
-            # print a log statement
-            print(f'Got bars for {next_bars[-1]["t"]}')
-
-            # add the next bars to our growing list of all bars
-            all_bars += next_bars
-
-            # sleep to ensure that no more than 200 requests occur per 60 seconds
-            time.sleep(max(request_time + 60/200 - time.time(), 0))
-
-        # return the list of all bars
-        return all_bars
