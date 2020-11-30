@@ -115,7 +115,6 @@ if __name__ == '__main__':
 
     opt = parser.parse_args()
 
-
     key_id = 'PKHGR6CVRK7DTWFIB6Q1'
     secret_key = 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n'
     conn = StreamConn(key_id, secret_key)
