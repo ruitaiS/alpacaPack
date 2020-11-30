@@ -14,23 +14,34 @@ secret_key = '2h0JwR4hoebs9udjZOtfzCrwlupXBu1MibK6AfrZ'
 base_url = 'https://api.alpaca.markets'
 '''
 
-#today = date.today().strftime("%Y-%m-%d")
-#open_time = str(datetime.now().strftime("%Y-%m-%dT09:30:00"))
-#current_time = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S"))
-
 def time():
+    
+    date_time = pd.Timestamp.now()
+    date = pd.Timestamp.now().date()
+    today_open = pd.Timestamp(str(date)+" 09:30:00")
+
+
     #Date
-    print(pd.Timestamp.now().date())
+    print(date)
 
     #Current time in ISO format:
-    print(pd.Timestamp.now().isoformat())
+    print(date_time.isoformat())
 
     #Current time as epoch:
-    print(pd.Timestamp.now().timestamp())
+    print(date_time.timestamp())
+
+    #9:30 opening time in ISO format:
+    print(today_open.isoformat())#end print
 
 def testData():
-    data = Data(key_id, secret_key)
-    data.get_date_bars('TSLA', open_time, current_time)
+    current_time = pd.Timestamp.now()
+    date = pd.Timestamp.now().date()
+    open_time = pd.Timestamp(str(date)+" 09:30:00")
 
-time()
-#testData()
+    data = Data(key_id, secret_key)
+
+    for element in data.get_date_bars('TSLA', open_time, current_time):
+        print(element)
+
+#time()
+testData()
