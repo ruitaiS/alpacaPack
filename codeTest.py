@@ -63,6 +63,10 @@ def testData():
 
 def test_updateHistorical(ticker):
     data = Data('PKHGR6CVRK7DTWFIB6Q1', 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n')
+    #file_path = "./historical/"+str(ticker)+".json"
+    #jsData = data.get_all_bars(ticker, '2020-11-25', '2020-11-29')
+    #json.dump(jsData, open(file_path, 'w'))
+
     data.updateHistorical(ticker)
 
 

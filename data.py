@@ -76,7 +76,11 @@ class Data:
 
     def updateHistorical(self, ticker):
         #Stores historical data as json file, from date of last previous pull to yesterday
-        #TODO: This needs to be double checked to make sure it gets all the days when adding new historical data
+
+        #TODO: 
+        # Add After Hours
+        # Make the cutoff the second before the request (rn it's the day before)
+        # Add way of visualizing the JS file (probably on the front end in react)
 
         start_date = '2015-01-01' #Gets updated if json exists
         end_date = pd.Timestamp.now().date() - timedelta(days = 1)
