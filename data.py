@@ -11,6 +11,8 @@ class Data:
         self.key = key
         self.secret_key = secret_key
 
+        #TODO: Sequentially load previously pickled historical datapoints
+
     #TODO: Rename get_date_bars and get_all bars
     #AFAIK, date_bars gets all the bars between the open and closing times specified for a single day
     #all_bars gets bars for each day in the date range specified
@@ -36,4 +38,34 @@ class Data:
 
         # return the bars for the date
         return date_bars
+
+    def updateHistorical(ticker):
+        #Checks if there's already a pickle file, pulls dates from the previous pull to the present
+
+        end_date = pd.Timestamp.now().date()
+        start_date = ''
+
+        listA = [1]
+        listB = [2]
+
+        file_path = "./historical/"+str(ticker)+".jsn"
+
+        '''
+        Pseudo:
+            if no file exists:
+                start_date='2015-01-01'
+                pickle under ticker_symbol.pkl
+            else:
+                open previous pickle file to see the last entry
+                append new stuff
+                repickle
+        '''
+
+        if os.path.exists(file_path):
+            data = json.load(open(file_path, 'r'))
+            print("file is there")
+            print(data)
+        else:
+            json.dump(listA, open(file_path, 'w'))
+            print("not found")
 

@@ -2,6 +2,11 @@ from data import Data
 from datetime import datetime, date
 import pandas as pd
 
+#Used for updateHistorical
+import json
+import os
+
+
 #Login Data
 key_id = 'PKHGR6CVRK7DTWFIB6Q1'
 secret_key = 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n'
@@ -43,5 +48,37 @@ def testData():
     for element in data.get_date_bars('TSLA', open_time, current_time):
         print(element)
 
+def updateHistorical(ticker):
+    #Checks if there's already a pickle file, pulls dates from the previous pull to the present
+
+    end_date = pd.Timestamp.now().date()
+    start_date = ''
+
+    listA = [1]
+    listB = [2]
+
+    file_path = "./historical/"+str(ticker)+".jsn"
+
+    '''
+    Pseudo:
+        if no file exists:
+            start_date='2015-01-01'
+            pickle under ticker_symbol.pkl
+        else:
+            open previous pickle file to see the last entry
+            append new stuff
+            repickle
+    '''
+
+    if os.path.exists(file_path):
+        data = json.load(open(file_path, 'r'))
+        print("file is there")
+        print(data)
+    else:
+        json.dump(listA, open(file_path, 'w'))
+        print("not found")
+
+
 #time()
-testData()
+#testData()
+updateHistorical("TSLA")
