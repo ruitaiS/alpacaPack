@@ -76,12 +76,12 @@ class Data:
 
     def updateHistorical(self, ticker):
         #Stores historical data as json file, from date of last previous pull to yesterday
-        #TODO: Make sure this works wrt different days starting and stopping
+        #TODO: This needs to be double checked to make sure it gets all the days when adding new historical data
 
         start_date = '2015-01-01' #Gets updated if json exists
         end_date = pd.Timestamp.now().date() - timedelta(days = 1)
 
-        file_path = "./historical/"+str(ticker)+".jsn"
+        file_path = "./historical/"+str(ticker)+".json"
 
         if os.path.exists(file_path):
             data = json.load(open(file_path, 'r'))
