@@ -3,8 +3,13 @@
 
 import requests
 import pandas_market_calendars as mcal
+import pandas as pd
 import time
-import pickle
+from datetime import datetime, date, timedelta
+import json
+import os
+
+#TODO: There's like four different things dealing with time lol
 
 class Data:
     def __init__(self, key, secret_key): 
@@ -39,33 +44,60 @@ class Data:
         # return the bars for the date
         return date_bars
 
-    def updateHistorical(ticker):
-        #Checks if there's already a pickle file, pulls dates from the previous pull to the present
+    def get_all_bars(self, ticker_symbol, start_date, end_date):
+        # get a list of market opens and closes for each trading day from 2015 onwards
+        trading_days = mcal.get_calendar('NYSE').schedule(start_date, end_date)
 
-        end_date = pd.Timestamp.now().date()
-        start_date = ''
+        # initialize an empty list of all bars
+        all_bars = []
 
-        listA = [1]
-        listB = [2]
+        # for each day in our list of trading days...
+        for i in range(len(trading_days)):
+
+            # get the time at the start of the request
+            request_time = time.time()
+
+            # get the list of bars for the next day
+            next_bars = self.get_date_bars(ticker_symbol, trading_days['market_open'][i], trading_days['market_close'][i])
+
+            # print a log statement
+            #TODO: Change to human readable format
+            
+            print(f'Got bars for {pd.to_datetime(next_bars[-1]["t"], unit="s")}')
+
+            # add the next bars to our growing list of all bars
+            all_bars += next_bars
+
+            # sleep to ensure that no more than 200 requests occur per 60 seconds
+            time.sleep(max(request_time + 60/200 - time.time(), 0))
+
+        # return the list of all bars
+        return all_bars
+
+    def updateHistorical(self, ticker):
+        #Stores historical data as json file, from date of last previous pull to yesterday
+        #TODO: Make sure this works wrt different days starting and stopping
+
+        start_date = '2015-01-01' #Gets updated if json exists
+        end_date = pd.Timestamp.now().date() - timedelta(days = 1)
 
         file_path = "./historical/"+str(ticker)+".jsn"
 
-        '''
-        Pseudo:
-            if no file exists:
-                start_date='2015-01-01'
-                pickle under ticker_symbol.pkl
-            else:
-                open previous pickle file to see the last entry
-                append new stuff
-                repickle
-        '''
-
         if os.path.exists(file_path):
             data = json.load(open(file_path, 'r'))
+            #Update start date to the last day the data was pulled for
             print("file is there")
-            print(data)
+            most_recent = pd.to_datetime(data[-1]["t"], unit="s").date()
+            start_date = most_recent + timedelta(days=1)
+            print("Most Recent Date: " + str(most_recent))
+            print("New Start Date: " + str(start_date))
+
+            if (start_date < end_date):
+                data.append(self.get_all_bars(ticker, start_date, end_date))
+                json.dump(data, open(file_path, 'w'))
+            else:
+                print("Up to date as of " + str(most_recent))
         else:
-            json.dump(listA, open(file_path, 'w'))
+            json.dump(self.get_all_bars(ticker, start_date, end_date), open(file_path, 'w'))
             print("not found")
 
