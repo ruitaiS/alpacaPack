@@ -3,6 +3,7 @@
 *.pyc
 /historical
 __pycache__/
+/oldstuff
 
 #React-Related:
 /frontend/node_modules
@@ -25,3 +26,4 @@ __pycache__/
 /frontend/npm-debug.log*
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
+frontend/.eslintcache
