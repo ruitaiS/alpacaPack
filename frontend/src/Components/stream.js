@@ -4,8 +4,9 @@ class Stream extends Component {
     constructor(props){
         super(props);
         this.state = {
-            key_id: 'PKHGR6CVRK7DTWFIB6Q1',
-            secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
+            key_id: props.key_id,
+            secret_key: props.secret_key,
+            ticker: props.ticker,
         }
     }
 
@@ -23,7 +24,8 @@ class Stream extends Component {
     
         this.ws.send(JSON.stringify(auth_data))
 
-        let listen_message = {"action": "listen", "data": {"streams": ["T.TSLA"]}}
+        //Make this generic
+        let listen_message = {"action": "listen", "data": {"streams": ["AM."+this.state.ticker]}}
 
         this.ws.send(JSON.stringify(listen_message))            
 
@@ -33,7 +35,10 @@ class Stream extends Component {
         this.ws.onmessage = evt => {
         // listen to data sent from the websocket server
         const message = JSON.parse(evt.data)
-        this.setState({dataFromServer: message})
+
+        //TODO: Test tomorrow, but it seems this returns a JSON string
+        //message parses it back into a dict-type of thing, with keys that you can then read off of
+        this.setState({dataFromServer: evt.data})
         console.log(message)
         }
 
@@ -46,7 +51,7 @@ class Stream extends Component {
     }
 
     render(){
-        return("Hi")
+        return(<button>{this.state.dataFromServer}</button>)
     }
 }
 
