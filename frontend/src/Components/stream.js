@@ -25,7 +25,7 @@ class Stream extends Component {
         this.ws.send(JSON.stringify(auth_data))
 
         //Make this generic
-        let listen_message = {"action": "listen", "data": {"streams": ["AM."+this.state.ticker]}}
+        let listen_message = {"action": "listen", "data": {"streams": ["T."+this.state.ticker]}}
 
         this.ws.send(JSON.stringify(listen_message))            
 
