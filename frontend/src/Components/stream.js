@@ -33,13 +33,11 @@ class Stream extends Component {
         }
 
         this.ws.onmessage = evt => {
-        // listen to data sent from the websocket server
-        const message = JSON.parse(evt.data)
 
-        //TODO: Test tomorrow, but it seems this returns a JSON string
-        //message parses it back into a dict-type of thing, with keys that you can then read off of
-        this.setState({dataFromServer: evt.data})
-        console.log(message)
+        let data = JSON.parse(evt.data)
+        console.log(data.data.p)
+
+        this.setState({price: data.data.p})
         }
 
         this.ws.onclose = () => {
@@ -51,7 +49,7 @@ class Stream extends Component {
     }
 
     render(){
-        return(<button>{this.state.dataFromServer}</button>)
+    return(<button>{this.state.price}</button>)
     }
 }
 
