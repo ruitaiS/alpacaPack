@@ -1,4 +1,4 @@
-from data import Data
+from historicalData import Data
 from datetime import datetime, date, timedelta
 import pandas as pd
 

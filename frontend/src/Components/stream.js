@@ -1,3 +1,6 @@
+//Based on:
+//https://dev.to/finallynero/using-websockets-in-react-4fkp
+
 import React, { Component }from "react";
 
 class Stream extends Component {

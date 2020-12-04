@@ -16,4 +16,4 @@ api = tradeapi.REST(key_id, secret_key, base_url)
 account = api.get_account()
 
 api.list_positions()
-print(account.status)
+print(account)

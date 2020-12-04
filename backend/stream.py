@@ -13,12 +13,12 @@ def on_open(ws):
     print("opened")
     auth_data = {
         "action": "authenticate",
-        "data": {"key_id": config.API_KEY, "secret_key": config.SECRET_KEY}
+        "data": {"key_id": key_id, "secret_key": secret_key}
     }
 
     ws.send(json.dumps(auth_data))
 
-    listen_message = {"action": "listen", "data": {"streams": ["AM.TSLA"]}}
+    listen_message = {"action": "listen", "data": {"streams": ["T.TSLA"]}}
 
     ws.send(json.dumps(listen_message))
 
