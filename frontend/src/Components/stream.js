@@ -14,7 +14,12 @@ class Stream extends Component {
     }
 
     // instance of websocket connection as a class property
+
+    //Stocks Websocket
     ws = new WebSocket('wss://socket.polygon.io/stocks')
+
+    //Forex Websocket
+    //ws = new WebSocket('wss://socket.polygon.io/forex')
 
     componentDidMount() {
         this.ws.onopen = () => {
@@ -48,8 +53,23 @@ class Stream extends Component {
 
     }
 
+    mouseOver(){
+        //Store current stream price
+        this.setState({buyPrice: this.state.price})
+    }
+
+    mouseOut(){
+        //Reset / remove buyPrice?
+    }
+
+    click(){
+        //Place a limit order at the buyPrice
+
+    }
+
     render(){
-    return(<button>{this.state.price}</button>)
+        //We want this to actually hold at the buyPrice when you do a mouseOver
+        return(<button>{this.state.price}</button>)
     }
 }
 
