@@ -64,12 +64,13 @@ class Stream extends Component {
 
     click(){
         //Place a limit order at the buyPrice
+        console.log("Clicked")
 
     }
 
     render(){
         //We want this to actually hold at the buyPrice when you do a mouseOver
-        return(<button>{this.state.price}</button>)
+        return(<button onClick={this.click}>{this.state.price}</button>)
     }
 }
 
