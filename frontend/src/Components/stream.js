@@ -10,7 +10,13 @@ class Stream extends Component {
             key_id: props.key_id,
             secret_key: props.secret_key,
             ticker: props.ticker,
+            test: "hi",
         }
+
+        //Bind this to its functions
+        this.click = this.click.bind(this)
+        this.mouseOver = this.mouseOver.bind(this)
+        this.mouseOut = this.mouseOut.bind(this)
     }
 
     // instance of websocket connection as a class property
@@ -55,22 +61,41 @@ class Stream extends Component {
 
     mouseOver(){
         //Store current stream price
+        //We want this to only run once, and then stop updating
+        console.log("Mouseover")
         this.setState({buyPrice: this.state.price})
     }
 
     mouseOut(){
-        //Reset / remove buyPrice?
+        //Reset / remove buyPrice
+        console.log("MouseOut")
+        this.setState({buyPrice: null})
     }
 
     click(){
         //Place a limit order at the buyPrice
         console.log("Clicked")
+        this.mouseOver()
+        //this.setState({buyPrice: this.state.price})
+        //console.log(this.state.test)
+
 
     }
 
+
+
     render(){
         //We want this to actually hold at the buyPrice when you do a mouseOver
-        return(<button onClick={this.click}>{this.state.price}</button>)
+        let buttonText = this.state.price
+        if (this.state.buyPrice != null){
+            buttonText = this.state.buyPrice
+        }
+
+        return(
+            <div>
+                <div>{this.state.price}</div>
+                <div><button onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
+            </div>)
     }
 }
 
