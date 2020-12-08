@@ -85,14 +85,20 @@ class Stream extends Component {
 
 
     render(){
-        //We want this to actually hold at the buyPrice when you do a mouseOver
         let buttonText = this.state.price
+        let health = 100
+        let color = "green"
         if (this.state.buyPrice != null){
             buttonText = this.state.buyPrice
+            health = (Math.abs(this.state.buyPrice - this.state.price) / this.state.price) * 100
+            if (this.state.buyPrice>this.state.price){
+                color = "red"
+            }
         }
 
         return(
             <div>
+                <div style={{width: health*10, backgroundColor: color}}>yo</div>
                 <div>{this.state.price}</div>
                 <div><button onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)
