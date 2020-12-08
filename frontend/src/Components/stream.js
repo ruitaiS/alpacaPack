@@ -1,16 +1,13 @@
 //Based on:
 //https://dev.to/finallynero/using-websockets-in-react-4fkp
 
-import React, { Component }from "react";
+import {Component} from "react";
+import HealthBar from './healthBar';
 
 class Stream extends Component {
     constructor(props){
         super(props);
         this.state = {
-            key_id: props.key_id,
-            secret_key: props.secret_key,
-            ticker: props.ticker,
-            test: "hi",
         }
 
         //Bind this to its functions
@@ -31,12 +28,12 @@ class Stream extends Component {
         this.ws.onopen = () => {
         // on connecting, do nothing but log it to the console
         console.log('connected')
-        let auth_data = {"action":"auth","params": this.state.key_id}
+        let auth_data = {"action":"auth","params": this.props.key_id}
     
         this.ws.send(JSON.stringify(auth_data))
 
         //Make this generic
-        let listen_message = {"action":"subscribe","params":"T."+this.state.ticker}
+        let listen_message = {"action":"subscribe","params":"T."+this.props.ticker}
 
         this.ws.send(JSON.stringify(listen_message))            
 
@@ -86,19 +83,13 @@ class Stream extends Component {
 
     render(){
         let buttonText = this.state.price
-        let health = 100
-        let color = "green"
         if (this.state.buyPrice != null){
             buttonText = this.state.buyPrice
-            health = (Math.abs(this.state.buyPrice - this.state.price) / this.state.price) * 100
-            if (this.state.buyPrice>this.state.price){
-                color = "red"
-            }
         }
 
         return(
             <div>
-                <div style={{width: health*10, backgroundColor: color}}>yo</div>
+                <HealthBar basePrice ={this.state.buyPrice} currPrice ={this.state.price}/>
                 <div>{this.state.price}</div>
                 <div><button onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)
