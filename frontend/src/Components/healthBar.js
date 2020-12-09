@@ -34,10 +34,10 @@ class HealthBar extends Component{
 
         if (netChange > 0){
             //Positive Change
-            return{height: "50px", width: {netChange}, backgroundColor: "green"}
+            return{height: "50px", width: "100%", backgroundColor: "green"}
         }else{
             //Negative Change
-            return{height: "50px", width: "10%", backgroundColor: "red"}
+            return{height: "50px", width: "100%", backgroundColor: "red"}
         }
 
         return {transform: "translate(-33%, 0%)", height: "50px", width: "300%", backgroundColor: this.bgColor(curr - base)}

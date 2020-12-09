@@ -62,12 +62,12 @@ class Selector extends Component{
             </div>
 
             <div>
-            <label for="base">Base Price:</label>
+            <label for="base">Limit Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="base" value={this.state.basePrice} onChange={this.baseChange}/>
             </div>
 
             <div>
-            <label for="curr">Current Price:</label>
+            <label for="curr">Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="curr" value={this.state.currPrice} onChange={this.currChange}/>
             </div>
         </fieldset>
