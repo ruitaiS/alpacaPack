@@ -84,9 +84,8 @@ class Stream extends Component {
 
         return(
             <div>
-                <HealthBar basePrice ={this.state.buyPrice} currPrice ={this.state.price}/>
                 <div>{this.state.price}</div>
-                <div><button onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
+                <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)
     }
 }

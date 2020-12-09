@@ -19,11 +19,20 @@ class HealthBar extends Component{
 
     }
 
+    bgColor(percentChange){
+        if (percentChange < 0){
+            return "red"
+        }else{
+            return "green"
+        }
+    }
+
     render(){
         return(
             <div>
                 <div>{this.props.basePrice}</div>
                 <div>{this.props.currPrice}</div>
+                <div style={{width: "100%", backgroundColor: this.bgColor(this.props.currPrice - this.props.basePrice)}}>Percentage Change: {100*(this.props.currPrice - this.props.basePrice)/this.props.basePrice} %</div>
             </div>
         )
         

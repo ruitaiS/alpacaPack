@@ -48,5 +48,9 @@
 .inputBox {
   text-align: left;
   width: 500px;
+}
 
+.streamBtn{
+  width: 50%;
+  height: 50px;
 }

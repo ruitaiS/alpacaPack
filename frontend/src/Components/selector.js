@@ -1,4 +1,5 @@
 import {Component} from "react";
+import HealthBar from "./healthBar";
 import Stream from './stream';
 
 class Selector extends Component{
@@ -7,10 +8,16 @@ class Selector extends Component{
       this.tickerChange = this.tickerChange.bind(this);
       this.idChange = this.idChange.bind(this);
       this.skChange = this.skChange.bind(this);
+      this.baseChange = this.baseChange.bind(this);
+      this.currChange = this.currChange.bind(this);
       this.state = {
-          key_id: 'PKHGR6CVRK7DTWFIB6Q1',
-          secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
-          ticker: 'TSLA',
+        key_id: 'PKHGR6CVRK7DTWFIB6Q1',
+        secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
+        ticker: 'TSLA',
+
+        //Only for Testing Healthbar
+        basePrice: 100,
+        currPrice: 101,       
 
         };
     }
@@ -23,6 +30,14 @@ class Selector extends Component{
     }
     skChange(e) {
         this.setState({secret_key: e.target.value});
+    }
+
+    baseChange(e) {
+        this.setState({basePrice: e.target.value});
+    }
+
+    currChange(e) {
+        this.setState({currPrice: e.target.value});
     }
   
     render() {
@@ -45,7 +60,18 @@ class Selector extends Component{
             <label for="tck">Ticker:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.state.ticker} onChange={this.tickerChange}/>
             </div>
+
+            <div>
+            <label for="base">Base Price:</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} id="base" value={this.state.basePrice} onChange={this.baseChange}/>
+            </div>
+
+            <div>
+            <label for="curr">Current Price:</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} id="curr" value={this.state.currPrice} onChange={this.currChange}/>
+            </div>
         </fieldset>
+        <HealthBar basePrice={this.state.basePrice} currPrice={this.state.currPrice}/>
         <Stream ticker={this.state.ticker} key_id={this.state.key_id} secret_key={this.state.secret_key}/>
         </div>
       );
