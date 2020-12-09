@@ -16,8 +16,6 @@ class Stream extends Component {
         this.mouseOut = this.mouseOut.bind(this)
     }
 
-    // instance of websocket connection as a class property
-
     //Stocks Websocket
     ws = new WebSocket('wss://socket.polygon.io/stocks')
 
@@ -26,16 +24,13 @@ class Stream extends Component {
 
     componentDidMount() {
         this.ws.onopen = () => {
-        // on connecting, do nothing but log it to the console
         console.log('connected')
+
         let auth_data = {"action":"auth","params": this.props.key_id}
-    
         this.ws.send(JSON.stringify(auth_data))
 
-        //Make this generic
         let listen_message = {"action":"subscribe","params":"T."+this.props.ticker}
-
-        this.ws.send(JSON.stringify(listen_message))            
+        this.ws.send(JSON.stringify(listen_message))
 
 
         }
