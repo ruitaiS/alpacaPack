@@ -8,6 +8,7 @@ class Stream extends Component {
     constructor(props){
         super(props);
         this.state = {
+            //currPrice
         }
 
         //Bind this to its functions
@@ -38,9 +39,9 @@ class Stream extends Component {
         this.ws.onmessage = evt => {
 
         let data = JSON.parse(evt.data)
-        console.log(data[0].p)
+        //console.log(data[0].p)
 
-        this.setState({price: data[0].p})
+        this.setState({currPrice: data[0].p})
         }
 
         this.ws.onclose = () => {
@@ -55,7 +56,7 @@ class Stream extends Component {
         //Store current stream price
         //We want this to only run once, and then stop updating
         console.log("Mouseover")
-        this.setState({buyPrice: this.state.price})
+        this.setState({buyPrice: this.state.currPrice})
     }
 
     mouseOut(){
@@ -77,14 +78,15 @@ class Stream extends Component {
 
 
     render(){
-        let buttonText = this.state.price
+        let buttonText = this.state.currPrice
         if (this.state.buyPrice != null){
             buttonText = this.state.buyPrice
         }
 
         return(
             <div>
-                <div>{this.state.price}</div>
+                <HealthBar scale="100" maxWidth="270" basePrice={this.state.buyPrice} currPrice={this.state.currPrice}/>
+                <div>{this.state.currPrice}</div>
                 <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)
     }

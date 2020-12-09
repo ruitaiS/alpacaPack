@@ -5,6 +5,9 @@ class HealthBar extends Component{
         super(props);
         //basePrice
         //currPrice
+        //width
+        //scale
+        this.styling = this.styling.bind(this);
         this.state = {
         }
 
@@ -28,19 +31,23 @@ class HealthBar extends Component{
     }
 
     styling(base, curr){
-        let netChange = curr-base
-        let pctChange = 100*netChange / base
-        let width = pctChange + "%"
+        let pctChange = (curr-base) / base
+        let barWidth = this.props.maxWidth * Math.abs(pctChange) * this.props.scale
+        console.log(`Percentage Change: ${pctChange}`)
+        console.log(`Bar Width: ${barWidth}`)
 
-        if (netChange > 0){
+        if (pctChange > 0){
             //Positive Change
-            return{height: "50px", width: "100%", backgroundColor: "green"}
+            //return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}`, backgroundColor: "green"}
+            return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}px`, backgroundColor: "green"}
         }else{
             //Negative Change
-            return{height: "50px", width: "100%", backgroundColor: "red"}
+            //return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`,height: "50px", width: `${barWidth}`, backgroundColor: "red"}
+            return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`, height: "50px", width: `${barWidth}px`, backgroundColor: "red"}
         }
 
-        return {transform: "translate(-33%, 0%)", height: "50px", width: "300%", backgroundColor: this.bgColor(curr - base)}
+        
+        
     }
 
     render(){

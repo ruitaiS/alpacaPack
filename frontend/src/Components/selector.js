@@ -71,7 +71,7 @@ class Selector extends Component{
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="curr" value={this.state.currPrice} onChange={this.currChange}/>
             </div>
         </fieldset>
-        <HealthBar basePrice={this.state.basePrice} currPrice={this.state.currPrice}/>
+        <HealthBar scale="1" maxWidth="270" basePrice={this.state.basePrice} currPrice={this.state.currPrice}/>
         <Stream ticker={this.state.ticker} key_id={this.state.key_id} secret_key={this.state.secret_key}/>
         </div>
       );
