@@ -19,7 +19,7 @@ class Selector extends Component{
         //Only for Testing Healthbar
         basePrice: 100,
         currPrice: 101,
-        slider: 0,     
+        pct: 0,     
 
         };
     }
@@ -43,7 +43,7 @@ class Selector extends Component{
     }
 
     sliderChange(e){
-      this.setState({slider: e.target.value})
+      this.setState({pct: e.target.value, currPrice: this.state.basePrice + this.state.basePrice*(e.target.value / 100)})
     }
   
     render() {
@@ -78,8 +78,8 @@ class Selector extends Component{
             </div>
 
             <div>
-            <label for="slider">{this.state.slider}:</label>
-            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min="-100" max="100" value={this.state.slider} class="slider" id="slider" onChange={this.sliderChange}/>
+            <label for="slider">Percent Change: {this.state.pct}%</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min="-100" max="100" value={this.state.pct} class="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
         <HealthBar scale="1" maxWidth="270" basePrice={this.state.basePrice} currPrice={this.state.currPrice}/>
