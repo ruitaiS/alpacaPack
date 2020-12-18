@@ -1,0 +1,23 @@
+controller -> python -> alpaca
+
+a - buy
+b - sell
+
+downpress - 
+buys when button is released so you can hold the button & watch
+
+bumper - cancel / release without committing buy
+
+--
+
+it maintains the limit buy/sell order until your next a/b downpress
+
+-----
+
+homework:
+
+get reading from controller to print to python terminal
+
+terminal only ascii? lol
+
+that or set up pygame video.
