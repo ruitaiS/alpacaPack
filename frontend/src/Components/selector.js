@@ -10,6 +10,7 @@ class Selector extends Component{
       this.skChange = this.skChange.bind(this);
       this.baseChange = this.baseChange.bind(this);
       this.currChange = this.currChange.bind(this);
+      this.sliderChange = this.sliderChange.bind(this);
       this.state = {
         key_id: 'PKHGR6CVRK7DTWFIB6Q1',
         secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
@@ -17,7 +18,8 @@ class Selector extends Component{
 
         //Only for Testing Healthbar
         basePrice: 100,
-        currPrice: 101,       
+        currPrice: 101,
+        slider: 0,     
 
         };
     }
@@ -38,6 +40,10 @@ class Selector extends Component{
 
     currChange(e) {
         this.setState({currPrice: e.target.value});
+    }
+
+    sliderChange(e){
+      this.setState({slider: e.target.value})
     }
   
     render() {
@@ -69,6 +75,11 @@ class Selector extends Component{
             <div>
             <label for="curr">Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="curr" value={this.state.currPrice} onChange={this.currChange}/>
+            </div>
+
+            <div>
+            <label for="slider">{this.state.slider}:</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min="-100" max="100" value={this.state.slider} class="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
         <HealthBar scale="1" maxWidth="270" basePrice={this.state.basePrice} currPrice={this.state.currPrice}/>
