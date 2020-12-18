@@ -11,6 +11,8 @@ class Selector extends Component{
       this.baseChange = this.baseChange.bind(this);
       this.currChange = this.currChange.bind(this);
       this.sliderChange = this.sliderChange.bind(this);
+      this.scaleChange = this.scaleChange.bind(this);
+      this.UIscaleChange = this.UIscaleChange.bind(this);
       this.state = {
         key_id: 'PKHGR6CVRK7DTWFIB6Q1',
         secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
@@ -19,7 +21,9 @@ class Selector extends Component{
         //Only for Testing Healthbar
         basePrice: 100,
         currPrice: 101,
-        pct: 0,     
+        pct: 0,
+        scale: 1,
+        UIscale: 1,  
 
         };
     }
@@ -44,6 +48,14 @@ class Selector extends Component{
 
     sliderChange(e){
       this.setState({pct: e.target.value, currPrice: this.state.basePrice + this.state.basePrice*(e.target.value / 100)})
+    }
+
+    scaleChange(e){
+      this.setState({scale: e.target.value})
+    }
+
+    UIscaleChange(e){
+      this.setState({UIscale: e.target.value})
     }
   
     render() {
@@ -78,11 +90,21 @@ class Selector extends Component{
             </div>
 
             <div>
+            <label for="curr">UI Scale:</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} id="UIscale" value={this.state.UIscale} onChange={this.UIscaleChange}/>
+            </div>
+
+            <div>
+            <label for="curr">Scale:</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} id="scale" value={this.state.scale} onChange={this.scaleChange}/>
+            </div>
+
+            <div>
             <label for="slider">Percent Change: {this.state.pct}%</label>
-            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min="-100" max="100" value={this.state.pct} class="slider" id="slider" onChange={this.sliderChange}/>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min={-100/this.state.scale} max={100/this.state.scale} step={1/this.state.scale} value={this.state.pct} class="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
-        <HealthBar scale="1" maxWidth="270" basePrice={this.state.basePrice} currPrice={this.state.currPrice}/>
+        <HealthBar maxWidth="270" basePrice={this.state.basePrice} currPrice={this.state.currPrice} scale={this.state.UIscale}/>
         <Stream ticker={this.state.ticker} key_id={this.state.key_id} secret_key={this.state.secret_key}/>
         </div>
       );
