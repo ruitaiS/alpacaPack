@@ -57,50 +57,50 @@ class Control extends Component{
   
     render() {
       return (
-        <div class="centered">
-        <fieldset class="inputBox">
+        <div className="centered">
+        <fieldset className="inputBox">
             <legend>Control Panel:</legend>
 
             {/*
             <div>
-            <label for="key">Key ID:</label>
+            <label htmlFor="key">Key ID:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="key" value={this.state.key_id} onChange={this.idChange}/>
             </div>
 
             <div>
-            <label for="secret">Secret Key:</label>
+            <label htmlFor="secret">Secret Key:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" value={this.state.secret_key} onChange={this.skChange}/>
             </div>
 
             <div>
-            <label for="tck">Ticker:</label>
+            <label htmlFor="tck">Ticker:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.state.ticker} onChange={this.tickerChange}/>
             </div>
 
             <div>
-            <label for="base">Limit Price:</label>
+            <label htmlFor="base">Limit Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="base" value={this.state.basePrice} onChange={this.baseChange}/>
             </div>
 
             <div>
-            <label for="curr">Price:</label>
+            <label htmlFor="curr">Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="curr" value={this.state.currPrice} onChange={this.currChange}/>
             </div>
             */}
 
             <div>
-            <label for="curr">UI Scale:</label>
+            <label htmlFor="curr">UI Scale:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="UIscale" value={this.state.UIscale} onChange={this.UIscaleChange}/>
             </div>
 
             <div>
-            <label for="curr">Scale:</label>
+            <label htmlFor="curr">Scale:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="scale" value={this.state.scale} onChange={this.scaleChange}/>
             </div>
 
             <div>
-            <label for="slider">Percent Change: {this.state.pct*100}%</label>
-            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min={-100/this.state.scale} max={100/this.state.scale} step={1/this.state.scale} value={this.state.pct*100} class="slider" id="slider" onChange={this.sliderChange}/>
+            <label htmlFor="slider">Percent Change: {this.state.pct*100}%</label>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min={-100/this.state.scale} max={100/this.state.scale} step={1/this.state.scale} value={this.state.pct*100} className="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
         <PCTBar maxWidth="270" pctChange={this.state.pct} scale={this.state.UIscale}/>

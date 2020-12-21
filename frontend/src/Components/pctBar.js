@@ -19,18 +19,21 @@ class PCTBar extends Component{
     }
 
     square(color){
-        return (<div style={{height: "5px", width: "5px", backgroundColor: "yellow", margin: "1px"}}></div>)
+        return (<div style={{height: "5px", width: "5px", backgroundColor: "blue", margin: "1px"}}></div>)
     }
 
     subPlot(pctChange){
         let res = []
-        for (let i = 0; i < pctChange; i += 0.1){
+        for (let i = 0; i <= pctChange - 0.1; i += 0.1){
             res.push(this.bar())
         }
 
-        for (let i = pctChange%0.1; i < pctChange; i += 0.01){
-            res.push(this.square())
+        console.log(pctChange%0.1)
+
+        for (let j = 0; j < pctChange%0.1; j += 0.01){
+            res.push(this.square("yellow"))
         }
+
         return res
     }
 
@@ -52,7 +55,7 @@ class PCTBar extends Component{
     render(){
         return(
             <div>
-                {this.subPlot(this.props.pctChange)}
+                <div style={{display:"flex"}}>{this.subPlot(Math.abs(this.props.pctChange))}</div>
                 <div style={this.styling(this.props.pctChange)}></div>
             </div>
         )
