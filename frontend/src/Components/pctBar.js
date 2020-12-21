@@ -22,15 +22,15 @@ class PCTBar extends Component{
         return (<div style={{height: "5px", width: "5px", backgroundColor: "blue", margin: "1px"}}></div>)
     }
 
-    subPlot(pctChange){
+    subPlot(pct){
         let res = []
-        for (let i = 0; i <= pctChange - 0.1; i += 0.1){
+        for (let i = 0; i <= pct - 0.1; i += 0.1){
             res.push(this.bar())
         }
 
-        console.log(pctChange%0.1)
+        console.log(pct%0.1)
 
-        for (let j = 0; j < pctChange%0.1; j += 0.01){
+        for (let j = 0; j <= pct%0.1-0.01; j += 0.01){
             res.push(this.square("yellow"))
         }
 

@@ -19,7 +19,7 @@ class Control extends Component{
 
         //Only for Testing Healthbar
         pct: 0,
-        scale: 1,
+        scale: 5,
         UIscale: 1,  
 
         };
@@ -44,6 +44,7 @@ class Control extends Component{
     }
 
     sliderChange(e){
+      console.log(e.target.value/100)
       this.setState({pct: e.target.value/100})
     }
 
@@ -103,7 +104,9 @@ class Control extends Component{
             <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min={-100/this.state.scale} max={100/this.state.scale} step={1/this.state.scale} value={this.state.pct*100} className="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
-        <PCTBar maxWidth="270" pctChange={this.state.pct} scale={this.state.UIscale}/>
+
+          <PCTBar maxWidth="270" pctChange={this.state.pct} scale={this.state.UIscale}/>
+
         </div>
       );
     }
