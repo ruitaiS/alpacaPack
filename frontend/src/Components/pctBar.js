@@ -7,8 +7,31 @@ class PCTBar extends Component{
         //maxWidth
         //scale
         this.styling = this.styling.bind(this);
+        this.bar = this.bar.bind(this);
+        this.square = this.square.bind(this);
+        this.subPlot = this.subPlot.bind(this);
         this.state = {
         }
+    }
+
+    bar(){
+        return (<div style={{height: "5px", width: "68px", backgroundColor: "green", margin: "1px"}}></div>)
+    }
+
+    square(color){
+        return (<div style={{height: "5px", width: "5px", backgroundColor: "yellow", margin: "1px"}}></div>)
+    }
+
+    subPlot(pctChange){
+        let res = []
+        for (let i = 0; i < pctChange; i += 0.1){
+            res.push(this.bar())
+        }
+
+        for (let i = pctChange%0.1; i < pctChange; i += 0.01){
+            res.push(this.square())
+        }
+        return res
     }
 
     styling(pctChange){
@@ -29,6 +52,7 @@ class PCTBar extends Component{
     render(){
         return(
             <div>
+                {this.subPlot(this.props.pctChange)}
                 <div style={this.styling(this.props.pctChange)}></div>
             </div>
         )
