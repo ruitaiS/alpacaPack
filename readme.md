@@ -10,5 +10,9 @@
     Add price changes to left and right
     Reset healthbar when lifting off the button
 
+    weird decimal values @ certain points
+    
+    Stretches the buy button / displaces the selector when it gets too big
+
 ## Selector
     Read off the chosen limit price and current price from the stream (lift state up)

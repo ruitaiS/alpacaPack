@@ -1,6 +1,7 @@
 import {Component} from "react";
 import HealthBar from "./healthBar";
 import Stream from './stream';
+import PCTBar from '../Components/pctBar';
 
 class Selector extends Component{
     constructor(props) {
@@ -105,6 +106,7 @@ class Selector extends Component{
             </div>
         </fieldset>
         <HealthBar maxWidth="270" basePrice={this.state.basePrice} currPrice={this.state.currPrice} scale={this.state.UIscale}/>
+        <PCTBar maxWidth="270" pctChange={100*(this.state.currPrice-this.state.basePrice)/this.state.basePrice}asePrice={this.state.basePrice} currPrice={this.state.currPrice} scale={this.state.UIscale}/>
         <Stream ticker={this.state.ticker} key_id={this.state.key_id} secret_key={this.state.secret_key}/>
         </div>
       );

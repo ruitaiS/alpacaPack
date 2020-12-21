@@ -1,8 +1,8 @@
-import Selector from './Components/selector';
+import Control from './Components/control';
 import './App.css';
 
 function App() {
-  return <Selector/>;
+  return <Control/>;
 }
 
 export default App;
