@@ -6,42 +6,74 @@ class PCTBar extends Component{
         //pctChange
         //maxWidth
         //scale
-        this.styling = this.styling.bind(this);
+        this.mainStyle = this.mainStyle.bind(this);
         this.bar = this.bar.bind(this);
         this.square = this.square.bind(this);
         this.subPlot = this.subPlot.bind(this);
+        this.subStyle = this.subStyle.bind(this);
         this.state = {
         }
     }
 
-    bar(){
-        return (<div style={{height: "5px", width: "68px", backgroundColor: "green", margin: "1px"}}></div>)
+    bar(color){
+        return (<div style={{height: "5px", width: "68px", backgroundColor: color, margin: "1px"}}></div>)
     }
 
     square(color){
-        return (<div style={{height: "5px", width: "5px", backgroundColor: "blue", margin: "1px"}}></div>)
+        return (<div style={{height: "5px", width: "5px", backgroundColor: color, margin: "1px"}}></div>)
     }
 
     subPlot(pct){
         let res = []
-        for (let i = 0; i <= pct - 0.1; i += 0.1){
-            res.push(this.bar())
+        console.log(pct)
+
+        
+        if ((pct > -0.01)&&(pct < 0.01)){
+            //Placeholder blank bar, otherwise it shifts up b/c missing element
+            res.push(this.bar("white"))
+        }else{
+            //NOTE: This is still a little bit buggy when converting squares into bars
+            if (pct > 0){
+                for (let i = 0; i <= pct - 0.1; i += 0.1){
+                    res.push(this.bar("green"))
+                }
+        
+                for (let j = 0; j <= pct%0.1-0.01; j += 0.01){
+                    res.push(this.square("blue"))
+                }
+            }else{
+                pct = -pct
+                for (let j = 0; j <= pct%0.1-0.01; j += 0.01){
+                    res.push(this.square("blue"))
+                }
+
+                for (let i = 0; i <= pct - 0.1; i += 0.1){
+                    res.push(this.bar("red"))
+                }
+            }            
         }
 
-        console.log(pct%0.1)
 
-        for (let j = 0; j <= pct%0.1-0.01; j += 0.01){
-            res.push(this.square("yellow"))
-        }
+
 
         return res
     }
 
-    styling(pctChange){
-        let barWidth = this.props.maxWidth * Math.abs(pctChange) * this.props.scale
+    //Styling for the subplot
+    subStyle(pct){
+        if (pct < 0){
+            let barWidth = (Math.trunc(Math.abs(pct)*100))*7
+            return {display:"flex", transform: `translate(${this.props.maxWidth-barWidth}px, 0px)`}
+        }else{
+            return {display:"flex", transform: `translate(${this.props.maxWidth}px, 0px)`}
+        }
 
-        
-        if (pctChange > 0){
+    }
+
+    //Styling for the Main Bar
+    mainStyle(pct){
+        let barWidth = this.props.maxWidth * Math.abs(pct) * this.props.scale
+        if (pct > 0){
             //Positive Change
             //return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}`, backgroundColor: "green"}
             return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}px`, backgroundColor: "green"}
@@ -55,8 +87,8 @@ class PCTBar extends Component{
     render(){
         return(
             <div>
-                <div style={{display:"flex"}}>{this.subPlot(Math.abs(this.props.pctChange))}</div>
-                <div style={this.styling(this.props.pctChange)}></div>
+                <div style={this.subStyle(this.props.pctChange)}>{this.subPlot(this.props.pctChange)}</div>
+                <div style={this.mainStyle(this.props.pctChange)}></div>
             </div>
         )
         
