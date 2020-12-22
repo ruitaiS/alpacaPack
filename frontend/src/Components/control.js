@@ -101,7 +101,7 @@ class Control extends Component{
 
             <div>
             <label htmlFor="slider">Percent Change: {this.state.pct*100}%</label>
-            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min={-100/this.state.scale} max={100/this.state.scale} step={1/this.state.scale} value={this.state.pct*100} className="slider" id="slider" onChange={this.sliderChange}/>
+            <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min="-100" max="100" step={1/this.state.scale} value={this.state.pct*100} className="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
 

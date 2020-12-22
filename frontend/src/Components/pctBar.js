@@ -72,7 +72,10 @@ class PCTBar extends Component{
 
     //Styling for the Main Bar
     mainStyle(pct){
-        let barWidth = this.props.maxWidth * Math.abs(pct) * this.props.scale
+        //Main Bar Represents Single Percentage
+        pct = (pct%0.01)*100
+
+        let barWidth = this.props.maxWidth * Math.abs(pct)
         if (pct > 0){
             //Positive Change
             //return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}`, backgroundColor: "green"}
@@ -85,6 +88,7 @@ class PCTBar extends Component{
     }
 
     render(){
+        //NOTE: Setting the width of the encapsulating div has strange effects on centering
         return(
             <div>
                 <div style={this.subStyle(this.props.pctChange)}>{this.subPlot(this.props.pctChange)}</div>
