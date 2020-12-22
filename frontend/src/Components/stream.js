@@ -2,13 +2,18 @@
 //https://dev.to/finallynero/using-websockets-in-react-4fkp
 
 import {Component} from "react";
-import HealthBar from './healthBar';
+import PCTBar from './pctBar';
 
 class Stream extends Component {
     constructor(props){
         super(props);
+        //key_id
+        //secret_key
+        //ticker
+        //fakePCT
         this.state = {
             //currPrice
+            //pct
         }
 
         //Bind this to its functions
@@ -42,6 +47,8 @@ class Stream extends Component {
         //console.log(data[0].p)
 
         this.setState({currPrice: data[0].p})
+        this.setState({pct: (this.state.currPrice-this.state.buyPrice)/ this.state.buyPrice})
+
         }
 
         this.ws.onclose = () => {
@@ -75,17 +82,16 @@ class Stream extends Component {
 
     }
 
-
-
     render(){
         let buttonText = this.state.currPrice
         if (this.state.buyPrice != null){
             buttonText = this.state.buyPrice
         }
 
+        //Use this.state.pct in place of this.props.fakePCT for live testing
         return(
             <div>
-                {/*<HealthBar scale="100" maxWidth="270" basePrice={this.state.buyPrice} currPrice={this.state.currPrice}/>*/}
+                <PCTBar maxWidth="270" pctChange={this.props.fakePCT} scale="1"/>
                 <div>{this.state.currPrice}</div>
                 <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)

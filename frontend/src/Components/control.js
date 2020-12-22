@@ -1,5 +1,5 @@
 import {Component} from "react";
-import PCTBar from './pctBar';
+import Stream from "./stream";
 
 class Control extends Component{
     constructor(props) {
@@ -19,7 +19,7 @@ class Control extends Component{
 
         //Only for Testing Healthbar
         pct: 0,
-        scale: 5,
+        scale: 1,
         UIscale: 1,  
 
         };
@@ -62,7 +62,6 @@ class Control extends Component{
         <fieldset className="inputBox">
             <legend>Control Panel:</legend>
 
-            {/*
             <div>
             <label htmlFor="key">Key ID:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="key" value={this.state.key_id} onChange={this.idChange}/>
@@ -78,6 +77,7 @@ class Control extends Component{
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.state.ticker} onChange={this.tickerChange}/>
             </div>
 
+            {/*
             <div>
             <label htmlFor="base">Limit Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="base" value={this.state.basePrice} onChange={this.baseChange}/>
@@ -87,7 +87,7 @@ class Control extends Component{
             <label htmlFor="curr">Price:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="curr" value={this.state.currPrice} onChange={this.currChange}/>
             </div>
-            */}
+            
 
             <div>
             <label htmlFor="curr">UI Scale:</label>
@@ -98,14 +98,14 @@ class Control extends Component{
             <label htmlFor="curr">Scale:</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} id="scale" value={this.state.scale} onChange={this.scaleChange}/>
             </div>
+            */}
 
             <div>
             <label htmlFor="slider">Percent Change: {this.state.pct*100}%</label>
             <input style={{float:"right", width:"350px", textAlign:"center"}} type="range" min="-100" max="100" step={1/this.state.scale} value={this.state.pct*100} className="slider" id="slider" onChange={this.sliderChange}/>
             </div>
         </fieldset>
-
-          <PCTBar maxWidth="270" pctChange={this.state.pct} scale={this.state.UIscale}/>
+          <Stream key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} fakePCT={this.state.pct}/>
 
         </div>
       );
