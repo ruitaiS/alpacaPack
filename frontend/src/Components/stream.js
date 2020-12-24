@@ -99,7 +99,6 @@ class Stream extends Component {
     click(){
         //Place a limit order at the holdPrice
         console.log("Clicked")
-        this.mouseOver()
         //this.setState({holdPrice: this.state.price})
         //console.log(this.state.test)
 
@@ -151,6 +150,7 @@ class Stream extends Component {
                 <PCTBar maxWidth="270" pctChange={this.state.pctGain - 1} scale="1"/>
                 <div>`Bought at: ${this.state.boughtAt}`</div>
                 <div>`Sold at: ${this.state.soldAt}`</div>
+                <div>`Percent Gain: {(this.state.pctGain-1)*100}%`</div>
                 <PCTBar maxWidth="270" pctChange={this.state.pct} scale="1"/>
                 <div>{overText}</div>
                 <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
