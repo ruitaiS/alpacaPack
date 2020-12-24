@@ -13,7 +13,7 @@ class Stream extends Component {
         //fakePCT
         this.state = {
             //currPrice
-            //pct
+            pct: null,
         }
 
         //Bind this to its functions
@@ -48,11 +48,12 @@ class Stream extends Component {
 
         this.setState({currPrice: data[0].p})
 
+        if (this.state.buyPrice != null){
         //Inverted PCT
         //Buy Price > Current Price = Green; You can buy the stock at (or cheaper) than you wanted
         //Buy Price < Current Price = Red; The stock is more expeensive than your limit price & the order won't go through (immediately)
         this.setState({pct: (this.state.buyPrice-this.state.currPrice)/ this.state.buyPrice})
-        console.log(this.state.pct)
+        }
 
         }
 
@@ -74,6 +75,7 @@ class Stream extends Component {
     mouseOut(){
         //Reset / remove buyPrice
         console.log("MouseOut")
+        this.setState({pct: null})
         this.setState({buyPrice: null})
     }
 

@@ -28,7 +28,7 @@ class PCTBar extends Component{
         console.log(pct)
 
         
-        if ((pct > -0.01)&&(pct < 0.01)){
+        if (((pct > -0.01)&&(pct < 0.01))||(pct == null)){
             //Placeholder blank bar, otherwise it shifts up b/c missing element
             res.push(this.bar("white"))
         }else{
