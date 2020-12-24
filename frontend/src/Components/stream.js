@@ -13,7 +13,14 @@ class Stream extends Component {
         //fakePCT
         this.state = {
             //currPrice
+            //holdPrice
             pct: null,
+
+
+            //Testing Buy / Sell Code
+            boughtAt: null,
+            soldAt: null,
+            pctGain: null,
         }
 
         //Bind this to its functions
@@ -48,12 +55,18 @@ class Stream extends Component {
 
         this.setState({currPrice: data[0].p})
 
-        if (this.state.buyPrice != null){
-        //Inverted PCT
-        //Buy Price > Current Price = Green; You can buy the stock at (or cheaper) than you wanted
-        //Buy Price < Current Price = Red; The stock is more expeensive than your limit price & the order won't go through (immediately)
-        this.setState({pct: (this.state.buyPrice-this.state.currPrice)/ this.state.buyPrice})
+        if (this.state.boughtAt != null){ //Currently in a position
+            this.setState({pct: (this.state.currPrice - this.state.boughtAt)/ this.state.boughtAt})
+        }else{ //Not in a position; only update pct if holding price
+            if (this.state.holdPrice != null){
+                //Inverted PCT
+                //Buy Price > Current Price = Green; You can buy the stock at (or cheaper) than you wanted
+                //Buy Price < Current Price = Red; The stock is more expeensive than your limit price & the order won't go through (immediately)
+                this.setState({pct: (this.state.holdPrice-this.state.currPrice)/ this.state.holdPrice})
+            }
         }
+
+
 
         }
 
@@ -69,22 +82,33 @@ class Stream extends Component {
         //Store current stream price
         //We want this to only run once, and then stop updating
         console.log("Mouseover")
-        this.setState({buyPrice: this.state.currPrice})
+        this.setState({holdPrice: this.state.currPrice})
+
+        //TODO: If you're in a position, and you do mouseover
+        //Show the change from buy-in to hold price in one color,
+        //change from hold price to current price in another color
     }
 
     mouseOut(){
-        //Reset / remove buyPrice
+        //Reset / remove holdPrice
         console.log("MouseOut")
         this.setState({pct: null})
-        this.setState({buyPrice: null})
+        this.setState({holdPrice: null})
     }
 
     click(){
-        //Place a limit order at the buyPrice
+        //Place a limit order at the holdPrice
         console.log("Clicked")
         this.mouseOver()
-        //this.setState({buyPrice: this.state.price})
+        //this.setState({holdPrice: this.state.price})
         //console.log(this.state.test)
+
+        //Clicking can be either buying or selling
+
+
+        if (this.state.currPrice <= this.state.holdPrice){
+            this.state.boughtAt = this.state.currPrice
+        }
 
 
     }
@@ -97,14 +121,18 @@ class Stream extends Component {
             buttonText = this.state.currPrice.toFixed(2)
         }
 
-        if (this.state.buyPrice != null){
-            buttonText = this.state.buyPrice.toFixed(2)
+        if (this.state.holdPrice != null){
+            buttonText = this.state.holdPrice.toFixed(2)
         }
 
 
         //Use this.state.pct in place of this.props.fakePCT for live testing
+        //First PCT bar shows gains, second is to show price changes
         return(
             <div>
+                <PCTBar maxWidth="270" pctChange={this.state.pctGain} scale="1"/>
+                <div>`Bought at: ${this.state.boughtAt}`</div>
+                <div>`Sold at: ${this.state.soldAt}`</div>
                 <PCTBar maxWidth="270" pctChange={this.state.pct} scale="1"/>
                 <div>{overText}</div>
                 <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
