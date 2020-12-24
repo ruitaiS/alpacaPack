@@ -20,7 +20,7 @@ class Stream extends Component {
             //Testing Buy / Sell Code
             boughtAt: null,
             soldAt: null,
-            pctGain: null,
+            pctGain: 1,
         }
 
         //Bind this to its functions
@@ -103,11 +103,21 @@ class Stream extends Component {
         //this.setState({holdPrice: this.state.price})
         //console.log(this.state.test)
 
-        //Clicking can be either buying or selling
+        
+        if (this.state.boughtAt != null){
+            //Already in a position -> Clicking exits
+            if (this.state.currPrice >= this.state.holdPrice){
+                this.setState({pctGain: 1+this.state.pct})
+                this.setState({soldAt: this.state.currPrice})
+            }
 
+            
 
-        if (this.state.currPrice <= this.state.holdPrice){
-            this.state.boughtAt = this.state.currPrice
+        }else{
+            //Not in a position -> Clicking enters
+            if (this.state.currPrice <= this.state.holdPrice){
+                this.setState({boughtAt: this.state.currPrice})
+            }
         }
 
 
@@ -130,7 +140,7 @@ class Stream extends Component {
         //First PCT bar shows gains, second is to show price changes
         return(
             <div>
-                <PCTBar maxWidth="270" pctChange={this.state.pctGain} scale="1"/>
+                <PCTBar maxWidth="270" pctChange={this.state.pctGain - 1} scale="1"/>
                 <div>`Bought at: ${this.state.boughtAt}`</div>
                 <div>`Sold at: ${this.state.soldAt}`</div>
                 <PCTBar maxWidth="270" pctChange={this.state.pct} scale="1"/>
