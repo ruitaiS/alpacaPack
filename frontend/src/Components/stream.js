@@ -107,15 +107,15 @@ class Stream extends Component {
         if (this.state.boughtAt != null){
             //Already in a position -> Clicking exits
             if (this.state.currPrice >= this.state.holdPrice){
-                this.setState({pctGain: 1+this.state.pct})
+                this.setState({pctGain: (1+this.state.pct)*this.state.pctGain})
                 this.setState({soldAt: this.state.currPrice})
+                this.setState({boughtAt: null})
             }
-
             
-
         }else{
             //Not in a position -> Clicking enters
             if (this.state.currPrice <= this.state.holdPrice){
+                this.setState({soldAt: null})
                 this.setState({boughtAt: this.state.currPrice})
             }
         }
@@ -124,15 +124,23 @@ class Stream extends Component {
     }
 
     render(){
+        let preText
         let buttonText
         let overText
+
+        if (this.state.boughtAt != null){
+            preText = "Sell At: "
+        }else{
+            preText = "Buy At: "
+        }
+
         if (this.state.currPrice != null){
             overText = this.state.currPrice.toFixed(2)
-            buttonText = this.state.currPrice.toFixed(2)
+            buttonText = `${preText} ${this.state.currPrice.toFixed(2)}`
         }
 
         if (this.state.holdPrice != null){
-            buttonText = this.state.holdPrice.toFixed(2)
+            buttonText = `${preText} ${this.state.holdPrice.toFixed(2)}`
         }
 
 
