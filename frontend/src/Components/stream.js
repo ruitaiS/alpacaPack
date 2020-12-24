@@ -47,7 +47,12 @@ class Stream extends Component {
         //console.log(data[0].p)
 
         this.setState({currPrice: data[0].p})
-        this.setState({pct: (this.state.currPrice-this.state.buyPrice)/ this.state.buyPrice})
+
+        //Inverted PCT
+        //Buy Price > Current Price = Green; You can buy the stock at (or cheaper) than you wanted
+        //Buy Price < Current Price = Red; The stock is more expeensive than your limit price & the order won't go through (immediately)
+        this.setState({pct: (this.state.buyPrice-this.state.currPrice)/ this.state.buyPrice})
+        console.log(this.state.pct)
 
         }
 
@@ -83,16 +88,23 @@ class Stream extends Component {
     }
 
     render(){
-        let buttonText = this.state.currPrice
-        if (this.state.buyPrice != null){
-            buttonText = this.state.buyPrice
+        let buttonText
+        let overText
+        if (this.state.currPrice != null){
+            overText = this.state.currPrice.toFixed(2)
+            buttonText = this.state.currPrice.toFixed(2)
         }
+
+        if (this.state.buyPrice != null){
+            buttonText = this.state.buyPrice.toFixed(2)
+        }
+
 
         //Use this.state.pct in place of this.props.fakePCT for live testing
         return(
             <div>
-                <PCTBar maxWidth="270" pctChange={this.props.fakePCT} scale="1"/>
-                <div>{this.state.currPrice}</div>
+                <PCTBar maxWidth="270" pctChange={this.state.pct} scale="1"/>
+                <div>{overText}</div>
                 <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)
     }

@@ -4,6 +4,7 @@
 /historical
 __pycache__/
 /oldstuff
+/howtos
 
 #React-Related:
 /frontend/node_modules
