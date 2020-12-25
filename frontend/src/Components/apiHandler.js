@@ -1,29 +1,35 @@
-import {Component} from "react";
+import React, { Component } from 'react'
 
-class API extends Component{
-    constructor(props){
-        super(props);
-        //Values that get passed to the component
+class API extends Component {
+  constructor(props) {
+    super(props)
+  }
+  componentWillMount() {
+    this.getData()
+  }
 
-        //Functions that need to get bound to this instance
-        //this.function = this.function.bind(this);
-        this.state = {
-            //Default state initialization
-        }
-    }
+  getData() {
+    // create a new XMLHttpRequest
+    var xhr = new XMLHttpRequest()
 
-    function(){
-        console.log("Hi! :)")
-    }
+    // get a callback when the server responds
+    xhr.addEventListener('load', () => {
+      // update the state of the component with the result here
+      console.log(xhr.responseText)
+    })
+    // open the request with the verb and the url
+    xhr.open('GET', 'https://dog.ceo/api/breeds/list/all')
+    // send the request
+    xhr.send()
+  }
 
-    render(){
-        return(
-            <div>
-                Stuff Goes Here
-            </div>
-        )
-        
-    }
+  render() {
+    return (
+      <div>
+        <p>Hello World</p>
+      </div>
+    )
+  }
 }
 
 export default API;
