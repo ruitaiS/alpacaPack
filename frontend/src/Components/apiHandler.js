@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 class API extends Component {
   constructor(props) {
     super(props)
+    this.account = this.account.bind(this)
     this.get = this.get.bind(this)
     this.buy = this.buy.bind(this)
     this.sell = this.sell.bind(this)
@@ -11,17 +12,38 @@ class API extends Component {
       liveURL: "https://api.alpaca.markets",
       paperURL: "https://paper-api.alpaca.markets",
       outputText: " ",
-      serverText: " ",  
+      responseText: " ",
   }
+
 
     //Props:
     //key_id
     //secret_key
     //ticker
+    //qty
     //side
-    //quantity
     //price
   }
+
+  account(){
+      
+    let xhr = new XMLHttpRequest()
+
+    xhr.addEventListener('load', () => {
+      // update the state of the component with the result here
+      console.log(xhr.responseText)
+      this.setState({outputText: "Got Account Details"})
+      this.setState({responseText: xhr.responseText})
+    })
+
+    xhr.open('GET', `${this.state.paperURL}/v2/account`)
+
+    xhr.setRequestHeader("APCA-API-KEY-ID", this.props.key_id)
+    xhr.setRequestHeader("APCA-API-SECRET-KEY", this.props.secret_key)
+
+    xhr.send()
+
+}
 
   get(){
       
@@ -34,7 +56,7 @@ class API extends Component {
         this.setState({responseText: xhr.responseText})
       })
 
-      xhr.open('GET', `${this.state.paperURL}/v2/account`)
+      xhr.open('GET', `${this.state.paperURL}/v2/orders`)
 
       xhr.setRequestHeader("APCA-API-KEY-ID", this.props.key_id)
       xhr.setRequestHeader("APCA-API-SECRET-KEY", this.props.secret_key)
@@ -43,21 +65,36 @@ class API extends Component {
 
   }
 
-  buy(){
-      
+  buy(){      
     let xhr = new XMLHttpRequest()
 
     xhr.addEventListener('load', () => {
       // update the state of the component with the result here
       console.log(xhr.responseText)
+      this.setState({outputText: "Submitted Order"})
+      this.setState({responseText: xhr.responseText})
     })
 
-    xhr.open('GET', 'https://dog.ceo/api/breeds/list/all')
+    xhr.open('POST', `${this.state.paperURL}/v2/orders`)
 
-    this.setState({outputText: "Buy Submitted"})
+    xhr.setRequestHeader("APCA-API-KEY-ID", this.props.key_id)
+    xhr.setRequestHeader("APCA-API-SECRET-KEY", this.props.secret_key)
 
-    xhr.send()
+    //Example of JSON order
+    //https://alpaca.markets/docs/trading-on-alpaca/orders/
 
+    //List of required parameters
+    //https://alpaca.markets/docs/api-documentation/api-v2/orders/
+
+    let order = {
+      "side" : "buy",
+      "symbol": "TSLA",
+      "qty" : "1",
+      "type": "market",
+      "time_in_force": "gtc"
+    }
+
+    xhr.send(JSON.stringify(order))
 }
 
   sell(){
@@ -73,10 +110,11 @@ class API extends Component {
     //Test API call functionality using buttons
     return (
       <div className="centered">
-        {this.state.serverText}
+        {/*this.state.responseText*/}
         {this.state.outputText}
         <div className="row">
-        <div><button className="bigBtn" onClick={this.get}>Get</button></div>
+          <div><button className="bigBtn" onClick={this.account}>Account Details</button></div>
+          <div><button className="bigBtn" onClick={this.get}>Get</button></div>
           <div><button className="bigBtn" onClick={this.buy}>Buy</button></div>
           <div><button className="bigBtn" onClick={this.sell}>Sell</button></div>
           <div><button className="bigBtn" onClick={this.cancel}>Cancel</button></div>
