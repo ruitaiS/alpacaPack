@@ -3,12 +3,15 @@ import React, { Component } from 'react'
 class API extends Component {
   constructor(props) {
     super(props)
+    this.get = this.get.bind(this)
     this.buy = this.buy.bind(this)
     this.sell = this.sell.bind(this)
     this.cancel = this.cancel.bind(this)
     this.state = {
-      outputText: "",
-      serverText: "",  
+      liveURL: "https://api.alpaca.markets",
+      paperURL: "https://paper-api.alpaca.markets",
+      outputText: " ",
+      serverText: " ",  
   }
 
     //Props:
@@ -19,39 +22,41 @@ class API extends Component {
     //quantity
     //price
   }
-  componentDidMount() {
-    this.getData()
-  }
 
-  getData() {
-    // create a new XMLHttpRequest
-    var xhr = new XMLHttpRequest()
-
-    // get a callback when the server responds
-    xhr.addEventListener('load', () => {
-      // update the state of the component with the result here
-      console.log(xhr.responseText)
-    })
-    // open the request with the verb and the url
-    xhr.open('GET', 'https://dog.ceo/api/breeds/list/all')
-    // send the request
-    xhr.send()
-  }
-
-  buy(){
+  get(){
       
       let xhr = new XMLHttpRequest()
 
       xhr.addEventListener('load', () => {
         // update the state of the component with the result here
-        console.log(xhr.responseText)
+        console.log(`hi ${xhr.responseText}`)
+        this.setState({outputText: "Got Orders"})
+        this.setState({responseText: xhr.responseText})
       })
 
-      xhr.open('GET', 'https://dog.ceo/api/breeds/list/all')
+      xhr.open('GET', `${this.props.paperURL}/v2/orders`)
 
-      this.setState({outputText: "Buy Submitted"})
+      xhr.setRequestHeader("APCA-API-KEY-ID", this.props.key_id)
+      xhr.setRequestHeader("APCA-API-SECRET-KEY", this.props.secret_key)
+
+      xhr.send()
 
   }
+
+  buy(){
+      
+    let xhr = new XMLHttpRequest()
+
+    xhr.addEventListener('load', () => {
+      // update the state of the component with the result here
+      console.log(xhr.responseText)
+    })
+
+    xhr.open('GET', 'https://dog.ceo/api/breeds/list/all')
+
+    this.setState({outputText: "Buy Submitted"})
+
+}
 
   sell(){
     this.setState({outputText: "Sell Submitted"})
@@ -69,6 +74,7 @@ class API extends Component {
         {this.state.serverText}
         {this.state.outputText}
         <div className="row">
+        <div><button className="bigBtn" onClick={this.get}>Get</button></div>
           <div><button className="bigBtn" onClick={this.buy}>Buy</button></div>
           <div><button className="bigBtn" onClick={this.sell}>Sell</button></div>
           <div><button className="bigBtn" onClick={this.cancel}>Cancel</button></div>
