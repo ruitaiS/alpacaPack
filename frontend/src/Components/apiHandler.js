@@ -29,12 +29,12 @@ class API extends Component {
 
       xhr.addEventListener('load', () => {
         // update the state of the component with the result here
-        console.log(`hi ${xhr.responseText}`)
+        console.log(xhr.responseText)
         this.setState({outputText: "Got Orders"})
         this.setState({responseText: xhr.responseText})
       })
 
-      xhr.open('GET', `${this.props.paperURL}/v2/orders`)
+      xhr.open('GET', `${this.state.paperURL}/v2/account`)
 
       xhr.setRequestHeader("APCA-API-KEY-ID", this.props.key_id)
       xhr.setRequestHeader("APCA-API-SECRET-KEY", this.props.secret_key)
@@ -55,6 +55,8 @@ class API extends Component {
     xhr.open('GET', 'https://dog.ceo/api/breeds/list/all')
 
     this.setState({outputText: "Buy Submitted"})
+
+    xhr.send()
 
 }
 
