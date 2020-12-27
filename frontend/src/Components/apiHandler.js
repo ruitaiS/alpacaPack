@@ -103,6 +103,19 @@ class API extends Component {
 
   cancel(){
     this.setState({outputText: "Cancelled"})
+
+    let xhr = new XMLHttpRequest()
+
+    xhr.addEventListener('load', () => {
+      // update the state of the component with the result here
+    })
+
+    xhr.open('DELETE', `${this.state.paperURL}/v2/orders`)
+
+    xhr.setRequestHeader("APCA-API-KEY-ID", this.props.key_id)
+    xhr.setRequestHeader("APCA-API-SECRET-KEY", this.props.secret_key)
+
+    xhr.send()
   }
 
 
