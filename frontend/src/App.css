@@ -54,3 +54,13 @@
   width: 50%;
   height: 50px;
 }
+
+.bigBtn{
+  width: 100%;
+  height: 50px;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+}
