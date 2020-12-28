@@ -53,7 +53,7 @@ class Stream extends Component {
         this.ws.onmessage = evt => {
 
         let data = JSON.parse(evt.data)
-        console.log(data)
+        console.log(data[0])
 
         this.setState({currPrice: data[0].p})
 
@@ -61,7 +61,7 @@ class Stream extends Component {
         if (this.state.chartData.length >=100){
             this.state.chartData.shift()
         }
-        this.state.chartData.push(data)
+        this.state.chartData.push(data[0])
 
         if (this.state.boughtAt != null){ //Currently in a position
             this.setState({pct: (this.state.currPrice - this.state.boughtAt)/ this.state.boughtAt})
