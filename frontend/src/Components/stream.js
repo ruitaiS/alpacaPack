@@ -3,6 +3,7 @@
 
 import {Component} from "react";
 import PCTBar from './pctBar';
+import Chart from './rechart';
 
 class Stream extends Component {
     constructor(props){
@@ -147,6 +148,7 @@ class Stream extends Component {
         //First PCT bar shows gains, second is to show price changes
         return(
             <div>
+                <Chart />
                 <PCTBar maxWidth="270" pctChange={this.state.pctGain - 1} scale="1"/>
                 <div>`Bought at: ${this.state.boughtAt}`</div>
                 <div>`Sold at: ${this.state.soldAt}`</div>
