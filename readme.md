@@ -1,3 +1,13 @@
+### Dec 27
+When the market is open, the prices move way too fast to glean any information by looking at the decimals, and also too fast for clicking.
+
+RN I'm thinking using the charting library to show the prices over time, in milliseconds
+
+Then have two sliders determine the buy and sell prices
+Then have a button that you hold down, and it executes for the duration that you're holding down the button.
+
+There's also definitely a lot of refactoring work that needs to be done; the structure of the program is really really messy b/c i'm just playing around with what feels good in terms of setup; don't want to spend too much time refactoring until I'm sure I have a thing that actually feels pretty intuitive to use.
+
 # TODO:
 
 ## General
