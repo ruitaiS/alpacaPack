@@ -15,6 +15,7 @@ class Stream extends Component {
         this.state = {
             //currPrice
             //holdPrice
+            chartData: [],
             pct: null,
 
 
@@ -52,9 +53,15 @@ class Stream extends Component {
         this.ws.onmessage = evt => {
 
         let data = JSON.parse(evt.data)
-        //console.log(data[0].p)
+        console.log(data)
 
         this.setState({currPrice: data[0].p})
+
+        //Pass the Time, Price, Volume data to the chart
+        if (this.state.chartData.length >=100){
+            this.state.chartData.shift()
+        }
+        this.state.chartData.push(data)
 
         if (this.state.boughtAt != null){ //Currently in a position
             this.setState({pct: (this.state.currPrice - this.state.boughtAt)/ this.state.boughtAt})
@@ -148,7 +155,7 @@ class Stream extends Component {
         //First PCT bar shows gains, second is to show price changes
         return(
             <div>
-                <Chart />
+                <Chart data={this.state.chartData}/>
                 <PCTBar maxWidth="270" pctChange={this.state.pctGain - 1} scale="1"/>
                 <div>`Bought at: ${this.state.boughtAt}`</div>
                 <div>`Sold at: ${this.state.soldAt}`</div>
