@@ -102,6 +102,9 @@ class API extends Component {
   }
 
   cancel(){
+
+    //This Cancels all orders
+
     this.setState({outputText: "Cancelled"})
 
     let xhr = new XMLHttpRequest()
