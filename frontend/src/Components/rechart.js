@@ -21,8 +21,8 @@ class Chart extends Component{
         console.log(this.props.data.length)
         return (
         <LineChart
-            width={500}
-            height={300}
+            width={750}
+            height={450}
             data={this.props.data}
             margin={{
             top: 5, right: 30, left: 20, bottom: 5,
@@ -30,9 +30,7 @@ class Chart extends Component{
         >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" domain={['dataMin', 'dataMax']} dataKey="t" />
-            <YAxis type="number" domain={['dataMin', 'dataMax']} dataKey="p" />
-            <Tooltip />
-            <Legend />
+            <YAxis type="number" domain={['auto', 'auto']} dataKey="p" />
             <Line type="monotone" dataKey="p" stroke="#82ca9d" />
         </LineChart>
         );
