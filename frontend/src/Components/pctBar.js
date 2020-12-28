@@ -25,7 +25,6 @@ class PCTBar extends Component{
 
     subPlot(pct){
         let res = []
-        console.log(pct)
 
         
         if (((pct > -0.01)&&(pct < 0.01))||(pct == null)){

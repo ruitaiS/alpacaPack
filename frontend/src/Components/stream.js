@@ -53,7 +53,7 @@ class Stream extends Component {
         this.ws.onmessage = evt => {
 
         let data = JSON.parse(evt.data)
-        console.log(data[0])
+        //console.log(data[0])
 
         this.setState({currPrice: data[0].p})
 
@@ -162,7 +162,7 @@ class Stream extends Component {
                 <div>`Percent Gain: {(this.state.pctGain-1)*100}%`</div>
                 <PCTBar maxWidth="270" pctChange={this.state.pct} scale="1"/>
                 <div>{overText}</div>
-                <div><button class="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
+                <div><button className="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
             </div>)
     }
 }
