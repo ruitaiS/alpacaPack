@@ -4,6 +4,7 @@ import Stream from "./stream";
 class Control extends Component{
     constructor(props) {
       super(props);
+      //#region This Binding
       this.tickerChange = this.tickerChange.bind(this);
       this.idChange = this.idChange.bind(this);
       this.skChange = this.skChange.bind(this);
@@ -12,6 +13,7 @@ class Control extends Component{
       this.sliderChange = this.sliderChange.bind(this);
       this.scaleChange = this.scaleChange.bind(this);
       this.UIscaleChange = this.UIscaleChange.bind(this);
+      //#endregion
       this.state = {
         key_id: 'PKHGR6CVRK7DTWFIB6Q1',
         secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
@@ -25,36 +27,39 @@ class Control extends Component{
         };
     }
   
-    tickerChange(e) {
-      this.setState({ticker: e.target.value});
-    }
-    idChange(e) {
-        this.setState({key_id: e.target.value});
-    }
-    skChange(e) {
-        this.setState({secret_key: e.target.value});
-    }
+    
+    //#region Onchange functions
+      tickerChange(e) {
+        this.setState({ticker: e.target.value});
+      }
+      idChange(e) {
+          this.setState({key_id: e.target.value});
+      }
+      skChange(e) {
+          this.setState({secret_key: e.target.value});
+      }
 
-    baseChange(e) {
-        this.setState({basePrice: e.target.value});
-    }
+      baseChange(e) {
+          this.setState({basePrice: e.target.value});
+      }
 
-    currChange(e) {
-        this.setState({currPrice: e.target.value});
-    }
+      currChange(e) {
+          this.setState({currPrice: e.target.value});
+      }
 
-    sliderChange(e){
-      console.log(e.target.value/100)
-      this.setState({pct: e.target.value/100})
-    }
+      sliderChange(e){
+        console.log(e.target.value/100)
+        this.setState({pct: e.target.value/100})
+      }
 
-    scaleChange(e){
-      this.setState({scale: e.target.value})
-    }
+      scaleChange(e){
+        this.setState({scale: e.target.value})
+      }
 
-    UIscaleChange(e){
-      this.setState({UIscale: e.target.value})
-    }
+      UIscaleChange(e){
+        this.setState({UIscale: e.target.value})
+      }
+      //#endregion
   
     render() {
       return (
