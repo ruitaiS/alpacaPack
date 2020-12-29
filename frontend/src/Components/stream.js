@@ -3,7 +3,8 @@
 
 import {Component} from "react";
 import PCTBar from './pctBar';
-import Chart from './rechart';
+import Chart from './chart';
+import API from './apiHandler';
 
 class Stream extends Component {
     constructor(props){
@@ -162,7 +163,8 @@ class Stream extends Component {
                 <div>`Percent Gain: {(this.state.pctGain-1)*100}%`</div>
                 <PCTBar maxWidth="270" pctChange={this.state.pct} scale="1"/>
                 <div>{overText}</div>
-                <div><button className="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>
+                {/*<div><button className="streamBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{buttonText}</button></div>*/}
+                <API click={this.click} mouseOver={this.mouseOver} mouseOut={this.mouseOut} buttonText={buttonText}/>
             </div>)
     }
 }

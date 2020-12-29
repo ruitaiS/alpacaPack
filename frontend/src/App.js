@@ -1,6 +1,6 @@
 import Control from './Components/control';
 import API from './Components/apiHandler';
-import Chart from './Components/rechart'
+import Chart from './Components/chart'
 import './App.css';
 
 function App() {

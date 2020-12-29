@@ -125,16 +125,20 @@ class API extends Component {
   render() {
     //Test API call functionality using buttons
     return (
-      <div className="centered">
-        {/*this.state.responseText*/}
-        {this.state.outputText}
+      <div>
         <div className="row">
           <div><button className="bigBtn" onClick={this.account}>Account Details</button></div>
           <div><button className="bigBtn" onClick={this.get}>Get</button></div>
           <div><button className="bigBtn" onClick={this.buy}>Buy</button></div>
           <div><button className="bigBtn" onClick={this.sell}>Sell</button></div>
           <div><button className="bigBtn" onClick={this.cancel}>Cancel</button></div>
+          <div><button className="bigBtn" onClick={this.props.function}>Test</button></div>
         </div>
+
+        <div className="row">
+          <button className="streamBtn" onClick={this.props.click} onMouseOver={this.props.mouseOver} onMouseOut={this.props.mouseOut}>{this.props.buttonText}</button>
+        </div>
+
       </div>
     )
   }
