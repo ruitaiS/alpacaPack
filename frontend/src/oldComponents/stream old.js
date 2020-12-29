@@ -1,22 +1,42 @@
 //Based on:
 //https://dev.to/finallynero/using-websockets-in-react-4fkp
 
-import PCTBar from './pctBar';
-import Chart from './chart';
-import API from './apiHandler';
+import {Component} from "react";
+import PCTBar from '../Components/pctBar';
+import Chart from '../Components/chart';
+import API from '../Components/apiHandler';
 
-class Stream{
-    constructor(key_id, secret_key, ticker){
-        //Stocks Websocket
-        this.ws = new WebSocket('wss://socket.polygon.io/stocks')
+class Stream extends Component {
+    constructor(props){
+        super(props);
+        //key_id
+        //secret_key
+        //ticker
+        //fakePCT
+        this.state = {
+            //currPrice
+            //holdPrice
+            chartData: [],
+            pct: null,
 
-        //Forex Websocket
-        //ws = new WebSocket('wss://socket.polygon.io/forex')
+
+            //Testing Buy / Sell Code
+            boughtAt: null,
+            soldAt: null,
+            pctGain: 1,
+        }
+
+        //Bind this to its functions
+        this.click = this.click.bind(this)
+        this.mouseOver = this.mouseOver.bind(this)
+        this.mouseOut = this.mouseOut.bind(this)
     }
 
+    //Stocks Websocket
+    ws = new WebSocket('wss://socket.polygon.io/stocks')
 
-
-
+    //Forex Websocket
+    //ws = new WebSocket('wss://socket.polygon.io/forex')
 
     componentDidMount() {
         this.ws.onopen = () => {
