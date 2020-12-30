@@ -1,3 +1,20 @@
+### Dec 29
+
+Refactoring everything b/c the first version was done kind of hastily / messily.
+
+Hierarchy:
+    Main
+        Control Panel - User Info input
+        Chart - Updated with price data from stream
+        Order Panel - stream data, as well as api instantiated based on login info given
+            Percent Bar
+            Order Button
+            More Order Buttons
+            Order History
+
+
+
+
 ### Dec 27
 When the market is open, the prices move way too fast to glean any information by looking at the decimals, and also too fast for clicking.
 
