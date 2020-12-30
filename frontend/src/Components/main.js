@@ -32,18 +32,13 @@ class Main extends Component{
     //NOTE: Using this.state.[whatever] after setState doesn't seem to update it until the next iteration;
     //Need to directly use e.target.value
     tickerChange(e) {
-        this.ws.unsubscribe(this.state.ticker)
-        this.setState({ticker: e.target.value});
-        this.ws.subscribe(e.target.value)
+        this.setState({ticker: e.target.value})
     }
     idChange(e) {
         this.setState({key_id: e.target.value});
-        this.api.idChange(e.target.value)
-        this.ws = new Stream(e.target.value, this.streamListener)
     }
     skChange(e) {
         this.setState({secret_key: e.target.value});
-        this.api.skChange(e.target.value)
     }
 
     connect(){
