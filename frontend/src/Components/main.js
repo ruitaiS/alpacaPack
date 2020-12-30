@@ -50,6 +50,10 @@ class Main extends Component{
         this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
         this.ws = new Stream(this.state.key_id, this.streamListener)
     }
+
+    disconnect(){
+        //TODO
+    }
     //#endregion
 
     log(msg){
@@ -57,13 +61,26 @@ class Main extends Component{
     }
 
     streamListener(msg){
-        console.log(msg)
         /*TODO
         See old version of stream
         Lots of entangled logic that you'll need to parcel out
         Here specifically you'll just want to update the price
         Updating chart and percent bar logic should be seperate
         */
+
+        let data = JSON.parse(msg.data)
+
+        //Login in Process:
+        if (data[0].message != null){
+            console.log(data[0].message)
+            //Subscribe to Stream after authentication confirmation
+            if (data[0].message === 'authenticated'){
+                this.ws.subscribe(this.state.ticker)
+            }
+        }else{
+            //Price data here
+            console.log(data[0].p)
+        }
     }
 
     test(){
