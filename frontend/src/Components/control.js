@@ -34,6 +34,8 @@ class Control extends Component{
               <label htmlFor="tck">Ticker:</label>
               <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
               </div>
+
+              <button style={{float:"right", width:"350px", textAlign:"center"}} onClick={this.props.connect}>Connect</button>
           </fieldset>
         </div>
       );

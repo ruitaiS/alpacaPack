@@ -11,6 +11,7 @@ class Main extends Component{
         this.tickerChange = this.tickerChange.bind(this);
         this.idChange = this.idChange.bind(this);
         this.skChange = this.skChange.bind(this);
+        this.connect = this.connect.bind(this);
 
         this.streamListener = this.streamListener.bind(this);
 
@@ -22,10 +23,7 @@ class Main extends Component{
             ticker: 'TSLA',
         }
 
-        this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-
         //TODO: Stream will be a little more complex wrt getting the return data
-        this.ws = new Stream(this.state.key_id, this.streamListener)
         //this.ws.subscribe(this.state.ticker)
     }
 
@@ -46,6 +44,11 @@ class Main extends Component{
     skChange(e) {
         this.setState({secret_key: e.target.value});
         this.api.skChange(e.target.value)
+    }
+
+    connect(){
+        this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
+        this.ws = new Stream(this.state.key_id, this.streamListener)
     }
     //#endregion
 
@@ -73,7 +76,7 @@ class Main extends Component{
             <div>
                 {this.state.key_id}
                 <button onClick={this.test}> Clicky</button>
-                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange}/>
+                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} connect={this.connect}/>
             </div>
         )
     }
