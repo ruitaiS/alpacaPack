@@ -8,12 +8,14 @@ class Stream{
     constructor(key_id, callback){
         //Stocks Websocket
         this.ws = new WebSocket('wss://socket.polygon.io/stocks')
+        console.log("test")
 
         //Send Authentication Message On Open:
         //TODO: Error handling on failure to authenticate
+        //TODO: Figure out why this is running twice
         this.ws.onopen = () => {
             console.log("Authenticating")
-            this.ws.send(JSON.stringify({"action":"auth","params": key_id}))
+            //this.ws.send(JSON.stringify({"action":"auth","params": key_id}))
         }
 
         this.ws.onclose = () =>{

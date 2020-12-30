@@ -15,7 +15,7 @@ class Main extends Component{
         this.streamListener = this.streamListener.bind(this);
 
         this.log = this.log.bind(this);
-        //this.test = this.test.bind(this);
+        this.test = this.test.bind(this);
         this.state = {
             key_id: 'PKHGR6CVRK7DTWFIB6Q1',
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
@@ -26,6 +26,7 @@ class Main extends Component{
 
         //TODO: Stream will be a little more complex wrt getting the return data
         this.ws = new Stream(this.state.key_id, this.streamListener)
+        //this.ws.subscribe(this.state.ticker)
     }
 
     //#region Onchange Functions (Called from Control Panel)
@@ -52,7 +53,8 @@ class Main extends Component{
         console.log(msg)
     }
 
-    streamListener(){
+    streamListener(msg){
+        console.log(msg)
         /*TODO
         See old version of stream
         Lots of entangled logic that you'll need to parcel out
@@ -61,12 +63,16 @@ class Main extends Component{
         */
     }
 
+    test(){
+        //let ws = new Stream(this.state.key_id, this.streamListener)
+    }
+
 
     render(){
         return(
             <div>
                 {this.state.key_id}
-                <button onClick={() => this.api.account(this.log)}> Clicky</button>
+                <button onClick={this.test}> Clicky</button>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange}/>
             </div>
         )
