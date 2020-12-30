@@ -12,6 +12,7 @@ class Main extends Component{
         this.skChange = this.skChange.bind(this);
 
         this.log = this.log.bind(this);
+        //this.test = this.test.bind(this);
         this.state = {
             key_id: 'PKHGR6CVRK7DTWFIB6Q1',
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
