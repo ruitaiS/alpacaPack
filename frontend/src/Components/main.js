@@ -53,7 +53,12 @@ class Main extends Component{
     }
 
     streamListener(){
-        //TODO
+        /*TODO
+        See old version of stream
+        Lots of entangled logic that you'll need to parcel out
+        Here specifically you'll just want to update the price
+        Updating chart and percent bar logic should be seperate
+        */
     }
 
 
