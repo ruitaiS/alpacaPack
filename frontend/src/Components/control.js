@@ -1,5 +1,4 @@
 import {Component} from "react";
-import Stream from "./stream";
 
 class Control extends Component{
     constructor(props) {

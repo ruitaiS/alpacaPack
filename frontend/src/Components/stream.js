@@ -13,10 +13,21 @@ class Stream{
         //Send Authentication Message On Open:
         //TODO: Error handling on failure to authenticate
         //TODO: Figure out why this is running twice
+
+        
         this.ws.onopen = () => {
             console.log("Authenticating")
-            //this.ws.send(JSON.stringify({"action":"auth","params": key_id}))
+            this.ws.send(JSON.stringify({"action":"auth","params": key_id}))
         }
+
+        /*
+        while(true){
+            if (this.ws.readyState === 1){
+                console.log("Authenticating")
+                this.ws.send(JSON.stringify({"action":"auth","params": key_id}))
+                break
+            }
+        }*/
 
         this.ws.onclose = () =>{
             console.log("Disconnected")
