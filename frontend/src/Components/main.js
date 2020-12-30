@@ -1,6 +1,7 @@
 import {Component} from "react";
 import Control from './control';
 import API from './apiHandler';
+import Stream from "./stream";
 
 class Main extends Component{
     constructor(props){
@@ -11,6 +12,8 @@ class Main extends Component{
         this.idChange = this.idChange.bind(this);
         this.skChange = this.skChange.bind(this);
 
+        this.streamListener = this.streamListener.bind(this);
+
         this.log = this.log.bind(this);
         //this.test = this.test.bind(this);
         this.state = {
@@ -20,18 +23,24 @@ class Main extends Component{
         }
 
         this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
+
+        //TODO: Stream will be a little more complex wrt getting the return data
+        this.ws = new Stream(this.state.key_id, this.streamListener)
     }
 
-    //#region Onchange functions
+    //#region Onchange Functions (Called from Control Panel)
     //TODO: May need to update the websocket stream & also the api handler
     //NOTE: Using this.state.[whatever] after setState doesn't seem to update it until the next iteration;
     //Need to directly use e.target.value
     tickerChange(e) {
+        this.ws.unsubscribe(this.state.ticker)
         this.setState({ticker: e.target.value});
+        this.ws.subscribe(e.target.value)
     }
     idChange(e) {
         this.setState({key_id: e.target.value});
         this.api.idChange(e.target.value)
+        this.ws = new Stream(e.target.value, this.streamListener)
     }
     skChange(e) {
         this.setState({secret_key: e.target.value});
@@ -41,6 +50,10 @@ class Main extends Component{
 
     log(msg){
         console.log(msg)
+    }
+
+    streamListener(){
+        //TODO
     }
 
 
