@@ -75,6 +75,18 @@ class API {
     xhr.send()
   }
 
+  idChange(key_id){
+    this.key_id = key_id
+  }
+
+  skChange(secret_key){
+    this.secret_key = secret_key
+  }
+
+  urlChange(url){
+    this.url = url
+  }
+
 }
 
 export default API;

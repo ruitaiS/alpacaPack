@@ -24,16 +24,18 @@ class Main extends Component{
 
     //#region Onchange functions
     //TODO: May need to update the websocket stream & also the api handler
+    //NOTE: Using this.state.[whatever] after setState doesn't seem to update it until the next iteration;
+    //Need to directly use e.target.value
     tickerChange(e) {
         this.setState({ticker: e.target.value});
     }
     idChange(e) {
         this.setState({key_id: e.target.value});
-        this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
+        this.api.idChange(e.target.value)
     }
     skChange(e) {
         this.setState({secret_key: e.target.value});
-        this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
+        this.api.skChange(e.target.value)
     }
     //#endregion
 
