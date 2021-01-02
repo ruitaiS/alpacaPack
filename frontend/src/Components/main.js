@@ -45,6 +45,7 @@ class Main extends Component{
     }
 
     streamChange(e){
+        //TODO -> What should the behavior here be wrt to the currently active connections?
         this.setState({stream: e.target.value})
         this.disconnect()
     }
@@ -56,8 +57,9 @@ class Main extends Component{
     }
 
     disconnect(){
+        //TODO
         this.ws.disconnect()
-        
+
     }
     //#endregion
 
