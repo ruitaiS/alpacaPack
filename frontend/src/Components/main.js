@@ -11,6 +11,8 @@ class Main extends Component{
         this.tickerChange = this.tickerChange.bind(this);
         this.idChange = this.idChange.bind(this);
         this.skChange = this.skChange.bind(this);
+        this.streamChange = this.streamChange.bind(this);
+
         this.connect = this.connect.bind(this);
 
         this.streamListener = this.streamListener.bind(this);
@@ -20,6 +22,7 @@ class Main extends Component{
         this.state = {
             key_id: 'PKHGR6CVRK7DTWFIB6Q1',
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
+            stream: 'forex',
             ticker: 'TSLA',
         }
 
@@ -39,6 +42,10 @@ class Main extends Component{
     }
     skChange(e) {
         this.setState({secret_key: e.target.value});
+    }
+
+    streamChange(e){
+        this.setState({stream: e.target.value})
     }
 
     connect(){
@@ -87,10 +94,10 @@ class Main extends Component{
     render(){
         return(
             <div>
-                {this.state.key_id}
+                {this.state.stream}
                 <button onClick={this.test}> Clicky</button>
                 {/*{this.state.data[0].p}*/}
-                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} connect={this.connect}/>
+                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} connect={this.connect}/>
             </div>
         )
     }
