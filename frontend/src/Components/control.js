@@ -30,15 +30,17 @@ class Control extends Component{
       }else{
         //Placeholder
         //Will need conditional rendering of options from a list of currency pairs
+        //Also it's using a pretty janky right 110px margin on the second select box to make it centered
         streamParams =(
         <div>
         <label htmlFor="pair">Pair:</label>
-          <div id="pair" style={{float:"right", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-          <select style={{width:"150px", textAlign:"center"}} value={this.props.p1} onChange={this.props.p1Change}>
+          <div id="pair" style={{float:"right", display: "flex", flexDirection: "row", justifyContent: "space-evenly", fontSize:"15px"}}>
+          <select style={{width:"50px", textAlign:"center", margin:"0px 10px 0px 10px"}} value={this.props.p1} onChange={this.props.p1Change}>
                 <option value="usd">USD</option>
                 <option value="cad">CAD</option>
           </select>
-          <select style={{width:"150px", textAlign:"center"}} value={this.props.p2} onChange={this.props.p2Change}>
+          to
+          <select style={{width:"50px", textAlign:"center", margin:"0px 110px 0px 10px"}} value={this.props.p2} onChange={this.props.p2Change}>
                 <option value="usd">USD</option>
                 <option value="cad">CAD</option>
           </select>
@@ -60,12 +62,16 @@ class Control extends Component{
               
               <div>
               <label htmlFor="secret">Secret Key:</label>
-              {this.props.stream === "forex" ? <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" disabled/> : <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" value={this.props.secret_key} onChange={this.props.skChange}/>}
+              {this.props.stream === "forex" ? 
+                <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" disabled value=""/>
+                :
+                <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" value={this.props.secret_key} onChange={this.props.skChange}/>
+              }
               </div>
               
 
               <div>
-              <label for="stream">Stream:</label>
+              <label htmlFor="stream">Stream:</label>
               <select id="stream" style={{float:"right", width:"350px", textAlign:"center"}} value={this.props.stream} onChange={this.props.streamChange}>
               <option value="stocks">Stocks</option>
               <option value="forex">Forex</option>

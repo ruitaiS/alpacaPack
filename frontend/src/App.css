@@ -52,6 +52,11 @@ select {
   -moz-text-align-last: center;
 }
 
+input, select{
+  width:100%;
+  box-sizing:border-box;
+}
+
 .inputBox {
   text-align: left;
   width: 500px;
