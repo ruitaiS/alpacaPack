@@ -31,6 +31,14 @@ class Control extends Component{
               </div>
 
               <div>
+              <label for="stream">Stream:</label>
+              <select id="stream" style={{float:"right", width:"350px", textAlign:"center"}}>
+              <option value="Stocks">Stocks</option>
+              <option value="Forex">Forex</option>
+              </select>
+              </div>
+
+              <div>
               <label htmlFor="tck">Ticker:</label>
               <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
               </div>

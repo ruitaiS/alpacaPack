@@ -45,6 +45,13 @@
   transform: translate(-50%, -50%);
 }
 
+select {
+  text-align-last: center;
+  text-align: center;
+  -ms-text-align-last: center;
+  -moz-text-align-last: center;
+}
+
 .inputBox {
   text-align: left;
   width: 500px;

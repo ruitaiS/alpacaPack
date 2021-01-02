@@ -42,6 +42,7 @@ class Main extends Component{
     }
 
     connect(){
+        //Creates new connections to API and Stream, after updating 
         this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
         this.ws = new Stream(this.state.key_id, this.streamListener)
     }
@@ -63,18 +64,18 @@ class Main extends Component{
         Updating chart and percent bar logic should be seperate
         */
 
-        let data = JSON.parse(msg.data)
+        this.setState({data: JSON.parse(msg.data)})
 
-        //Login in Process:
-        if (data[0].message != null){
-            console.log(data[0].message)
+        //Subscribe to Ticker after Auth Confirmation:
+        if (this.state.data[0].message != null){
+            console.log(this.state.data[0].message)
             //Subscribe to Stream after authentication confirmation
-            if (data[0].message === 'authenticated'){
+            if (this.state.data[0].message === 'authenticated'){
                 this.ws.subscribe(this.state.ticker)
             }
         }else{
             //Price data here
-            console.log(data[0].p)
+            console.log(this.state.data[0].p)
         }
     }
 
@@ -88,6 +89,7 @@ class Main extends Component{
             <div>
                 {this.state.key_id}
                 <button onClick={this.test}> Clicky</button>
+                {/*{this.state.data[0].p}*/}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} connect={this.connect}/>
             </div>
         )
