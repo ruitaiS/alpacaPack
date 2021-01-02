@@ -1,3 +1,7 @@
+### Jan 2
+Not totally sure what the behavior should be when switching from forex to stocks, wrt the connections.
+I can definitely foresee a dangerous situation where the alpaca endpoint is still active even after switching to forex, and trade orders are going through when you press the buttons.
+
 ### Dec 29
 
 Refactoring everything b/c the first version was done kind of hastily / messily.

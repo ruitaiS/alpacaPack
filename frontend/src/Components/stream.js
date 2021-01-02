@@ -37,6 +37,10 @@ class Stream{
     unsubscribe(ticker){
         this.ws.send(JSON.stringify({"action":"unsubscribe","params":"T."+ticker}))
     }
+
+    disconnect(){
+        this.ws.close()
+    }
 }
 
 export default Stream;

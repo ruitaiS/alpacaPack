@@ -46,6 +46,7 @@ class Main extends Component{
 
     streamChange(e){
         this.setState({stream: e.target.value})
+        this.disconnect()
     }
 
     connect(){
@@ -55,7 +56,8 @@ class Main extends Component{
     }
 
     disconnect(){
-        //TODO
+        this.ws.disconnect()
+        
     }
     //#endregion
 
