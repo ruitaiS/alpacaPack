@@ -1,7 +1,6 @@
 import {Component} from "react";
 
-//TODO: Consider passing / 
-
+//TODO: There are a lot of parameters being passed to control...
 class Control extends Component{
     constructor(props) {
       //key_id
@@ -15,9 +14,29 @@ class Control extends Component{
       super(props);
       this.state = {
         };
+      this.currencyOptions = this.currencyOptions.bind(this)
+
+      //TODO: More Comprehensive List
+      //https://www.xe.com/symbols.php
+      this.currencies = ["USD", "CAD", "JPY"]
+    }
+
+    currencyOptions(exclude){
+      let res = []
+      for (let currency of this.currencies){
+        if (currency !== exclude){
+          res.push(
+            <option value={currency}>{currency}</option>
+          )
+        }
+      }
+      return res
     }
   
     render() {
+
+
+
 
       //Conditional Rendering for Stream Parameter Input
       let streamParams
@@ -36,14 +55,13 @@ class Control extends Component{
         <label htmlFor="pair">Pair:</label>
           <div id="pair" style={{float:"right", display: "flex", flexDirection: "row", justifyContent: "space-evenly", fontSize:"15px"}}>
           <select style={{width:"50px", textAlign:"center", margin:"0px 10px 0px 10px"}} value={this.props.p1} onChange={this.props.p1Change}>
-                <option value="usd">USD</option>
-                <option value="cad">CAD</option>
+                {this.currencyOptions(this.props.p2)}
           </select>
           to
-          <select style={{width:"50px", textAlign:"center", margin:"0px 110px 0px 10px"}} value={this.props.p2} onChange={this.props.p2Change}>
-                <option value="usd">USD</option>
-                <option value="cad">CAD</option>
+          <select style={{width:"50px", textAlign:"center", margin:"0px 10px 0px 10px"}} value={this.props.p2} onChange={this.props.p2Change}>
+                {this.currencyOptions(this.props.p1)}
           </select>
+          <button style={{width:"50px", textAlign:"center", margin:"0px 50px 0px 10px"}} onClick={this.props.pairSwap}>Swap</button>
           </div>
         </div>
         )
@@ -63,7 +81,7 @@ class Control extends Component{
               <div>
               <label htmlFor="secret">Secret Key:</label>
               {this.props.stream === "forex" ? 
-                <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" disabled value=""/>
+                <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" disabled value="N/A"/>
                 :
                 <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" value={this.props.secret_key} onChange={this.props.skChange}/>
               }

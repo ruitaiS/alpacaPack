@@ -13,6 +13,10 @@ class Main extends Component{
         this.skChange = this.skChange.bind(this);
         this.streamChange = this.streamChange.bind(this);
 
+        this.p1Change = this.p1Change.bind(this);
+        this.p2Change = this.p2Change.bind(this);
+        this.pairSwap = this.pairSwap.bind(this);
+
         this.connect = this.connect.bind(this);
 
         this.streamListener = this.streamListener.bind(this);
@@ -24,6 +28,9 @@ class Main extends Component{
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
             stream: 'forex',
             ticker: 'TSLA',
+
+            p1: "USD",
+            p2: "CAD",
         }
 
         //TODO: Stream will be a little more complex wrt getting the return data
@@ -47,7 +54,23 @@ class Main extends Component{
     streamChange(e){
         //TODO -> What should the behavior here be wrt to the currently active connections?
         this.setState({stream: e.target.value})
-        this.disconnect()
+        //this.disconnect()
+    }
+
+    //Currency Pair Related Functions
+    p1Change(e){
+        this.setState({p1: e.target.value})
+    }
+
+    p2Change(e){
+        this.setState({p2: e.target.value})
+    }
+
+    pairSwap(){
+        let p1Now = this.state.p1
+        let p2Now = this.state.p2
+        this.setState({p1: p2Now})
+        this.setState({p2: p1Now})
     }
 
     connect(){
@@ -58,7 +81,7 @@ class Main extends Component{
 
     disconnect(){
         //TODO
-        this.ws.disconnect()
+        //this.ws.disconnect()
 
     }
     //#endregion
@@ -101,7 +124,7 @@ class Main extends Component{
                 {this.state.stream}
                 <button onClick={this.test}> Clicky</button>
                 {/*{this.state.data[0].p}*/}
-                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} connect={this.connect}/>
+                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )
     }
