@@ -5,9 +5,9 @@
 //https://polygon.io/sockets
 
 class Stream{
-    constructor(key_id, callback){
+    constructor(key_id, url, callback){
         //Stocks Websocket
-        this.ws = new WebSocket('wss://socket.polygon.io/stocks')
+        this.ws = new WebSocket(url)
         console.log("test")
 
         //Send Authentication Message On Open:
@@ -29,6 +29,7 @@ class Stream{
 
     }
 
+    //TODO: These are only for the stock cluster; will need changes for forex / crypto
     //TODO: Check if you can do this more than once, & how the response actually comes through
     subscribe(ticker){
         this.ws.send(JSON.stringify({"action":"subscribe","params":"T."+ticker}))

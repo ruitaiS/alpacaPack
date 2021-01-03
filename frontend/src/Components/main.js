@@ -26,7 +26,7 @@ class Main extends Component{
         this.state = {
             key_id: 'PKHGR6CVRK7DTWFIB6Q1',
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
-            stream: 'forex',
+            stream: 'stocks',
             ticker: 'TSLA',
 
             p1: "USD",
@@ -74,9 +74,14 @@ class Main extends Component{
     }
 
     connect(){
-        //Creates new connections to API and Stream, after updating 
-        this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-        this.ws = new Stream(this.state.key_id, this.streamListener)
+        //Creates new connections to API and Stream, after updating
+        if (this.state.stream === "stocks"){
+            this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
+        }else{
+            this.api = null
+        }
+        
+        this.ws = new Stream(this.state.key_id, `wss://socket.polygon.io/${this.state.stream}`, this.streamListener)
     }
 
     disconnect(){
@@ -91,6 +96,7 @@ class Main extends Component{
     }
 
     streamListener(msg){
+        console.log(JSON.parse(msg.data))
         /*TODO
         See old version of stream
         Lots of entangled logic that you'll need to parcel out
@@ -98,8 +104,10 @@ class Main extends Component{
         Updating chart and percent bar logic should be seperate
         */
 
-        this.setState({data: JSON.parse(msg.data)})
+        //this.setState({data: JSON.parse(msg.data)})
 
+        //TODO: The way we handle the message will depend on what stream type we're listening to
+        /*
         //Subscribe to Ticker after Auth Confirmation:
         if (this.state.data[0].message != null){
             console.log(this.state.data[0].message)
@@ -110,7 +118,7 @@ class Main extends Component{
         }else{
             //Price data here
             console.log(this.state.data[0].p)
-        }
+        }*/
     }
 
     test(){
@@ -121,7 +129,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                {this.state.stream}
+                {this.state.data}
                 <button onClick={this.test}> Clicky</button>
                 {/*{this.state.data[0].p}*/}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
