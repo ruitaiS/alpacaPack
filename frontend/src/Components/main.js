@@ -81,6 +81,8 @@ class Main extends Component{
             this.api = null
         }
         
+        //Gonna need to revamp this to use the other websocket
+        //https://finnhub.io/
         this.ws = new Stream(this.state.key_id, `wss://socket.polygon.io/${this.state.stream}`, this.streamListener)
     }
 
