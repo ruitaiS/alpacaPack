@@ -34,10 +34,6 @@ class Control extends Component{
     }
   
     render() {
-
-
-
-
       //Conditional Rendering for Stream Parameter Input
       let streamParams
       if (this.props.stream === 'stocks'){
@@ -47,9 +43,7 @@ class Control extends Component{
         <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
         </div>)
       }else{
-        //Placeholder
-        //Will need conditional rendering of options from a list of currency pairs
-        //Also it's using a pretty janky right 110px margin on the second select box to make it centered
+        //janky right margin on the second select box to make it centered
         streamParams =(
         <div>
         <label htmlFor="pair">Pair:</label>
@@ -76,7 +70,6 @@ class Control extends Component{
               <label htmlFor="key">Key ID:</label>
               <input style={{float:"right", width:"350px", textAlign:"center"}} id="key" value={this.props.key_id} onChange={this.props.idChange}/>
               </div>
-
               
               <div>
               <label htmlFor="secret">Secret Key:</label>
@@ -86,7 +79,6 @@ class Control extends Component{
                 <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" value={this.props.secret_key} onChange={this.props.skChange}/>
               }
               </div>
-              
 
               <div>
               <label htmlFor="stream">Stream:</label>
