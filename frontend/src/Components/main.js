@@ -24,20 +24,17 @@ class Main extends Component{
         this.log = this.log.bind(this);
         this.test = this.test.bind(this);
         this.state = {
-            //key_id: 'PKHGR6CVRK7DTWFIB6Q1',
-            key_id: 'bvqgf2n48v6qg460kck0',
+            key_id: 'PKHGR6CVRK7DTWFIB6Q1',
+            //key_id: 'bvqgf2n48v6qg460kck0',
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
 
-            //stream: 'stocks',
-            stream: 'forex',
+            stream: 'stocks',
+            //stream: 'forex',
             ticker: 'TSLA',
 
             p1: "USD",
             p2: "CAD",
         }
-
-        //TODO: Stream will be a little more complex wrt getting the return data
-        //this.ws.subscribe(this.state.ticker)
     }
 
     //#region Onchange Functions (Called from Control Panel)
@@ -84,8 +81,10 @@ class Main extends Component{
             this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
         }else{
-            this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
-            this.api = null
+            alert("Forex streaming is currently unsupported.")
+            this.setState({stream: "stocks"})
+            //this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
+            //this.api = null
         }
     }
 
