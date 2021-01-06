@@ -26,7 +26,7 @@ class Control extends Component{
       for (let currency of this.currencies){
         if (currency !== exclude){
           res.push(
-            <option value={currency}>{currency}</option>
+            <option key={currency} value={currency}>{currency}</option>
           )
         }
       }
