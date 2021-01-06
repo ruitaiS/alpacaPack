@@ -4,6 +4,10 @@
 //Uses the Polygon websocket rather than the alpaca one. Documentation here:
 //https://polygon.io/sockets
 
+
+//TODO: This will need different methods depending on which websocket is being used, since they all seem to have different formats and standards
+//For now just use the stocks endpoint to build everything out
+
 class Stream{
     constructor(key_id, url, callback){
         //Stocks Websocket

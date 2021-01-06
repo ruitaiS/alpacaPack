@@ -81,7 +81,7 @@ class Main extends Component{
             this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
         }else{
-            alert("Forex streaming is currently unsupported.")
+            alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
             //this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
             //this.api = null
@@ -129,7 +129,11 @@ class Main extends Component{
     }
 
     test(){
-        //let ws = new Stream(this.state.key_id, this.streamListener)
+        /*
+        this.ws.subscribe("AAPL")
+        this.ws.subscribe("MSFT")
+        this.ws.subscribe("XPEV")
+        */
     }
 
 
