@@ -24,9 +24,12 @@ class Main extends Component{
         this.log = this.log.bind(this);
         this.test = this.test.bind(this);
         this.state = {
-            key_id: 'PKHGR6CVRK7DTWFIB6Q1',
+            //key_id: 'PKHGR6CVRK7DTWFIB6Q1',
+            key_id: 'bvqgf2n48v6qg460kck0',
             secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
-            stream: 'stocks',
+
+            //stream: 'stocks',
+            stream: 'forex',
             ticker: 'TSLA',
 
             p1: "USD",
@@ -55,6 +58,8 @@ class Main extends Component{
         //TODO -> What should the behavior here be wrt to the currently active connections?
         this.setState({stream: e.target.value})
         //this.disconnect()
+
+        //url state is updated in connect()
     }
 
     //Currency Pair Related Functions
@@ -76,14 +81,12 @@ class Main extends Component{
     connect(){
         //Creates new connections to API and Stream, after updating
         if (this.state.stream === "stocks"){
+            this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
         }else{
+            this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
             this.api = null
         }
-        
-        //Gonna need to revamp this to use the other websocket
-        //https://finnhub.io/
-        this.ws = new Stream(this.state.key_id, `wss://socket.polygon.io/${this.state.stream}`, this.streamListener)
     }
 
     disconnect(){
@@ -98,7 +101,6 @@ class Main extends Component{
     }
 
     streamListener(msg){
-        console.log(JSON.parse(msg.data))
         /*TODO
         See old version of stream
         Lots of entangled logic that you'll need to parcel out
@@ -106,21 +108,25 @@ class Main extends Component{
         Updating chart and percent bar logic should be seperate
         */
 
+        let data = JSON.parse(msg.data)
+        console.log(data)
+
         //this.setState({data: JSON.parse(msg.data)})
 
         //TODO: The way we handle the message will depend on what stream type we're listening to
-        /*
+        
+        //Stock Websocket Format:
         //Subscribe to Ticker after Auth Confirmation:
-        if (this.state.data[0].message != null){
-            console.log(this.state.data[0].message)
+        if (data[0].message != null){
+            console.log(data[0].message)
             //Subscribe to Stream after authentication confirmation
-            if (this.state.data[0].message === 'authenticated'){
+            if (data[0].message === 'authenticated'){
                 this.ws.subscribe(this.state.ticker)
             }
         }else{
-            //Price data here
-            console.log(this.state.data[0].p)
-        }*/
+            //Message is null, so we assume it is already subscribed to a stream
+            console.log(data[0].p)
+        }
     }
 
     test(){
@@ -131,7 +137,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                {this.state.data}
+                {this.state.url}
                 <button onClick={this.test}> Clicky</button>
                 {/*{this.state.data[0].p}*/}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
