@@ -21,7 +21,7 @@ const MultiKeysPressed = ({ keys, keysPressed, emoji }) => {
   return null;
 };
 
-function App() {
+function KB() {
   // Call our hook for each key that we'd like to monitor
   const happyPress = useKeyPress("h");
   const sadPress = useKeyPress("s");
@@ -73,5 +73,4 @@ const Label = ({ value, isBold }) => (
   </div>
 );
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+export default KB;
