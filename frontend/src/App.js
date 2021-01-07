@@ -1,6 +1,6 @@
 
 import Main from './Components/main';
-import KB from './Components/kbHandler';
+import KB from './Components/keyboard/kbHandler';
 import './App.css';
 
 function App() {
