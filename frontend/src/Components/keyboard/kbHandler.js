@@ -1,6 +1,6 @@
 import React from "react";
 import useKeyPress from "./use-key-press";
-import useMultiKeyPress from "../use-multi-key-press";
+import useMultiKeyPress from "./use-multi-key-press";
 //import "./styles.css";
 
 function areKeysPressed(keys = [], keysPressed = []) {
