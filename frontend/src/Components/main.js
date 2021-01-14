@@ -3,6 +3,8 @@ import Control from './control';
 import API from './apiHandler';
 import Stream from "./stream";
 
+import List from './list';
+
 class Main extends Component{
     constructor(props){
         super(props);
@@ -23,10 +25,14 @@ class Main extends Component{
 
         this.log = this.log.bind(this);
         this.test = this.test.bind(this);
+        this.updatePositions = this.updatePositions.bind(this);
+
         this.state = {
-            key_id: 'PKHGR6CVRK7DTWFIB6Q1',
+            key_id: 'PKHO52XD6BFXD87F8WP5',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: 'TpSauKJD8We5hu3vvXzwp2o7UrXBfR4uzxp4Z27n',
+            secret_key: 'QxHhpdHZdO5WFAN6EucqX5odwGWZEN4TKvs63dqq',
+
+            positions: '',
 
             stream: 'stocks',
             //stream: 'forex',
@@ -99,6 +105,7 @@ class Main extends Component{
         console.log(msg)
     }
 
+    //This callback is *specifically* for parsing the websocket stream data
     streamListener(msg){
         /*TODO
         See old version of stream
@@ -128,19 +135,23 @@ class Main extends Component{
         }
     }
 
+    //Temporary function for testing position updating:
+    updatePositions(pos){
+        let pList = JSON.parse(pos)
+        this.setState({positions: pList})
+        console.log(pos)
+    }
+
     test(){
-        /*
-        this.ws.subscribe("AAPL")
-        this.ws.subscribe("MSFT")
-        this.ws.subscribe("XPEV")
-        */
+        //Testing to make sure new api format works
+        this.api.get_positions(this.updatePositions)
     }
 
 
     render(){
         return(
             <div>
-                {this.state.url}
+                <List positions={this.state.positions}/>
                 <button onClick={this.test}> Clicky</button>
                 {/*{this.state.data[0].p}*/}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>

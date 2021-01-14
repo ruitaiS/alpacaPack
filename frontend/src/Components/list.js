@@ -2,7 +2,7 @@ import {Component} from "react";
 
 class List extends Component{
     constructor(props){
-        //List of (Symbol, price) pairs?
+        //positions
 
         super(props);
 
@@ -12,14 +12,17 @@ class List extends Component{
         }
     }
 
-    function(){
-        console.log("Hi! :)")
+    renderPosition(pos){
+        <div>
+            Position
+        </div>
     }
 
     render(){
+
         return(
             <div>
-                Stuff Goes Here
+                {this.props.positions}
             </div>
         )
         
