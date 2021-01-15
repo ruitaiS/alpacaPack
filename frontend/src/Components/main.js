@@ -21,6 +21,8 @@ class Main extends Component{
 
         this.connect = this.connect.bind(this);
 
+        this.subscribe = this.subscribe.bind(this);
+        this.unsubscribe = this.unsubscribe.bind(this);
         this.streamListener = this.streamListener.bind(this);
 
         this.log = this.log.bind(this);
@@ -134,7 +136,16 @@ class Main extends Component{
 
             //Print the price
             //console.log(data[0].p)
+            this.setState({streamData: data})
         }
+    }
+
+    subscribe(ticker){
+        this.ws.subscribe(ticker)
+    }
+
+    unsubscribe(ticker){
+        this.ws.unsubscribe(ticker)
     }
 
     //Temporary function for testing position updating:
@@ -146,15 +157,15 @@ class Main extends Component{
     test(){
         //Testing to make sure new api format works
         this.api.get_positions(this.updatePositions)
+        alert(this.state.streamData[0].p)
     }
 
 
     render(){
         return(
             <div>
-                <List positions={this.state.positions}/>
+                <List positions={this.state.positions} ws={this.ws}/>
                 <button onClick={this.test}> Clicky</button>
-                {/*{this.state.data[0].p}*/}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )

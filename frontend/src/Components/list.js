@@ -34,6 +34,10 @@ class List extends Component{
               <label htmlFor="shares">Shares:</label>
               <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={pos.qty} /*onChange={this.props.idChange}*//>
               </div>
+
+              <div>
+                  <button onClick={()=>this.props.ws.subscribe("MSFT")}>Sub Test</button>
+              </div>
               
             </fieldset>
         )
