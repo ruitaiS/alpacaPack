@@ -13,10 +13,29 @@ class List extends Component{
     }
 
     renderPosition(pos){
+        /*
+        We want to pull these from Alpaca position:
+        symbol
+        qty
+
+        Switch to calculating on the fly with the Polygon websocket data:
+        current_price (price per share)
+        market_value (total value of the position, for calculating % of portfolio value)
+        change_today (percent change since yesterday)
+        */
+
+
+
         return(
-            <div>
-                {pos.symbol}
-            </div>
+            <fieldset className="portfolioElement">
+              <legend>{pos.symbol} // ${pos.current_price} // {(pos.change_today*100).toFixed(2)}%</legend>
+
+              <div>
+              <label htmlFor="shares">Shares:</label>
+              <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={pos.qty} /*onChange={this.props.idChange}*//>
+              </div>
+              
+            </fieldset>
         )
     }
 
@@ -34,7 +53,9 @@ class List extends Component{
         }
 
         return (
-            res
+            <div>
+                {res}
+            </div>
         )        
     }
 }

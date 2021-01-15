@@ -62,6 +62,11 @@ input, select{
   width: 500px;
 }
 
+.portfolioElement{
+  text-align: left;
+  width: 250px;
+}
+
 .streamBtn{
   width: 50%;
   height: 50px;
