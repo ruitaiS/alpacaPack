@@ -27,7 +27,9 @@ class Main extends Component{
 
         this.log = this.log.bind(this);
         this.test = this.test.bind(this);
+
         this.updatePositions = this.updatePositions.bind(this);
+        this.get_price = this.get_price.bind(this);
 
         this.state = {
             key_id: 'PKHO52XD6BFXD87F8WP5',
@@ -38,7 +40,7 @@ class Main extends Component{
 
             stream: 'stocks',
             //stream: 'forex',
-            ticker: 'TSLA',
+            ticker: 'MSFT',
 
             p1: "USD",
             p2: "CAD",
@@ -135,7 +137,7 @@ class Main extends Component{
             //Message is null, so we assume it is already subscribed to a stream
 
             //Print the price
-            //console.log(data[0].p)
+            console.log(JSON.stringify(data))
             this.setState({streamData: data})
         }
     }
@@ -148,10 +150,31 @@ class Main extends Component{
         this.ws.unsubscribe(ticker)
     }
 
+    //Assumes you've already ws.subscribed to the ticker
+    get_price(ticker){
+        alert("Checking Price for " + ticker)
+        for (let datum of this.state.streamData){
+            if (datum.sym === ticker){
+                return datum.p
+            }else{
+                alert("Found Price for " + datum.sym)
+            }
+        }
+
+        alert(ticker + " Price Not Found")
+        return null
+    }
+
+
     //Temporary function for testing position updating:
     updatePositions(pos){
         this.setState({positions: pos})
-        console.log(JSON.parse(pos)[0])
+
+        for (let position of JSON.parse(pos)){
+            alert(position.symbol)
+            this.subscribe(position.symbol)
+        }
+        
     }
 
     test(){
@@ -164,7 +187,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                <List positions={this.state.positions} ws={this.ws}/>
+                <List positions={this.state.positions} ws={this.ws} streamData={this.state.streamData} get_price={(ticker)=>this.get_price(ticker)}/>
                 <button onClick={this.test}> Clicky</button>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>

@@ -24,11 +24,9 @@ class List extends Component{
         change_today (percent change since yesterday)
         */
 
-
-
         return(
             <fieldset className="portfolioElement">
-              <legend>{pos.symbol} // ${pos.current_price} // {(pos.change_today*100).toFixed(2)}%</legend>
+              <legend>{pos.symbol} // ${this.props.get_price(pos.symbol)} // {(pos.change_today*100).toFixed(2)}%</legend>
 
               <div>
               <label htmlFor="shares">Shares:</label>
@@ -36,7 +34,7 @@ class List extends Component{
               </div>
 
               <div>
-                  <button onClick={()=>this.props.ws.subscribe("MSFT")}>Sub Test</button>
+                  <button onClick={()=>this.props.ws.subscribe(`${pos.symbol}`)}>Sub Test</button>
               </div>
               
             </fieldset>
