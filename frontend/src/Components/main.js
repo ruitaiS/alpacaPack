@@ -32,7 +32,7 @@ class Main extends Component{
             //key_id: 'bvqgf2n48v6qg460kck0',
             secret_key: 'QxHhpdHZdO5WFAN6EucqX5odwGWZEN4TKvs63dqq',
 
-            positions: '',
+            //positions: '',
 
             stream: 'stocks',
             //stream: 'forex',
@@ -115,7 +115,7 @@ class Main extends Component{
         */
 
         let data = JSON.parse(msg.data)
-        console.log(data)
+        //console.log(data)
 
         //this.setState({data: JSON.parse(msg.data)})
 
@@ -131,15 +131,16 @@ class Main extends Component{
             }
         }else{
             //Message is null, so we assume it is already subscribed to a stream
-            console.log(data[0].p)
+
+            //Print the price
+            //console.log(data[0].p)
         }
     }
 
     //Temporary function for testing position updating:
     updatePositions(pos){
-        let pList = JSON.parse(pos)
-        this.setState({positions: pList})
-        console.log(pos)
+        this.setState({positions: pos})
+        console.log(JSON.parse(pos)[0])
     }
 
     test(){

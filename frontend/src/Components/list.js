@@ -6,26 +6,36 @@ class List extends Component{
 
         super(props);
 
-
+        this.renderPosition = this.renderPosition.bind(this)
         this.state = {
             //Default state initialization
         }
     }
 
     renderPosition(pos){
-        <div>
-            Position
-        </div>
+        return(
+            <div>
+                {pos.symbol}
+            </div>
+        )
     }
 
     render(){
+        //alert(typeof(this.props.positions))
+        let res = []
+        let positions = []
+        if (this.props.positions != null){
+            positions = JSON.parse(this.props.positions)
+        }
+        //res.push(positions[0])
 
-        return(
-            <div>
-                {this.props.positions}
-            </div>
-        )
-        
+        for (let position of positions){
+            res.push(this.renderPosition(position))
+        }
+
+        return (
+            res
+        )        
     }
 }
 
