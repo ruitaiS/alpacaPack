@@ -1,3 +1,18 @@
+### Jan 15
+Working on the portfolio / Position list
+
+Alpaca API returns a list of open positions as well as number of shares.
+
+I want to have each of them updated with live price data from the Polygon websocket (Alpaca can also do this, but it doesn't update as quickly).
+
+Right now I'm having an issue with the order in which items are updated / pulled.
+
+Main.js contains the api and the websocket instances.
+Positions are updated by a test button (this should probably be tied to connect?)
+Position list is passed to list.js, which iterates through it and generates a box for each position.
+
+
+
 ### Jan 2
 Not totally sure what the behavior should be when switching from forex to stocks, wrt the connections.
 I can definitely foresee a dangerous situation where the alpaca endpoint is still active even after switching to forex, and trade orders are going through when you press the buttons.
