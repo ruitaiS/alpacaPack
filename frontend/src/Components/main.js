@@ -25,9 +25,6 @@ class Main extends Component{
         this.unsubscribe = this.unsubscribe.bind(this);
         this.streamListener = this.streamListener.bind(this);
 
-        this.log = this.log.bind(this);
-        this.test = this.test.bind(this);
-
         this.updatePositions = this.updatePositions.bind(this);
         this.get_price = this.get_price.bind(this);
 
@@ -84,30 +81,7 @@ class Main extends Component{
         this.setState({p1: p2Now})
         this.setState({p2: p1Now})
     }
-
-    connect(){
-        //Creates new connections to API and Stream, after updating
-        if (this.state.stream === "stocks"){
-            this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
-            this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-        }else{
-            alert("Forex support coming soon!")
-            this.setState({stream: "stocks"})
-            //this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
-            //this.api = null
-        }
-    }
-
-    disconnect(){
-        //TODO
-        //this.ws.disconnect()
-
-    }
     //#endregion
-
-    log(msg){
-        console.log(msg)
-    }
 
     //This callback is *specifically* for parsing the websocket stream data
     streamListener(msg){
@@ -142,53 +116,33 @@ class Main extends Component{
         }
     }
 
-    subscribe(ticker){
-        this.ws.subscribe(ticker)
-    }
+    connect(){
+        //Creates new connections to API and Stream
+        if (this.state.stream === "stocks"){
+            this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
+            this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
 
-    unsubscribe(ticker){
-        this.ws.unsubscribe(ticker)
-    }
-
-    //Assumes you've already ws.subscribed to the ticker
-    get_price(ticker){
-        alert("Checking Price for " + ticker)
-        for (let datum of this.state.streamData){
-            if (datum.sym === ticker){
-                return datum.p
-            }else{
-                alert("Found Price for " + datum.sym)
-            }
+            this.api.get_positions(this.updatePositions)
+            alert(this.state.streamData[0].p)
+        }else{
+            alert("Forex support coming soon!")
+            this.setState({stream: "stocks"})
+            //this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
+            //this.api = null
         }
-
-        alert(ticker + " Price Not Found")
-        return null
     }
 
+    disconnect(){
+        //TODO
+        //this.ws.disconnect()
 
-    //Temporary function for testing position updating:
-    updatePositions(pos){
-        this.setState({positions: pos})
-
-        for (let position of JSON.parse(pos)){
-            alert(position.symbol)
-            this.subscribe(position.symbol)
-        }
-        
-    }
-
-    test(){
-        //Testing to make sure new api format works
-        this.api.get_positions(this.updatePositions)
-        alert(this.state.streamData[0].p)
     }
 
 
     render(){
         return(
             <div>
-                <List positions={this.state.positions} ws={this.ws} streamData={this.state.streamData} get_price={(ticker)=>this.get_price(ticker)}/>
-                <button onClick={this.test}> Clicky</button>
+                {/*<List positions={this.state.positions} ws={this.ws} streamData={this.state.streamData} get_price={(ticker)=>this.get_price(ticker)}/>*/}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )

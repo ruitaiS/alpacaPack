@@ -45,6 +45,7 @@ class List extends Component{
         //alert(typeof(this.props.positions))
         let res = []
         let positions = []
+        
         if (this.props.positions != null){
             positions = JSON.parse(this.props.positions)
         }
