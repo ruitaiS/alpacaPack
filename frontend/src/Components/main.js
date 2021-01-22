@@ -19,21 +19,23 @@ class Main extends Component{
         this.p2Change = this.p2Change.bind(this);
         this.pairSwap = this.pairSwap.bind(this);
 
+        this.streamListener = this.streamListener.bind(this);
         this.connect = this.connect.bind(this);
 
-        this.subscribe = this.subscribe.bind(this);
-        this.unsubscribe = this.unsubscribe.bind(this);
-        this.streamListener = this.streamListener.bind(this);
-
         this.updatePositions = this.updatePositions.bind(this);
-        this.get_price = this.get_price.bind(this);
+
+        //this.subscribe = this.subscribe.bind(this);
+        //this.unsubscribe = this.unsubscribe.bind(this);
+
+        //this.updatePositions = this.updatePositions.bind(this);
+        //this.get_price = this.get_price.bind(this);
 
         this.state = {
             key_id: 'PKHO52XD6BFXD87F8WP5',
             //key_id: 'bvqgf2n48v6qg460kck0',
             secret_key: 'QxHhpdHZdO5WFAN6EucqX5odwGWZEN4TKvs63dqq',
 
-            //positions: '',
+            //positions: array of [Ticker, qty, avg price] arrays,
 
             stream: 'stocks',
             //stream: 'forex',
@@ -83,8 +85,8 @@ class Main extends Component{
     }
     //#endregion
 
-    //This callback is *specifically* for parsing the websocket stream data
-    streamListener(msg){
+    
+    streamListener(msg){ //websocket callback; parses incoming data and updates state
         /*TODO
         See old version of stream
         Lots of entangled logic that you'll need to parcel out
@@ -116,14 +118,30 @@ class Main extends Component{
         }
     }
 
+    
+    apiPositionListener(msg){//Parses positions from API, updates state
+        let positions = []
+
+        for (let position of JSON.parse(msg)){
+            alert(position.symbol)
+            positions.push([position.symbol, position.qty, position.avg_entry_price])
+        }
+
+        console.log(positions)
+    }
+
+    updatePositions(){//Call this every time you enter / exit
+            this.api.get_positions(this.apiPositionListener)//Get List of existing positions from api
+            //Subscribe to those positions on the stream
+            //Store the relevant information in state
+    }
+
     connect(){
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
             this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-
-            this.api.get_positions(this.updatePositions)
-            alert(this.state.streamData[0].p)
+            this.updatePositions()            
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})

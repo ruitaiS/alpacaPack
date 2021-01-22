@@ -103,8 +103,6 @@ class API {
     xhr.send()
   }
 
-
-
   //Functions for Updating Login Parameters
   //These may be depreciated, since now we just create a new instance of API on connect
   idChange(key_id){
