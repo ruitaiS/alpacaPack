@@ -13,7 +13,7 @@ class List extends Component{
         }
     }
 
-    renderPosition(pos){
+    renderPosition(symbol, qty, cost, price){
         /*
         We want to pull these from Alpaca position:
         symbol
@@ -25,17 +25,19 @@ class List extends Component{
         change_today (percent change since yesterday)
         */
 
+        let change = (price - cost) / cost
+
         return(
             <fieldset className="portfolioElement">
-              <legend>{pos.symbol} // ${this.props.get_price(pos.symbol)} // {(pos.change_today*100).toFixed(2)}%</legend>
+              <legend>{symbol} // ${price} // {(change*100).toFixed(2)}%</legend>
 
               <div>
               <label htmlFor="shares">Shares:</label>
-              <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={pos.qty} /*onChange={this.props.idChange}*//>
+              <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={qty} /*onChange={this.props.idChange}*//>
               </div>
 
               <div>
-                  <button onClick={()=>this.props.ws.subscribe(`${pos.symbol}`)}>Sub Test</button>
+                  <button onClick={()=>alert(`Clicked ${symbol}`)}>Test</button>
               </div>
               
             </fieldset>
@@ -49,21 +51,14 @@ class List extends Component{
         
         //Only Render if Data has been instantiated
         if (this.props.positions != null){
-            console.log(JSON.stringify(this.props.positions))
+            for (let symbol in this.props.positions){
+                res.push(this.renderPosition(symbol, this.props.positions[symbol].qty, this.props.positions[symbol].cost, this.props.positions[symbol].price))
+            }
         }
-
-        
-        
-        
-
-        /*
-        for (let position of positions){
-            res.push(this.renderPosition(position))
-        }*/
 
         return (
             <div>
-                yo
+                {res}
             </div>
         )        
     }
