@@ -36,7 +36,9 @@ class Main extends Component{
             //key_id: 'bvqgf2n48v6qg460kck0',
             secret_key: 'vbrBfUR0BkmsjtR13sB0mxqYOPQqaR67ARJoZO4P',
 
-            //positions: array of [Ticker, qty, avg price] arrays,
+            
+            positions: null, //array of [Ticker, qty, avg price] arrays
+            streamData: null, //Data from the polygon stream
 
             stream: 'stocks',
             //stream: 'forex',
@@ -143,7 +145,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                <List positions={this.state.positions} ws={this.ws} streamData={this.state.streamData}/>
+                <List positions={this.state.positions} streamData={this.state.streamData}/>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )

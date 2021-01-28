@@ -3,6 +3,7 @@ import {Component} from "react";
 class List extends Component{
     constructor(props){
         //positions
+        //streamData
 
         super(props);
 
@@ -46,18 +47,24 @@ class List extends Component{
         let res = []
         let positions = []
         
-        if (this.props.positions != null){
+        //Only Render if Data has been instantiated
+        if (this.props.positions != null && this.props.streamData != null){
             positions = JSON.parse(this.props.positions)
+            for (let datum of this.props.streamData){
+                console.log(datum.sym)
+            }
         }
-        //res.push(positions[0])
+        
+        
 
+        /*
         for (let position of positions){
             res.push(this.renderPosition(position))
-        }
+        }*/
 
         return (
             <div>
-                {res}
+                yo
             </div>
         )        
     }
