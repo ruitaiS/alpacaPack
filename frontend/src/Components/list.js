@@ -29,15 +29,15 @@ class List extends Component{
 
         return(
             <fieldset className="portfolioElement">
-              <legend>{symbol} // ${price} // {(change*100).toFixed(2)}%</legend>
+              <legend>{symbol} // ${Math.floor(price*100)/100} // {(change*100).toFixed(2)}%</legend>
 
               <div>
               <label htmlFor="shares">Shares:</label>
-              <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={qty} /*onChange={this.props.idChange}*//>
+              <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={qty}/>
               </div>
 
               <div>
-                  <button onClick={()=>alert(`Clicked ${symbol}`)}>Test</button>
+                  <button onClick={()=>alert(`Clicked ${symbol}`)}>Update</button>
               </div>
               
             </fieldset>
