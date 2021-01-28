@@ -95,7 +95,8 @@ class Main extends Component{
             console.log(data[0].message)
             //initialize positions after authentication confirmation
             if (data[0].message === 'authenticated'){
-                this.ws.subscribe(this.state.ticker)
+                //TODO: How to handle the active window?
+                //this.ws.subscribe(this.state.ticker)
                 this.initPositions()
             }
         }else{//Message is null, so we assume it is already subscribed to a stream
