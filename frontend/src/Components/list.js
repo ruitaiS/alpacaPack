@@ -48,16 +48,11 @@ class List extends Component{
         let positions = []
         
         //Only Render if Data has been instantiated
-        if (this.props.positions != null && this.props.streamData != null){
-            positions = JSON.parse(this.props.positions)
-            
-            //Data from WS comes in Asynchronously, so we update the position dict
-            for (let datum of this.props.streamData){
-                positions[datum.sym]["price"] = datum.p
-            }
+        if (this.props.positions != null){
+            console.log(JSON.stringify(this.props.positions))
         }
 
-        console.log(JSON.stringify(positions))
+        
         
         
 

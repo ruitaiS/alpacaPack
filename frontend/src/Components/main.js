@@ -21,8 +21,6 @@ class Main extends Component{
 
         this.streamListener = this.streamListener.bind(this);
         this.connect = this.connect.bind(this);
-
-        this.initPositions = this.initPositions.bind(this);
         this.apiPositionListener = this.apiPositionListener.bind(this);
 
         //this.subscribe = this.subscribe.bind(this);
@@ -30,6 +28,8 @@ class Main extends Component{
 
         //this.initPositions = this.initPositions.bind(this);
         //this.get_price = this.get_price.bind(this);
+
+        this.positions = {} // Symbol: [qty, price]
 
         this.state = {
             key_id: 'PK5YYD0RTSIBEH5O4IG7',
@@ -97,37 +97,34 @@ class Main extends Component{
             if (data[0].message === 'authenticated'){
                 //TODO: How to handle the active window?
                 //this.ws.subscribe(this.state.ticker)
-                this.initPositions()
+                this.api.get_positions(this.apiPositionListener) 
             }
         }else{//Message is null, so we assume it is already subscribed to a stream
             //console.log(JSON.stringify(data))
-            this.setState({streamData: data})
+            //this.setState({streamData: data})
+
+            //Data from WS comes in Asynchronously, so we update the position dict
+            for (let datum of data){
+                this.positions[datum.sym]["price"] = datum.p
+            }
+            this.setState({positions: this.positions})
         }
     }
 
     
-    apiPositionListener(msg){//Run only from initPositions
-        let positions = {} // Symbol: [qty, price]
-
+    apiPositionListener(msg){
+        //After getting Alpaca positions list, subscribes to the necessary streams through polygon
         for (let position of JSON.parse(msg)){
-            positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price}
+            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price}
             this.ws.subscribe(position.symbol)
         }
-
-        this.setState({positions: JSON.stringify(positions)})
-        //console.log(this.state.positions)
-    }
-
-    initPositions(){
-        this.api.get_positions(this.apiPositionListener)
     }
 
     connect(){
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
-            this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.initPositions()            
+            this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)          
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
@@ -146,7 +143,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                <List positions={this.state.positions} streamData={this.state.streamData}/>
+                <List positions={this.state.positions}/>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )
