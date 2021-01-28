@@ -22,24 +22,25 @@ class Main extends Component{
         this.streamListener = this.streamListener.bind(this);
         this.connect = this.connect.bind(this);
 
-        this.updatePositions = this.updatePositions.bind(this);
+        this.initPositions = this.initPositions.bind(this);
+        this.apiPositionListener = this.apiPositionListener.bind(this);
 
         //this.subscribe = this.subscribe.bind(this);
         //this.unsubscribe = this.unsubscribe.bind(this);
 
-        //this.updatePositions = this.updatePositions.bind(this);
+        //this.initPositions = this.initPositions.bind(this);
         //this.get_price = this.get_price.bind(this);
 
         this.state = {
-            key_id: 'PKHO52XD6BFXD87F8WP5',
+            key_id: 'PK5YYD0RTSIBEH5O4IG7',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: 'QxHhpdHZdO5WFAN6EucqX5odwGWZEN4TKvs63dqq',
+            secret_key: 'vbrBfUR0BkmsjtR13sB0mxqYOPQqaR67ARJoZO4P',
 
             //positions: array of [Ticker, qty, avg price] arrays,
 
             stream: 'stocks',
             //stream: 'forex',
-            ticker: 'MSFT',
+            ticker: 'MSFT', // Ticker is the active window ticker symbol
 
             p1: "USD",
             p2: "CAD",
@@ -87,53 +88,35 @@ class Main extends Component{
 
     
     streamListener(msg){ //websocket callback; parses incoming data and updates state
-        /*TODO
-        See old version of stream
-        Lots of entangled logic that you'll need to parcel out
-        Here specifically you'll just want to update the price
-        Updating chart and percent bar logic should be seperate
-        */
-
         let data = JSON.parse(msg.data)
-        //console.log(data)
-
-        //this.setState({data: JSON.parse(msg.data)})
-
-        //TODO: The way we handle the message will depend on what stream type we're listening to
-        
-        //Stock Websocket Format:
-        //Subscribe to Ticker after Auth Confirmation:
         if (data[0].message != null){
             console.log(data[0].message)
-            //Subscribe to Stream after authentication confirmation
+            //initialize positions after authentication confirmation
             if (data[0].message === 'authenticated'){
                 this.ws.subscribe(this.state.ticker)
+                this.initPositions()
             }
-        }else{
-            //Message is null, so we assume it is already subscribed to a stream
-
-            //Print the price
-            console.log(JSON.stringify(data))
+        }else{//Message is null, so we assume it is already subscribed to a stream
+            //console.log(JSON.stringify(data))
             this.setState({streamData: data})
         }
     }
 
     
-    apiPositionListener(msg){//Parses positions from API, updates state
-        let positions = []
+    apiPositionListener(msg){//Run only from initPositions
+        let positions = {} // Symbol: [qty, price]
 
         for (let position of JSON.parse(msg)){
-            alert(position.symbol)
-            positions.push([position.symbol, position.qty, position.avg_entry_price])
+            positions[position.symbol] = [position.qty, position.avg_entry_price]
+            this.ws.subscribe(position.symbol)
         }
 
-        console.log(positions)
+        this.setState({positions: JSON.stringify(positions)})
+        //console.log(this.state.positions)
     }
 
-    updatePositions(){//Call this every time you enter / exit
-            this.api.get_positions(this.apiPositionListener)//Get List of existing positions from api
-            //Subscribe to those positions on the stream
-            //Store the relevant information in state
+    initPositions(){
+        this.api.get_positions(this.apiPositionListener)
     }
 
     connect(){
@@ -141,7 +124,7 @@ class Main extends Component{
         if (this.state.stream === "stocks"){
             this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.updatePositions()            
+            this.initPositions()            
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
@@ -160,7 +143,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                {/*<List positions={this.state.positions} ws={this.ws} streamData={this.state.streamData} get_price={(ticker)=>this.get_price(ticker)}/>*/}
+                <List positions={this.state.positions} ws={this.ws} streamData={this.state.streamData}/>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )
