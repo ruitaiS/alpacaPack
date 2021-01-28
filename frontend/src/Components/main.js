@@ -109,7 +109,7 @@ class Main extends Component{
         let positions = {} // Symbol: [qty, price]
 
         for (let position of JSON.parse(msg)){
-            positions[position.symbol] = [position.qty, position.avg_entry_price]
+            positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price}
             this.ws.subscribe(position.symbol)
         }
 
