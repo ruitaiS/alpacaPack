@@ -30,7 +30,7 @@ class List extends Component{
 
         return(
             <fieldset className="portfolioElement">
-              <legend>{symbol} // ${Math.floor(price*100)/100} // {(change*100).toFixed(2)}%</legend>
+              <legend>{symbol} // ${(Math.floor(price*100)/100).toFixed(2)} // {(change*100).toFixed(2)}%</legend>
               <PCTBar height="5" width="300" pctChange={change} />
 
               <div>
