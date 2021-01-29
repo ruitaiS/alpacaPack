@@ -78,11 +78,11 @@ class PCTBar extends Component{
         if (pct > 0){
             //Positive Change
             //return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}`, backgroundColor: "green"}
-            return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}px`, backgroundColor: "green"}
+            return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "5px", width: `${barWidth}px`, backgroundColor: "green"}
         }else{
             //Negative Change
             //return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`,height: "50px", width: `${barWidth}`, backgroundColor: "red"}
-            return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`, height: "50px", width: `${barWidth}px`, backgroundColor: "red"}
+            return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`, height: "5px", width: `${barWidth}px`, backgroundColor: "red"}
         }
     }
 

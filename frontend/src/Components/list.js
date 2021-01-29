@@ -1,4 +1,5 @@
 import {Component} from "react";
+import PCTBar from '../Components/pctBar';
 
 class List extends Component{
     constructor(props){
@@ -30,6 +31,7 @@ class List extends Component{
         return(
             <fieldset className="portfolioElement">
               <legend>{symbol} // ${Math.floor(price*100)/100} // {(change*100).toFixed(2)}%</legend>
+              <PCTBar maxWidth="150" pctChange={change} scale="1"/>
 
               <div>
               <label htmlFor="shares">Shares:</label>

@@ -1,3 +1,12 @@
+### Jan 28
+Ok that took way longer than it really should have. It's done in kind of a janky way rn, but it works. After pressing connect, it creates a API instance and then a WS instance. When the WS has confirmed authentication, the streamListener callback creates a positions dict, then as the WS feeds more data to the callback, it updates the prices in the dict by iterating through the data message.
+
+Next steps would be:
+    Get a miniaturized version of the percent bar working within the watchlist
+    At the top, you should also have a conglomerate sort of thing that shows the total percentage change.
+
+    Be able to enter / exit positions without having to adjust the quantity; should remember the previous quantity
+
 ### Jan 15
 Working on the portfolio / Position list
 

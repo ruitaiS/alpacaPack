@@ -143,7 +143,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                <List positions={this.state.positions}/>
+                <List positions={this.state.positions} api={this.api}/>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )
