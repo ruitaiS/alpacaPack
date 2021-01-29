@@ -4,8 +4,8 @@ class PCTBar extends Component{
     constructor(props){
         super(props);
         //pctChange
-        //maxWidth
-        //scale
+        //width
+        //height
         this.mainStyle = this.mainStyle.bind(this);
         this.bar = this.bar.bind(this);
         this.square = this.square.bind(this);
@@ -62,9 +62,9 @@ class PCTBar extends Component{
     subStyle(pct){
         if (pct < 0){
             let barWidth = (Math.trunc(Math.abs(pct)*100))*7
-            return {display:"flex", transform: `translate(${this.props.maxWidth-barWidth}px, 0px)`}
+            return {display:"flex", transform: `translate(${(this.props.width/2)-barWidth}px, 0px)`}
         }else{
-            return {display:"flex", transform: `translate(${this.props.maxWidth}px, 0px)`}
+            return {display:"flex", transform: `translate(${(this.props.width/2)}px, 0px)`}
         }
 
     }
@@ -74,15 +74,15 @@ class PCTBar extends Component{
         //Main Bar Represents Single Percentage
         pct = (pct%0.01)*100
 
-        let barWidth = this.props.maxWidth * Math.abs(pct)
+        let barWidth = (this.props.width/2) * Math.abs(pct)
         if (pct > 0){
             //Positive Change
-            //return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "50px", width: `${barWidth}`, backgroundColor: "green"}
-            return{transform: `translate(${this.props.maxWidth}px, 0px)`, height: "5px", width: `${barWidth}px`, backgroundColor: "green"}
+            //return{transform: `translate(${(this.props.width/2)}px, 0px)`, height: "50px", width: `${barWidth}`, backgroundColor: "green"}
+            return{transform: `translate(${(this.props.width/2)}px, 0px)`, height: `${this.props.height}px`, width: `${barWidth}px`, backgroundColor: "green"}
         }else{
             //Negative Change
-            //return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`,height: "50px", width: `${barWidth}`, backgroundColor: "red"}
-            return{transform: `translate(${this.props.maxWidth - barWidth}px, 0px)`, height: "5px", width: `${barWidth}px`, backgroundColor: "red"}
+            //return{transform: `translate(${(this.props.width/2) - barWidth}px, 0px)`,height: "50px", width: `${barWidth}`, backgroundColor: "red"}
+            return{transform: `translate(${(this.props.width/2) - barWidth}px, 0px)`, height: `${this.props.height}px`, width: `${barWidth}px`, backgroundColor: "red"}
         }
     }
 
