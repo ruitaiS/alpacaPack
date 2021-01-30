@@ -119,10 +119,12 @@ class Main extends Component{
     apiPositionListener(msg){
         //After getting Alpaca positions list, subscribes to the necessary streams through polygon
         for (let position of JSON.parse(msg)){
-            alert(position.symbol)
+            alert("api Position Listener Called")
             this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price}
             this.ws.subscribe(position.symbol)
         }
+
+        this.setState({positions: this.positions})
     }
 
     connect(){

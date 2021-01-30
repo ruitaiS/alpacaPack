@@ -1,3 +1,10 @@
+### Jan 30
+Right now, position list doesn't render if we're not getting price data from the websocket.
+
+this.state.positions updates really weirdly - We have a local this.positions, and then after we update this.positions, we do this.setState(positions: this.positions). I think this is essentially the crux of the issue; it's not updating the state unless it's getting websocket data.
+
+Shouldn't be too hard to convert it to update the state directly (rather than use a local variable, and then re-assigning it constantly)
+
 ### Jan 28
 Ok that took way longer than it really should have. It's done in kind of a janky way rn, but it works. After pressing connect, it creates a API instance and then a WS instance. When the WS has confirmed authentication, the streamListener callback creates a positions dict, then as the WS feeds more data to the callback, it updates the prices in the dict by iterating through the data message.
 
