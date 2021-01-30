@@ -8,6 +8,8 @@ class List extends Component{
 
         super(props);
 
+        this.history = this.history.bind(this)
+
         this.renderPosition = this.renderPosition.bind(this)
         this.state = {
             //Default state initialization
@@ -46,21 +48,34 @@ class List extends Component{
         )
     }
 
+    //Test History
+    history(){
+        this.props.api.get_history((msg)=>console.log(msg))
+    }
+
     render(){
         //alert(typeof(this.props.positions))
-        let res = []
-        let positions = []
+        let list = []
+        let totalVal = 0
+
+        //alert("Rendering")
+
         
         //Only Render if Data has been instantiated
         if (this.props.positions != null){
+            alert("Positions is not null")
             for (let symbol in this.props.positions){
-                res.push(this.renderPosition(symbol, this.props.positions[symbol].qty, this.props.positions[symbol].cost, this.props.positions[symbol].price))
+                list.push(this.renderPosition(symbol, this.props.positions[symbol].qty, this.props.positions[symbol].cost, this.props.positions[symbol].price))
+                totalVal += this.props.positions[symbol].price * this.props.positions[symbol].qty
             }
         }
 
         return (
             <div>
-                {res}
+                Total Portfolio Value: ${(Math.floor(totalVal*100)/100).toFixed(2)}<br></br>
+                Net Gain:
+                {/*<button onClick={this.history}>Test Account History</button>*/}
+                {list}
             </div>
         )        
     }

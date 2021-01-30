@@ -97,9 +97,12 @@ class Main extends Component{
             if (data[0].message === 'authenticated'){
                 //TODO: How to handle the active window?
                 //this.ws.subscribe(this.state.ticker)
+
+                //Get Position List After Websocket Confirm
+                //alert("Getting Positions")
                 this.api.get_positions(this.apiPositionListener) 
             }
-        }else{//Message is null, so we assume it is already subscribed to a stream
+        }else{//Message is null, so we assume we're subscribed, and getting price data
             //console.log(JSON.stringify(data))
             //this.setState({streamData: data})
 
@@ -107,6 +110,7 @@ class Main extends Component{
             for (let datum of data){
                 this.positions[datum.sym]["price"] = datum.p
             }
+            //alert("Setting Positions")
             this.setState({positions: this.positions})
         }
     }
@@ -115,6 +119,7 @@ class Main extends Component{
     apiPositionListener(msg){
         //After getting Alpaca positions list, subscribes to the necessary streams through polygon
         for (let position of JSON.parse(msg)){
+            alert(position.symbol)
             this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price}
             this.ws.subscribe(position.symbol)
         }

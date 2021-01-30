@@ -16,6 +16,15 @@ class API {
     xhr.send()
   }
 
+  get_history(callback){
+    let xhr = new XMLHttpRequest()
+    xhr.addEventListener('load', ()=>callback(xhr.responseText))
+    xhr.open('GET', `${this.url}/v2/account/portfolio/history`)
+    xhr.setRequestHeader("APCA-API-KEY-ID", this.key_id)
+    xhr.setRequestHeader("APCA-API-SECRET-KEY", this.secret_key)
+    xhr.send()
+  }
+
     //Order Related Documentation & Functions
 
     //Example of JSON order
