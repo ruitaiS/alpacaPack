@@ -63,7 +63,6 @@ class List extends Component{
         
         //Only Render if Data has been instantiated
         if (this.props.positions != null){
-            alert("Positions is not null")
             for (let symbol in this.props.positions){
                 list.push(this.renderPosition(symbol, this.props.positions[symbol].qty, this.props.positions[symbol].cost, this.props.positions[symbol].price))
                 totalVal += this.props.positions[symbol].price * this.props.positions[symbol].qty

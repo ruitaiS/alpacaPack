@@ -37,7 +37,7 @@ class Main extends Component{
             secret_key: 'vbrBfUR0BkmsjtR13sB0mxqYOPQqaR67ARJoZO4P',
 
             
-            positions: null, //array of [Ticker, qty, avg price] arrays
+            positions: {}, //array of [Ticker, qty, avg price] arrays
             streamData: null, //Data from the polygon stream
 
             stream: 'stocks',
@@ -117,10 +117,12 @@ class Main extends Component{
 
     
     apiPositionListener(msg){
+        alert("API position listener called")
+
         //After getting Alpaca positions list, subscribes to the necessary streams through polygon
         for (let position of JSON.parse(msg)){
-            alert("api Position Listener Called")
-            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price}
+            //Price defaults to last day price; will get overwritten by WS stream if live
+            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, price: position.lastday_price}
             this.ws.subscribe(position.symbol)
         }
 
