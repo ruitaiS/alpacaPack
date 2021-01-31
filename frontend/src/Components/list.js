@@ -31,9 +31,9 @@ class List extends Component{
         let change = (price - cost) / cost
 
         return(
-            <fieldset className="portfolioElement">
+            <fieldset className="portfolioElement" key={symbol}>
               <legend>{symbol} // ${(Math.floor(price*100)/100).toFixed(2)} // {(change*100).toFixed(2)}%</legend>
-              <PCTBar height="5" width="300" pctChange={change} />
+              <PCTBar symbol={symbol} height="5" width="300" pctChange={change} />
 
               <div>
               <label htmlFor="shares">Shares:</label>
@@ -73,7 +73,8 @@ class List extends Component{
             <div>
                 Total Portfolio Value: ${(Math.floor(totalVal*100)/100).toFixed(2)}<br></br>
                 Net Gain:
-                {/*<button onClick={this.history}>Test Account History</button>*/}
+                {/**/}
+                <button onClick={this.history}>Test Account History</button>
                 {list}
             </div>
         )        

@@ -37,7 +37,7 @@ class Main extends Component{
             secret_key: 'vbrBfUR0BkmsjtR13sB0mxqYOPQqaR67ARJoZO4P',
 
             
-            positions: {}, //array of [Ticker, qty, avg price] arrays
+            positions: null, //array of [Ticker, qty, avg price] arrays
             streamData: null, //Data from the polygon stream
 
             stream: 'stocks',
@@ -117,7 +117,7 @@ class Main extends Component{
 
     
     apiPositionListener(msg){
-        alert("API position listener called")
+        //alert("API position listener called")
 
         //After getting Alpaca positions list, subscribes to the necessary streams through polygon
         for (let position of JSON.parse(msg)){

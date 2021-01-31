@@ -15,12 +15,12 @@ class PCTBar extends Component{
         }
     }
 
-    bar(color){
-        return (<div style={{height: "5px", width: "68px", backgroundColor: color, margin: "1px"}}></div>)
+    bar(color, key){
+        return (<div key={key} style={{height: "5px", width: "68px", backgroundColor: color, margin: "1px"}}></div>)
     }
 
-    square(color){
-        return (<div style={{height: "5px", width: "5px", backgroundColor: color, margin: "1px"}}></div>)
+    square(color, key){
+        return (<div key={key} style={{height: "5px", width: "5px", backgroundColor: color, margin: "1px"}}></div>)
     }
 
     subPlot(pct){
@@ -29,32 +29,28 @@ class PCTBar extends Component{
         
         if (((pct > -0.01)&&(pct < 0.01))||(pct == null)){
             //Placeholder blank bar, otherwise it shifts up b/c missing element
-            res.push(this.bar("white"))
+            res.push(this.bar("white", `${this.props.symbol}${res.length}`))
         }else{
             //NOTE: This is still a little bit buggy when converting squares into bars
             if (pct > 0){
                 for (let i = 0; i <= pct - 0.1; i += 0.1){
-                    res.push(this.bar("green"))
+                    res.push(this.bar("green", `${this.props.symbol}${res.length}`))
                 }
         
                 for (let j = 0; j <= pct%0.1-0.01; j += 0.01){
-                    res.push(this.square("blue"))
+                    res.push(this.square("blue", `${this.props.symbol}${res.length}`))
                 }
             }else{
                 pct = -pct
                 for (let j = 0; j <= pct%0.1-0.01; j += 0.01){
-                    res.push(this.square("blue"))
+                    res.push(this.square("blue", `${this.props.symbol}${res.length}`))
                 }
 
                 for (let i = 0; i <= pct - 0.1; i += 0.1){
-                    res.push(this.bar("red"))
+                    res.push(this.bar("red", `${this.props.symbol}${res.length}`))
                 }
             }            
         }
-
-
-
-
         return res
     }
 
