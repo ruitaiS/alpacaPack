@@ -20,8 +20,9 @@ class Main extends Component{
         this.pairSwap = this.pairSwap.bind(this);
 
         this.streamListener = this.streamListener.bind(this);
-        this.connect = this.connect.bind(this);
         this.apiPositionListener = this.apiPositionListener.bind(this);
+        this.connect = this.connect.bind(this);
+        this.updatePositions = this.updatePositions.bind(this);
 
         //this.subscribe = this.subscribe.bind(this);
         //this.unsubscribe = this.unsubscribe.bind(this);
@@ -161,7 +162,7 @@ class Main extends Component{
     render(){
         return(
             <div>
-                <List positions={this.state.positions} api={this.api}/>
+                <List positions={this.state.positions} api={this.api} updatePositions={this.updatePositions}/>
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
             </div>
         )

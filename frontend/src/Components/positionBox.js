@@ -9,6 +9,7 @@ class PositionBox extends Component{
         //cost (purchase cost)
         //price (current price)
         //api (alpaca trade api)
+        //updatePositions()
 
         //Functions that need to get bound to this instance
         //this.function = this.function.bind(this);
@@ -36,7 +37,7 @@ class PositionBox extends Component{
               </div>
 
               <div>
-                  <button onClick={()=>alert(`Clicked ${this.props.symbol}`)}>Update</button>
+                  <button onClick={this.props.updatePositions}>Update</button>
               </div>
               
             </fieldset>

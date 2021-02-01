@@ -5,6 +5,7 @@ class List extends Component{
     constructor(props){
         //positions
         //api
+        //updatePositions()
 
         super(props);
 
@@ -17,7 +18,7 @@ class List extends Component{
     }
 
     renderPosition(symbol, qty, cost, price){
-        return(<PositionBox symbol={symbol} qty={qty} cost={cost} price={price} api={this.props.api}/>)
+        return(<PositionBox symbol={symbol} qty={qty} cost={cost} price={price} api={this.props.api} updatePositions={this.props.updatePositions}/>)
     }
 
     //#region Test Functions
