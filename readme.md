@@ -3,7 +3,7 @@ Minor issue with the pctBar when it goes past large changes - the width stays at
 
 Not a major problem, but just something I noticed on the gamestop stock.
 
-
+Positions do not update when changed from Alpaca website. I think because it only pings for the position list once, and it's not getting a constant update.
 
 ### Jan 30
 Right now, position list doesn't render if we're not getting price data from the websocket.

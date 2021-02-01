@@ -39,9 +39,6 @@ class List extends Component{
         let list = []
         let totalVal = 0
 
-        //alert("Rendering")
-
-        
         //Only Render if Data has been instantiated
         if (this.props.positions != null){
             for (let symbol in this.props.positions){

@@ -13,7 +13,7 @@ class PositionBox extends Component{
         //Functions that need to get bound to this instance
         //this.function = this.function.bind(this);
         this.state = {
-            lastQty: null, //Stores the previous sell quantity so you can re-buy the same amount
+            exitQty: null, //Stores the previous sell quantity so you can re-buy the same amount
 
         }
     }

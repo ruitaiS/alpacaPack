@@ -100,7 +100,7 @@ class Main extends Component{
 
                 //Get Position List After Websocket Confirm
                 //alert("Getting Positions")
-                this.api.get_positions(this.apiPositionListener) 
+                this.api.get_positions((msg)=> this.apiPositionListener(msg, true)) 
             }
         }else{//Message is null, so we assume we're subscribed, and getting price data
             //console.log(JSON.stringify(data))
@@ -116,17 +116,26 @@ class Main extends Component{
     }
 
     
-    apiPositionListener(msg){
+    apiPositionListener(msg, firstRun){
         //alert("API position listener called")
 
-        //After getting Alpaca positions list, subscribes to the necessary streams through polygon
+        //Get Alpaca positions list
         for (let position of JSON.parse(msg)){
             //Price defaults to last day price; will get overwritten by WS stream if live
             this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, price: position.lastday_price}
-            this.ws.subscribe(position.symbol)
+            
+            //Only subscribe to ws streams on initialization
+            if(firstRun){
+                this.ws.subscribe(position.symbol)
+            }
         }
 
         this.setState({positions: this.positions})
+    }
+
+    //Get new positions from Alpaca without subscribing (Called after sell/buy orders) 
+    updatePositions(){
+        this.api.get_positions((msg)=> this.apiPositionListener(msg, false))
     }
 
     connect(){
