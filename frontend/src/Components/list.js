@@ -1,10 +1,10 @@
 import {Component} from "react";
-import PCTBar from '../Components/pctBar';
+import PositionBox from '../Components/positionBox';
 
 class List extends Component{
     constructor(props){
         //positions
-        //streamData
+        //api
 
         super(props);
 
@@ -17,40 +17,21 @@ class List extends Component{
     }
 
     renderPosition(symbol, qty, cost, price){
-        /*
-        We want to pull these from Alpaca position:
-        symbol
-        qty
-
-        Switch to calculating on the fly with the Polygon websocket data:
-        current_price (price per share)
-        market_value (total value of the position, for calculating % of portfolio value)
-        change_today (percent change since yesterday)
-        */
-
-        let change = (price - cost) / cost
-
-        return(
-            <fieldset className="portfolioElement" key={symbol}>
-              <legend>{symbol} // ${(Math.floor(price*100)/100).toFixed(2)} // {(change*100).toFixed(2)}%</legend>
-              <PCTBar symbol={symbol} height="5" width="300" pctChange={change} />
-
-              <div>
-              <label htmlFor="shares">Shares:</label>
-              <input style={{float:"right", width:"50px", textAlign:"center"}} id="shares" value={qty}/>
-              </div>
-
-              <div>
-                  <button onClick={()=>alert(`Clicked ${symbol}`)}>Update</button>
-              </div>
-              
-            </fieldset>
-        )
+        return(<PositionBox symbol={symbol} qty={qty} cost={cost} price={price} api={this.props.api}/>)
     }
 
+    //#region Test Functions
     //Test History
     history(){
         this.props.api.get_history((msg)=>console.log(msg))
+    }
+
+    sell(symbol, qty, price){
+
+    }
+
+    buy(symbol, qty, price){
+
     }
 
     render(){

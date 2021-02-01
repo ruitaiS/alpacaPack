@@ -26,7 +26,6 @@ class PCTBar extends Component{
     subPlot(pct){
         let res = []
 
-        
         if (((pct > -0.01)&&(pct < 0.01))||(pct == null)){
             //Placeholder blank bar, otherwise it shifts up b/c missing element
             res.push(this.bar("white", `${this.props.symbol}${res.length}`))
@@ -62,7 +61,6 @@ class PCTBar extends Component{
         }else{
             return {display:"flex", transform: `translate(${(this.props.width/2)}px, 0px)`}
         }
-
     }
 
     //Styling for the Main Bar
