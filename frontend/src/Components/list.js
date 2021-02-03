@@ -27,13 +27,14 @@ class List extends Component{
         this.props.api.get_history((msg)=>console.log(msg))
     }
 
+    /*
     sell(symbol, qty, price){
 
     }
 
     buy(symbol, qty, price){
 
-    }
+    }*/
 
     render(){
         //alert(typeof(this.props.positions))
