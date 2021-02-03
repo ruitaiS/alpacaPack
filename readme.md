@@ -1,3 +1,8 @@
+### Feb 2
+I think the issue for position updating is fixed (it will check if the positions entry for that symbol is null, if yes then it subscribes)
+    -> Will need to test/tweak tomorrow to confirm, as the market is closed now and I can't adjust positions. Especially check the behavior when exiting and re-entering a position. I want to have it stay on the watch-list, stay subscribed, showing 0 shares, but alpaca might not return that entry at all when being pinged for updated positions
+    -> don't remove it from the list until explicitly removed
+
 ### Feb 1
 Minor issue with the pctBar when it goes past large changes - the width stays at 68px but it does past the actual width of the containing box.
 

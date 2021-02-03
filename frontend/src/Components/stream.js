@@ -12,7 +12,8 @@ class Stream{
     constructor(key_id, url, callback){
         //Stocks Websocket
         this.ws = new WebSocket(url)
-        console.log("test")
+
+        this.subscriptionList = [];
 
         //Send Authentication Message On Open:
         //TODO: Error handling on failure to authenticate        
