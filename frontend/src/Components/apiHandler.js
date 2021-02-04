@@ -81,7 +81,7 @@ class API {
       "time_in_force": time_in_force
     }
 
-    console.log(JSON.stringify(order))
+    //console.log(JSON.stringify(order))
 
     /*
     stop_price

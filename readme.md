@@ -1,3 +1,12 @@
+### Feb 3
+Increasing quantities updates properly, because they're still being returned by alpaca
+
+Exiting a position entirely doesn't update, because the alpaca position list doesn't return them at all. Is there a better way to do this other than to set all of the position quantities to 0 at the start?
+
+There's also the issue of knowing when an order actually fills or not - When you do the callback, it just returns a receipt for the order - it's not a callback for when the order actually gets filled.
+
+
+
 ### Feb 2
 I think the issue for position updating is fixed (it will check if the positions entry for that symbol is null, if yes then it subscribes)
     -> Will need to test/tweak tomorrow to confirm, as the market is closed now and I can't adjust positions. Especially check the behavior when exiting and re-entering a position. I want to have it stay on the watch-list, stay subscribed, showing 0 shares, but alpaca might not return that entry at all when being pinged for updated positions

@@ -12,6 +12,7 @@ class PositionBox extends Component{
         //updatePositions()
 
         //Functions that need to get bound to this instance
+        this.orderCallback = this.orderCallback.bind(this);
         this.enter = this.enter.bind(this);
         this.exit = this.exit.bind(this);
 
@@ -21,16 +22,21 @@ class PositionBox extends Component{
         }
     }
 
+    orderCallback(msg){
+        console.log(msg)
+        this.props.updatePositions()
+    }
+
     //Exit the position at the specified price level
     exit(price){
         //Do We really need the callback here?
-        this.props.api.sell((msg)=>console.log(msg), this.props.symbol, this.props.qty, "limit", price, "gtc")
+        this.props.api.sell(this.orderCallback, this.props.symbol, this.props.qty, "limit", price, "gtc")
         this.setState({lastQty: this.props.qty})
     }
 
     //Re-enter the position at the specified price level
     enter(price){
-        this.props.api.buy((msg)=>this.props.updatePositions(), this.props.symbol, this.state.lastQty, "limit", price, "gtc")
+        this.props.api.buy(this.orderCallback, this.props.symbol, this.state.lastQty, "limit", price, "gtc")
     }
 
     render(){

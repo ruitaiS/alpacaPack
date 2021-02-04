@@ -128,6 +128,7 @@ class Main extends Component{
             }
 
             //Price defaults to last day price; will get overwritten by WS stream if live
+            //alert(`Quantity: ${position.qty}`)
             this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, price: position.lastday_price}
         }
 
