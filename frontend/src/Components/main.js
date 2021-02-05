@@ -19,7 +19,8 @@ class Main extends Component{
         this.p2Change = this.p2Change.bind(this);
         this.pairSwap = this.pairSwap.bind(this);
 
-        this.streamListener = this.streamListener.bind(this);
+        this.priceListener = this.priceListener.bind(this);
+        this.tradeStatusListener = this.tradeStatusListener.bind(this);
         this.apiPositionListener = this.apiPositionListener.bind(this);
         this.connect = this.connect.bind(this);
         this.updatePositions = this.updatePositions.bind(this);
@@ -90,7 +91,7 @@ class Main extends Component{
     //#endregion
 
     
-    streamListener(msg){ //websocket callback; parses incoming data and updates state
+    priceListener(msg){ //websocket callback; parses incoming data and updates state
         let data = JSON.parse(msg.data)
         if (data[0].message != null){
             console.log(data[0].message)
@@ -113,6 +114,14 @@ class Main extends Component{
             }
             //alert("Setting Positions")
             this.setState({positions: this.positions})
+        }
+    }
+
+    tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
+        console.log(msg)
+        let data = JSON.parse(msg.data)
+        if(data.data.status == "authorized"){
+            
         }
     }
 
@@ -144,11 +153,11 @@ class Main extends Component{
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.ws = new Stream(this.state.key_id, 'wss://socket.polygon.io/stocks', this.streamListener)          
+            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://data.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)       
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
-            //this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.streamListener)
+            //this.ws = new Stream(this.state.key_id, `wss://ws.finnhub.io?token=${this.state.key_id}`, this.priceListener)
             //this.api = null
         }
     }
