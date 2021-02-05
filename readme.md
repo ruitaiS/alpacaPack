@@ -1,3 +1,8 @@
+### Feb 5
+Apparently there is a trade_updates websocket stream through alpaca that should push the trade confirms.
+
+I'm going to try to see if I can add that as a seperate websocket contained within stream, and then when generating it, point it to two listeners (one listening to the polygon price data, the other to listen to trade updates).
+
 ### Feb 3
 Increasing quantities updates properly, because they're still being returned by alpaca
 
