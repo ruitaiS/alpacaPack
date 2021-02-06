@@ -3,6 +3,9 @@ Apparently there is a trade_updates websocket stream through alpaca that should 
 
 I'm going to try to see if I can add that as a seperate websocket contained within stream, and then when generating it, point it to two listeners (one listening to the polygon price data, the other to listen to trade updates).
 
+
+priceListener and tradeStatusListener are basically the same thing, but they send / receive slightly different messages two websockets. Not a huge fan of the fact that they're repeating each other's code.
+
 ### Feb 3
 Increasing quantities updates properly, because they're still being returned by alpaca
 

@@ -26,6 +26,7 @@ class Stream{
         this.alpaca.onopen = () => {
             console.log("Authenticating Trade Updates Stream")
             this.alpaca.send(JSON.stringify({"action":"authenticate","data": {"key_id": key_id, "secret_key":secret_key}}))
+            this.alpaca.send(JSON.stringify({"action":"listen","data":{"streams":["trade_updates"]}}))
         }
 
         //TODO: Could I just use onmessage = callback(msg)?

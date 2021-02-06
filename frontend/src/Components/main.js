@@ -94,7 +94,7 @@ class Main extends Component{
     priceListener(msg){ //websocket callback; parses incoming data and updates state
         let data = JSON.parse(msg.data)
         if (data[0].message != null){
-            console.log(data[0].message)
+            console.log(`Polygon says ${data[0].message}`)
             //initialize positions after authentication confirmation
             if (data[0].message === 'authenticated'){
                 //TODO: How to handle the active window?
@@ -118,11 +118,17 @@ class Main extends Component{
     }
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
-        console.log(msg)
-        let data = JSON.parse(msg.data)
-        if(data.data.status == "authorized"){
-            
-        }
+        alert(JSON.stringify(msg))
+        /*let data = JSON.parse(msg.data)
+        if(data.data.status != null){
+            console.log(`Alpaca says ${data.data.status}`)
+            if(data.data.status === "authorized"){
+                //Subscribe to trade status stream
+                this.ws.alpaca.send(JSON.stringify({"action":"listen","data":{"streams":["trade_updates"]}}))
+            }
+        }else{
+            console.log(`Second branch Alpaca says ${msg.data}`)
+        }*/
     }
 
     
@@ -149,11 +155,13 @@ class Main extends Component{
         this.api.get_positions(this.apiPositionListener)
     }
 
+
+
     connect(){
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://data.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)       
+            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)       
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
