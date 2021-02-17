@@ -34,9 +34,9 @@ class Main extends Component{
         this.positions = {} // Symbol: [qty, price]
 
         this.state = {
-            key_id: 'PK5YYD0RTSIBEH5O4IG7',
+            key_id: 'PKE06IXOHYSCN0DKRU3M',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: 'vbrBfUR0BkmsjtR13sB0mxqYOPQqaR67ARJoZO4P',
+            secret_key: '1Hv5IIH4niKxwe6uvMSHzVyslejRSwhoiamYCSLQ',
 
             
             positions: null, //array of [Ticker, qty, avg price] arrays
@@ -92,6 +92,8 @@ class Main extends Component{
 
     
     priceListener(msg){ //websocket callback; parses incoming data and updates state
+        console.log(msg)
+        /*
         let data = JSON.parse(msg.data)
         if (data[0].message != null){
             console.log(`Polygon says ${data[0].message}`)
@@ -114,12 +116,14 @@ class Main extends Component{
             }
             //alert("Setting Positions")
             this.setState({positions: this.positions})
-        }
+        }*/
     }
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
-        alert(JSON.stringify(msg))
-        /*let data = JSON.parse(msg.data)
+        //
+
+        //console.log(msg)
+        let data = JSON.parse(msg)
         if(data.data.status != null){
             console.log(`Alpaca says ${data.data.status}`)
             if(data.data.status === "authorized"){
@@ -127,8 +131,8 @@ class Main extends Component{
                 this.ws.alpaca.send(JSON.stringify({"action":"listen","data":{"streams":["trade_updates"]}}))
             }
         }else{
-            console.log(`Second branch Alpaca says ${msg.data}`)
-        }*/
+            console.log(`Second branch Alpaca says ${msg}`)
+        }
     }
 
     
@@ -161,7 +165,7 @@ class Main extends Component{
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)       
+            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)       
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})

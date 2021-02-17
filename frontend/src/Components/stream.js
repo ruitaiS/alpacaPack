@@ -26,7 +26,6 @@ class Stream{
         this.alpaca.onopen = () => {
             console.log("Authenticating Trade Updates Stream")
             this.alpaca.send(JSON.stringify({"action":"authenticate","data": {"key_id": key_id, "secret_key":secret_key}}))
-            this.alpaca.send(JSON.stringify({"action":"listen","data":{"streams":["trade_updates"]}}))
         }
 
         //TODO: Could I just use onmessage = callback(msg)?
@@ -34,7 +33,12 @@ class Stream{
             polygonCallback(msg)
         }
         this.alpaca.onmessage = msg => {
-            alpacaCallback(msg)
+            //msg.data is a blob containing a promise
+            //text() uncovers the promise, then() is the callback on promise resolution
+            //res is the actual json string
+            msg.data.text().then(res => {
+                alpacaCallback(res)
+            })
         }
 
         this.polygon.onclose = () =>{
