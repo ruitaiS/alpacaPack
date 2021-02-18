@@ -121,15 +121,26 @@ class Main extends Component{
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
 
         //console.log(msg)
-        let data = JSON.parse(msg)
-        if(data.data.status != null){
-            console.log(`Alpaca says ${data.data.status}`)
-            if(data.data.status === "authorized"){
+        let data = JSON.parse(msg).data
+        if(data.status != null){
+            console.log(`Alpaca says ${data.status}`)
+            if(data.status === "authorized"){
                 //Subscribe to trade status stream
                 this.ws.alpaca.send(JSON.stringify({"action":"listen","data":{"streams":["trade_updates"]}}))
             }
+        }else if(data.streams != null){
+            data.streams.forEach(x => {console.log(`Alpaca is listening to ${x}`)})
         }else{
+            
+            /*
             console.log(`Second branch Alpaca says ${msg}`)
+            console.log(`Event Type: ${data.event}`)
+            console.log(`Symbol: ${data.order.symbol}`)
+            if(data.event === 'new'){
+                console.log(`New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
+            }else{
+                console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
+            }*/           
         }
     }
 

@@ -1,3 +1,10 @@
+### Feb 18
+Got trade_updates websocket working - it was wrapped in a weird way, but I managed to get it opened (see stream.js alpaca.onmessage section for into)
+
+Currently writing code to parse through the return message from trade_updates in order to update the watch list as orders get filled.
+
+
+
 ### Feb 5
 Apparently there is a trade_updates websocket stream through alpaca that should push the trade confirms.
 
