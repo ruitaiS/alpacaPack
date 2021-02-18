@@ -91,9 +91,8 @@ class Main extends Component{
     //#endregion
 
     
-    priceListener(msg){ //websocket callback; parses incoming data and updates state
-        console.log(msg)
-        /*
+    priceListener(msg){ //Polygon websocket callback; parses incoming data and updates state
+        //console.log(msg)
         let data = JSON.parse(msg.data)
         if (data[0].message != null){
             console.log(`Polygon says ${data[0].message}`)
@@ -116,11 +115,10 @@ class Main extends Component{
             }
             //alert("Setting Positions")
             this.setState({positions: this.positions})
-        }*/
+        }
     }
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
-        //
 
         //console.log(msg)
         let data = JSON.parse(msg)
