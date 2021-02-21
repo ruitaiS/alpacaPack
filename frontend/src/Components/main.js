@@ -6,7 +6,7 @@ import Stream from "./stream";
 
 import List from './list';
 
-import watchList from './watchlist.json'
+import config from './config.json'
 
 class Main extends Component{
     constructor(props){
@@ -28,7 +28,7 @@ class Main extends Component{
         this.connect = this.connect.bind(this);
         this.updatePositions = this.updatePositions.bind(this);
 
-        this.storeWatchList = this.storeWatchList.bind(this);
+        this.storeConfig = this.storeConfig.bind(this);
 
         //this.subscribe = this.subscribe.bind(this);
         //this.unsubscribe = this.unsubscribe.bind(this);
@@ -173,9 +173,9 @@ class Main extends Component{
         this.api.get_positions(this.apiPositionListener)
     }
 
-    storeWatchList(){
+    storeConfig(){
         let res = "data:application/octet-stream,"
-        res += encodeURIComponent(JSON.stringify(watchList))
+        res += encodeURIComponent(JSON.stringify(config))
         window.open(res);
     }
 
