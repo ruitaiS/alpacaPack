@@ -1,3 +1,17 @@
+### Feb 20
+In the future leave a couple of positions open when you start the weekend - otherwise you can't open any new positions, and the position list won't actually render.
+
+Working on:
+    >> Switching to a watchlist rather than a positionList.
+        -> Read / Write watchlist to a local file for now
+        -> Update each item on the watchlist from the open positions list with the number of shares held
+
+        Turns out react can't actually write to local files very easily... I've got a janky download thing set up, where it prompts you for a save location -> ideally we want this to be automated, but for now this is an ok workaround.
+
+Today added:
+    >> Generic priced button with mouseover hold -> This will need testing once the market is live
+    >> Draggable components -> this is more game-y stuff, but I think it will be necessary once you start thinking about how to recategorize stocks into different strategy groups (https://js.plainenglish.io/making-draggable-components-in-react-4c6d4d1df95f)
+
 ### Feb 18
 Got trade_updates websocket working - it was wrapped in a weird way, but I managed to get it opened (see stream.js alpaca.onmessage section for into)
 
