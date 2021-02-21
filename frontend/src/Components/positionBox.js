@@ -1,5 +1,6 @@
 import {Component} from "react";
 import PCTBar from '../Components/pctBar';
+import PriceButton from '../Components/priceButton';
 
 class PositionBox extends Component{
     constructor(props){
@@ -64,6 +65,10 @@ class PositionBox extends Component{
 
               <div>
                   <button onClick={()=>this.exit(10)}>Exit</button>
+              </div>
+
+              <div>
+                  <PriceButton text="Yo" price={this.props.price} click={console.log("clicked")}/>
               </div>
               
             </fieldset>
