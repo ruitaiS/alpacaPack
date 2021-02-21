@@ -4,7 +4,10 @@ Retooling the way the position list updates, vis the watchlist
 also thinking about how the whole interface should be:
     Several groupings of stocks? Each group has a position list, and a strategy / pseudo-alg that it's employing?
 
-
+also also - realized you probably need to untangle the position updating
+    -> from within each group, subscribe to polygon stream
+    -> alpaca updates the positions that it's in
+    -> the alpaca positions will always be a subset of the polygon subscriptions
 
 ### Feb 20
 In the future leave a couple of positions open when you start the weekend - otherwise you can't open any new positions, and the position list won't actually render.
