@@ -73,7 +73,6 @@ class PositionBox extends Component{
               
             </fieldset>
         )
-        
     }
 }
 
