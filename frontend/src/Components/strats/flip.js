@@ -6,11 +6,13 @@ import {Component} from "react";
     //One key liquidate panic button
 
 
-class BumbStrat extends Component{
+class FlipStrat extends Component{
     constructor(props){
         super(props);
         //Values that get passed to the component
-        //
+        //api - alpaca trade api
+        //positions - master list of positions
+        
 
         //Functions that need to get bound to this instance
         //this.function = this.function.bind(this);
@@ -33,4 +35,4 @@ class BumbStrat extends Component{
     }
 }
 
-export default BumbStrat;
+export default FlipStrat;

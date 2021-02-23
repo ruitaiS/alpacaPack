@@ -5,7 +5,9 @@ also thinking about how the whole interface should be:
     Several groupings of stocks? Each group has a position list, and a strategy / pseudo-alg that it's employing?
 
 also also - realized you probably need to untangle the position updating
-    -> from within each group, subscribe to polygon stream
+    -> from within each group, update the main watchlist / position list
+    -> when polygon initializes, go through the main watchlist and subscribe to everything
+        -> whenever watchlist is updated from subcomponents, unsub directly from polygon
     -> alpaca updates the positions that it's in
     -> the alpaca positions will always be a subset of the polygon subscriptions
 
