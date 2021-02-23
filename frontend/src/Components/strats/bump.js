@@ -46,10 +46,13 @@ class BumpStrat extends Component{
         
 
         //Functions that need to get bound to this instance
-        //this.function = this.function.bind(this);
+        this.deltaChange = this.deltaChange.bind(this);
         this.state = {
-            entered: "false",
 
+            startCapital: 500,
+            delta: 0.01,
+
+            status: "out", //out, in, waiting-entry, waiting-exit
         }
     }
 
@@ -57,15 +60,44 @@ class BumpStrat extends Component{
         console.log("Hi! :)")
     }
 
+    deltaChange(e){
+        this.setState({delta: e.target.value})
+        console.log(`New Delta: ${this.state.delta}`)
+    }
+
+    capChange(e){
+        this.setState({startCapital: e.target.value})
+        console.log(`New Starting Allocation: ${this.state.startCapital}`)
+        //Reset the statistics too
+    }
+
     render(){
         return(
             <div>
                 Bump Strat
-                {this.props.ticker}
-                <PCTBar pctChange="0.1" width="500" height="50"/>
+                <fieldset className="inputBox">
+                    <legend>{this.props.ticker}</legend>
+                    <PCTBar pctChange="0.1" width="500" height="50"/>
 
-                {/*Conditional formatting to change the onclick */}
-                <PriceBtn text="Test" click={()=>alert("clicked")}/>
+                    <div>
+                        <label htmlFor="slider">Initial Allocation: ${this.state.startCapital}</label>
+                        {/*Conditionally disable if we're in a position */}
+                        {this.state.status === "out" ? 
+                            <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.startCapital} onChange={this.capChange}/>
+                            :
+                            <input disabled style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.startCapital} onChange={this.capChange}/>
+                        }
+                    </div>
+
+                    <div>
+                        <label htmlFor="slider">Delta: ${this.state.delta}</label>
+                        <input style={{float:"right", width:"150px", textAlign:"center"}} type="range" min="0" max="10" step={0.01} value={this.state.delta} className="slider" id="slider" onChange={this.deltaChange}/>
+                        <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
+                    </div>
+
+                    {/*Conditional formatting to change the onclick */}
+                    <PriceBtn text={this.props.price} click={()=>alert("clicked")}/>
+                </fieldset>j
             </div>
         )
         
