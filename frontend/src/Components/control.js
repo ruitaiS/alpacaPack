@@ -40,7 +40,8 @@ class Control extends Component{
         streamParams =               
         (<div>
         <label htmlFor="tck">Ticker:</label>
-        <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
+        {/*Disable changing ticker symbol for now */}
+        <input disabled style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
         </div>)
       }else{
         //janky right margin on the second select box to make it centered
@@ -62,7 +63,7 @@ class Control extends Component{
       }
 
       return (
-        <div className="centered">
+        <div>
           <fieldset className="inputBox">
               <legend>Control Panel:</legend>
 

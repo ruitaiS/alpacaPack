@@ -1,3 +1,10 @@
+### Feb 22
+I've kinda been branching out in too many different directions. I think it's really time to re-focus and work on building a minimum viable product.
+
+Focus on building out the bump strategy. UI and display is not super important at this point - you can use robinhood or the alpaca website's graph. Within the next few days, get the core functionality working, so you can confirm whether or not this is a viable strategy.
+
+In general, focus on building out strategies, rather than the UI. Don't get sidetracked into menial labor working on nice-to-haves. Figure out now if this is a feasible idea, or if it's a dead end.
+
 ### Feb 21
 Retooling the way the position list updates, vis the watchlist
 

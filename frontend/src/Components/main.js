@@ -6,6 +6,8 @@ import Stream from "./stream";
 
 import List from './list';
 
+import BumpStrat from './strats/bump';
+
 import config from './config.json'
 
 class Main extends Component{
@@ -186,12 +188,6 @@ class Main extends Component{
         if (this.state.stream === "stocks"){
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
             this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
-
-            //Testing that watchlist is being read
-            for(let position in watchList){
-                console.log(`${position} is ${watchList[position]}`)
-                watchList[position] = watchList[position] + 1
-            }
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
@@ -209,13 +205,14 @@ class Main extends Component{
 
     render(){
         return(
-            <div>
-
+            <div className="centered">
+                
                 {/* 
                 <List positions={this.state.positions} api={this.api} updatePositions={this.updatePositions}/>
                 <button onClick={this.storeConfig}>Save List</button>
                 */}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
+                <BumpStrat ticker={this.state.ticker}/>
             </div>
         )
     }

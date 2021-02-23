@@ -1,4 +1,6 @@
 import {Component} from "react";
+import PriceBtn from '../priceButton';
+import PCTBar from '../pctBar';
 
 //Buy in using the limit price button
     //Or at pre-set base price - executes so long as space key is held
@@ -28,7 +30,11 @@ class FlipStrat extends Component{
     render(){
         return(
             <div>
-                Stuff Goes Here
+                Flip Strat
+                <PCTBar pctChange="0.1" width="500" height="50"/>
+
+                {/*Conditional formatting to change the onclick */}
+                <PriceBtn text="Test" click={()=>alert("clicked")}/>
             </div>
         )
         
