@@ -106,11 +106,11 @@ class Main extends Component{
             //initialize positions after authentication confirmation
             if (data[0].message === 'authenticated'){
                 //TODO: How to handle the active window?
-                //this.ws.subscribe(this.state.ticker)
+                this.ws.subscribe(this.state.ticker)
 
                 //Get Position List After Websocket Confirm
                 //alert("Getting Positions")
-                this.updatePositions()
+                //this.updatePositions()
             }
         }else{//Message is null, so we assume we're subscribed, and getting price data
             //console.log(JSON.stringify(data))
@@ -212,7 +212,11 @@ class Main extends Component{
                 <button onClick={this.storeConfig}>Save List</button>
                 */}
                 <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
-                <BumpStrat ticker={this.state.ticker}/>
+                
+                {/*Display Strat box only after price feed is live */}
+                {this.state.positions != null &&
+                <BumpStrat ticker={this.state.ticker} price={this.state.positions[this.state.ticker]["price"]}/>
+                }
             </div>
         )
     }

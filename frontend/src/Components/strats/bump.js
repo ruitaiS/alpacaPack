@@ -34,6 +34,8 @@ import PCTBar from '../pctBar';
 //Secondary exit button without hover, places limit sell at price at time of click
 //Panic button places market sell order
 
+//Similar inverse strategy should exist - sell as it's dipping, re-buy a larger amount of shares at a lower price
+
 
 
 class BumpStrat extends Component{
