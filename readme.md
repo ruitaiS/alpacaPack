@@ -1,3 +1,32 @@
+### Feb 24
+
+Alpaca is phasing out polygon, I can get a free month but after i'll have to pay 200 a month, so I really need to get this going.
+
+Today I got the hold prices working and order placement working
+
+now i need to think about how to:
+    update the value of the shares in real time
+    confirm trade acceptance / completion
+        bump needs to wait for trade update listener to have some useful information
+            >>TUL should update a status dict within main
+            >>status dict is passed to bump as a prop
+            >>bump reads status dict and does something when it detects change
+
+Position updater only updates position state if *in* a position - if held quantity is zero, it does not update
+trade status updater updates when orders are opened or closed
+    >>Event type: new
+        update positions with status (waiting-entry or waiting-exit), along with number of shares and limit price
+            >>gets read by bump
+    >>Event type: fill
+        check if it completely closes out the order (eg. are there outstanding shares that have yet to be complete?)
+        check if it closes out the position (eg. are the sold shares = to the held shares?). If yes:
+            update qty to zero (b/c position updater won't)
+            update the amount of capital based on how much the shares were sold for
+            update status to out
+        
+
+
+
 ### Feb 22
 I've kinda been branching out in too many different directions. I think it's really time to re-focus and work on building a minimum viable product.
 

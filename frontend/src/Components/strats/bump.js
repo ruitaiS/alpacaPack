@@ -43,15 +43,15 @@ class BumpStrat extends Component{
         super(props);
         //Values that get passed to the component
         //api - alpaca trade api
-        //symbol - symbol that we're trading on
+        //ticker - symbol that we're trading on
         //price - current price of the asset
         
 
         //Functions that need to get bound to this instance
         this.deltaChange = this.deltaChange.bind(this);
+        this.click = this.click.bind(this);
         this.state = {
-
-            startCapital: 500,
+            capital: 10000,
             delta: 0.01,
 
             status: "out", //out, in, waiting-entry, waiting-exit
@@ -68,26 +68,60 @@ class BumpStrat extends Component{
     }
 
     capChange(e){
-        this.setState({startCapital: e.target.value})
-        console.log(`New Starting Allocation: ${this.state.startCapital}`)
+        this.setState({capital: e.target.value})
+        console.log(`New Starting Allocation: ${this.state.capital}`)
         //Reset the statistics too
     }
 
-    render(){
+    //This is kind of shitty because it will do it even when it's just the price data changing
+    //Ideally you want to call a function in bump from the parent component
+    componentDidUpdate(prevProps){
+        if (prevProps.test != this.props.test){
+            console.log(`Test value changed from ${prevProps.test} to ${this.props.test}`)
+        }
+    }
+
+    click(price){
+        if (this.state.status === "out"){
+            //Place a limit buy order
+            //On completion, place limit sell @ delta
+            let symbol = this.props.ticker
+            let qty = Math.floor(this.state.capital / price)
+            let type = "limit"
+            let time_in_force = "gtc"
+            this.props.api.buy(((msg)=>console.log(msg)), symbol, qty, type, price, time_in_force)
+            
+        }else if (this.state.status === "in"){
+            //Place limit sell
+
+        }else if (this.state.status === "waiting-entry"){
+            //Cancel existing buy order
+
+        }else if (this.state.status === "waiting-exit"){
+            //Cancel sell order
+            //
+
+        }
+    }
+
+    render(){  
+
+
+
         return(
             <div>
                 Bump Strat
                 <fieldset className="inputBox">
-                    <legend>{this.props.ticker}</legend>
+                    <legend>{`Current Price: $${this.props.price}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
 
                     <div>
-                        <label htmlFor="slider">Initial Allocation: ${this.state.startCapital}</label>
+                        <label htmlFor="slider">Capital Allocation: ${this.state.capital}</label>
                         {/*Conditionally disable if we're in a position */}
                         {this.state.status === "out" ? 
-                            <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.startCapital} onChange={this.capChange}/>
+                            <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.capital} onChange={this.capChange}/>
                             :
-                            <input disabled style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.startCapital} onChange={this.capChange}/>
+                            <input disabled style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.capital} onChange={this.capChange}/>
                         }
                     </div>
 
@@ -97,9 +131,9 @@ class BumpStrat extends Component{
                         <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
                     </div>
 
-                    {/*Conditional formatting to change the onclick */}
-                    <PriceBtn text={this.props.price} click={()=>alert("clicked")}/>
-                </fieldset>j
+                    <PriceBtn text={this.state.status} click={this.click} price={this.props.price}/>
+                    
+                </fieldset>
             </div>
         )
         

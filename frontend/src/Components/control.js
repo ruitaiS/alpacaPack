@@ -10,6 +10,7 @@ class Control extends Component{
       //skChange
       //tickerChange
       //streamChange
+      //connected (boolean)
 
       super(props);
       this.state = {
@@ -34,14 +35,20 @@ class Control extends Component{
     }
   
     render() {
+
       //Conditional Rendering for Stream Parameter Input
       let streamParams
       if (this.props.stream === 'stocks'){
         streamParams =               
         (<div>
         <label htmlFor="tck">Ticker:</label>
-        {/*Disable changing ticker symbol for now */}
-        <input disabled style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
+        {/*Disable changing ticker symbol after connection */}
+        {this.props.connected ?
+          <input disabled style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
+          :
+          <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
+        }
+        
         </div>)
       }else{
         //janky right margin on the second select box to make it centered

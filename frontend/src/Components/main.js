@@ -32,6 +32,9 @@ class Main extends Component{
 
         this.storeConfig = this.storeConfig.bind(this);
 
+        this.testClick = this.testClick.bind(this);
+        this.logPos = this.logPos.bind(this);
+
         //this.subscribe = this.subscribe.bind(this);
         //this.unsubscribe = this.unsubscribe.bind(this);
 
@@ -51,10 +54,14 @@ class Main extends Component{
 
             stream: 'stocks',
             //stream: 'forex',
-            ticker: 'MSFT', // Ticker is the active window ticker symbol
+            ticker: 'TSLA', // Ticker is the active window ticker symbol
 
             p1: "USD",
             p2: "CAD",
+
+            connected: false,
+
+            test: true,
         }
     }
 
@@ -110,7 +117,7 @@ class Main extends Component{
 
                 //Get Position List After Websocket Confirm
                 //alert("Getting Positions")
-                //this.updatePositions()
+                this.updatePositions()
             }
         }else{//Message is null, so we assume we're subscribed, and getting price data
             //console.log(JSON.stringify(data))
@@ -118,7 +125,13 @@ class Main extends Component{
 
             //Data from WS comes in Asynchronously, so we update the position dict
             for (let datum of data){
-                this.positions[datum.sym]["price"] = datum.p
+                if (this.positions[datum.sym] === null){
+                    //initialize the entry with null price if doesn't already exist
+                    this.positions[datum.sym] = {price: null}
+                }else{
+                    this.positions[datum.sym]["price"] = datum.p
+                }
+                
             }
             //alert("Setting Positions")
             this.setState({positions: this.positions})
@@ -127,7 +140,7 @@ class Main extends Component{
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
 
-        //console.log(msg)
+        console.log(msg)
         let data = JSON.parse(msg).data
         if(data.status != null){
             console.log(`Alpaca says ${data.status}`)
@@ -138,16 +151,16 @@ class Main extends Component{
         }else if(data.streams != null){
             data.streams.forEach(x => {console.log(`Alpaca is listening to ${x}`)})
         }else{
-            
-            /*
-            console.log(`Second branch Alpaca says ${msg}`)
+
+
+            //console.log(`Second branch Alpaca says ${msg}`)
             console.log(`Event Type: ${data.event}`)
             console.log(`Symbol: ${data.order.symbol}`)
             if(data.event === 'new'){
                 console.log(`New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
             }else{
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
-            }*/           
+            }         
         }
     }
 
@@ -186,8 +199,10 @@ class Main extends Component{
     connect(){
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
+            this.positions[`${this.state.ticker}`] = {price: null}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
             this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
+            this.setState({connected: true})
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
@@ -202,21 +217,45 @@ class Main extends Component{
 
     }
 
+    testClick(){
+        if (this.state.test){
+            this.setState({test:false})
+            console.log("Set to false")
+        }else{
+            this.setState({test:true})
+            console.log("Set to true")
+        }
+    }
+
+    logPos(){
+        console.log(JSON.stringify(this.state.positions))
+    }
+
 
     render(){
         return(
-            <div className="centered">
-                
-                {/* 
+            <div>
+                {/*
                 <List positions={this.state.positions} api={this.api} updatePositions={this.updatePositions}/>
                 <button onClick={this.storeConfig}>Save List</button>
                 */}
-                <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect}/>
-                
-                {/*Display Strat box only after price feed is live */}
-                {this.state.positions != null &&
-                <BumpStrat ticker={this.state.ticker} price={this.state.positions[this.state.ticker]["price"]}/>
-                }
+
+                <div className="centered">                
+                    <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect} connected={this.state.connected}/>
+                    
+                    {/*Display Strat box only after price feed is live */}
+                    {this.state.positions != null &&
+                    <BumpStrat test={this.state.test} api={this.api} ticker={this.state.ticker} price={this.state.positions[this.state.ticker]["price"]}/>
+                    }
+
+                    <div className="centeredRow">
+                        {/*Test for updating props */}
+                        <button onClick={this.testClick}>Test</button>
+                        {/*Show Positions in Console */}
+                        <button onClick={this.logPos}>Log Positions</button>
+                    </div>
+            </div>
+
             </div>
         )
     }

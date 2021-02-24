@@ -23,6 +23,7 @@ class PriceBtn extends Component{
     mouseOver(){
         console.log("MouseOver")
         this.setState({holdPrice: this.props.price})
+        //alert(this.state.holdPrice)
     }
 
     mouseOut(){
@@ -36,7 +37,9 @@ class PriceBtn extends Component{
 
     render(){
         return(
-        <div><button className="bigBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{this.props.text}: ${this.state.holdPrice != null ? this.state.holdPrice : this.props.price}</button></div>
+        <div>
+            <button className="bigBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{this.props.text}: ${this.state.holdPrice != null ? this.state.holdPrice : this.props.price}</button>
+        </div>
         )
         
     }
