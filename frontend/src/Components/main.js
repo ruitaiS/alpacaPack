@@ -127,9 +127,9 @@ class Main extends Component{
             for (let datum of data){
                 if (this.positions[datum.sym] === null){
                     //initialize the entry with null price if doesn't already exist
-                    this.positions[datum.sym] = {price: null}
+                    this.positions[datum.sym] = {value: null}
                 }else{
-                    this.positions[datum.sym]["price"] = datum.p
+                    this.positions[datum.sym]["value"] = datum.p
                 }
                 
             }
@@ -139,6 +139,7 @@ class Main extends Component{
     }
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
+        //https://alpaca.markets/docs/api-documentation/api-v2/streaming/
 
         console.log(msg)
         let data = JSON.parse(msg).data
@@ -152,15 +153,40 @@ class Main extends Component{
             data.streams.forEach(x => {console.log(`Alpaca is listening to ${x}`)})
         }else{
 
+            /*
+                Not 100% sure how to handle order updating in an efficient way.
+                RN I'm just keeping a list of pending orders, which get cleared as they are filled,
+                and a single entry for the previous fill order, so that child components can check it for updates
+
+                Could there maybe be a situation where the child isn't able to process the fill orders before it gets wiped?
+            */
+
 
             //console.log(`Second branch Alpaca says ${msg}`)
-            console.log(`Event Type: ${data.event}`)
-            console.log(`Symbol: ${data.order.symbol}`)
+            //console.log(`Event Type: ${data.event} ${data.order.side}`)
+            //console.log(`Symbol: ${data.order.symbol}`)
+            
             if(data.event === 'new'){
                 console.log(`New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
-            }else{
+                this.positions[data.order.symbol]["pending"].push({[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id})
+            }else if (data.event === "fill"){
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
-            }         
+                //find corresponding pending order and clear it
+
+
+                //replace filled entry
+                //should i grow this to a certain size? (if the child comps can't process quickly enough)
+                this.positions[data.order.symbol]["filled"] = {[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id}
+            }else if(data.event === "partial_fill"){
+                console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
+            }else{
+                //canceled
+                //expired
+                //done_for_day
+                //replaced
+                //Or could be some other stuff
+                console.log(data.event)
+            }      
         }
     }
 
@@ -177,7 +203,7 @@ class Main extends Component{
 
             //Price defaults to last day price; will get overwritten by WS stream if live
             //alert(`Quantity: ${position.qty}`)
-            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, price: position.lastday_price}
+            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, value: position.lastday_price, pending: [], filled: []}
         }
 
         this.setState({positions: this.positions})
@@ -199,7 +225,7 @@ class Main extends Component{
     connect(){
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
-            this.positions[`${this.state.ticker}`] = {price: null}
+            this.positions[`${this.state.ticker}`] = {value: null}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
             this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
             this.setState({connected: true})
@@ -245,7 +271,7 @@ class Main extends Component{
                     
                     {/*Display Strat box only after price feed is live */}
                     {this.state.positions != null &&
-                    <BumpStrat test={this.state.test} api={this.api} ticker={this.state.ticker} price={this.state.positions[this.state.ticker]["price"]}/>
+                    <BumpStrat test={this.state.test} api={this.api} ticker={this.state.ticker} value={this.state.positions[this.state.ticker]["value"]}/>
                     }
 
                     <div className="centeredRow">

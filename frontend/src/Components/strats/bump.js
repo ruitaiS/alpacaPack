@@ -44,7 +44,7 @@ class BumpStrat extends Component{
         //Values that get passed to the component
         //api - alpaca trade api
         //ticker - symbol that we're trading on
-        //price - current price of the asset
+        //value - current price of the asset
         
 
         //Functions that need to get bound to this instance
@@ -76,7 +76,7 @@ class BumpStrat extends Component{
     //This is kind of shitty because it will do it even when it's just the price data changing
     //Ideally you want to call a function in bump from the parent component
     componentDidUpdate(prevProps){
-        if (prevProps.test != this.props.test){
+        if (prevProps.test !== this.props.test){
             console.log(`Test value changed from ${prevProps.test} to ${this.props.test}`)
         }
     }
@@ -112,7 +112,7 @@ class BumpStrat extends Component{
             <div>
                 Bump Strat
                 <fieldset className="inputBox">
-                    <legend>{`Current Price: $${this.props.price}`}</legend>
+                    <legend>{`Current Price: $${this.props.value}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
 
                     <div>
@@ -131,7 +131,7 @@ class BumpStrat extends Component{
                         <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
                     </div>
 
-                    <PriceBtn text={this.state.status} click={this.click} price={this.props.price}/>
+                    <PriceBtn text={this.state.status} click={this.click} value={this.props.value}/>
                     
                 </fieldset>
             </div>

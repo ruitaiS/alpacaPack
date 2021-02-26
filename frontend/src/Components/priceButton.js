@@ -6,7 +6,7 @@ class PriceBtn extends Component{
     constructor(props){
         super(props);
         //text - The text displayed on the button
-        //price - live price data that comes in
+        //value - live price data that comes in
         //click - function that gets called when the button is clicked
 
         //Functions that need to get bound to this instance
@@ -22,7 +22,7 @@ class PriceBtn extends Component{
 
     mouseOver(){
         console.log("MouseOver")
-        this.setState({holdPrice: this.props.price})
+        this.setState({holdPrice: this.props.value})
         //alert(this.state.holdPrice)
     }
 
@@ -38,7 +38,7 @@ class PriceBtn extends Component{
     render(){
         return(
         <div>
-            <button className="bigBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{this.props.text}: ${this.state.holdPrice != null ? this.state.holdPrice : this.props.price}</button>
+            <button className="bigBtn" onClick={this.click} onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>{this.props.text}: ${this.state.holdPrice != null ? this.state.holdPrice : this.props.value}</button>
         </div>
         )
         
