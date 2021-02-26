@@ -142,7 +142,7 @@ class Main extends Component{
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
         //https://alpaca.markets/docs/api-documentation/api-v2/streaming/
 
-        console.log(msg)
+        //console.log(msg)
         let data = JSON.parse(msg).data
         if(data.status != null){
             console.log(`Alpaca says ${data.status}`)
@@ -182,7 +182,9 @@ class Main extends Component{
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
             }else if (data.event === "canceled"){
                 console.log(`Order ${data.order.id} was canceled`)
-                
+                this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "canceled"}
+                //Log the cancellation; don't delete outright
+                //Child components will listen for updates & update positions once they see them
             }else{
                 //expired
                 //done_for_day

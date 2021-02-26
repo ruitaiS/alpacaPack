@@ -50,11 +50,15 @@ class BumpStrat extends Component{
         //Functions that need to get bound to this instance
         this.deltaChange = this.deltaChange.bind(this);
         this.click = this.click.bind(this);
+        this.orderConfirm = this.orderConfirm.bind(this);
+        this.openOrders = {}
         this.state = {
             capital: 10000,
             delta: 0.01,
 
             status: "out", //out, in, waiting-entry, waiting-exit
+
+            
         }
     }
 
@@ -81,6 +85,18 @@ class BumpStrat extends Component{
         }
     }
 
+    orderConfirm(msg){
+        //API buy callback; stores the confirmation info
+        //alert("Got Order")
+        let data = JSON.parse(msg)
+        this.openOrders[data.id]= {[data.side]: data.qty, price: data.limit_price}
+        this.setState({openOrders: this.openOrders})
+
+
+        console.log(`Confirm ${data.id} : ${data.side} ${data.qty} shares of ${data.symbol} for ${data.limit_price}`)
+        console.log(`Currently Open Orders for ${this.props.ticker}: ${JSON.stringify(this.state.openOrders)}`)
+    }
+
     click(price){
         if (this.state.status === "out"){
             //Place a limit buy order
@@ -89,7 +105,7 @@ class BumpStrat extends Component{
             let qty = Math.floor(this.state.capital / price)
             let type = "limit"
             let time_in_force = "gtc"
-            this.props.api.buy(((msg)=>console.log(msg)), symbol, qty, type, price, time_in_force)
+            this.props.api.buy((msg)=>this.orderConfirm(msg), symbol, qty, type, price, time_in_force)
             
         }else if (this.state.status === "in"){
             //Place limit sell
