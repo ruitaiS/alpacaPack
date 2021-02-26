@@ -34,6 +34,7 @@ class Main extends Component{
 
         this.testClick = this.testClick.bind(this);
         this.logPos = this.logPos.bind(this);
+        this.clearOrders = this.clearOrders.bind(this);
 
         //this.subscribe = this.subscribe.bind(this);
         //this.unsubscribe = this.unsubscribe.bind(this);
@@ -168,25 +169,27 @@ class Main extends Component{
             
             if(data.event === 'new'){
                 console.log(`New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
-                this.positions[data.order.symbol]["pending"].push({[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id})
+                this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "open"}
+                //this.positions[data.order.symbol]["orders"].push({[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id})
             }else if (data.event === "fill"){
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
-                //find corresponding pending order and clear it
-
-
-                //replace filled entry
-                //should i grow this to a certain size? (if the child comps can't process quickly enough)
-                this.positions[data.order.symbol]["filled"] = {[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id}
+                //update order status with fill price
+                this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, fill_price:data.order.filled_avg_price, status: "closed"}
+            
+            //TODO: These two
             }else if(data.event === "partial_fill"){
+                alert("Partial Order Fill")
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
+            }else if (data.event === "canceled"){
+                console.log(`Order ${data.order.id} was canceled`)
+                
             }else{
-                //canceled
                 //expired
                 //done_for_day
                 //replaced
                 //Or could be some other stuff
                 console.log(data.event)
-            }      
+            }
         }
     }
 
@@ -203,7 +206,7 @@ class Main extends Component{
 
             //Price defaults to last day price; will get overwritten by WS stream if live
             //alert(`Quantity: ${position.qty}`)
-            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, value: position.lastday_price, pending: [], filled: []}
+            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, value: position.lastday_price, orders: {}}
         }
 
         this.setState({positions: this.positions})
@@ -255,6 +258,15 @@ class Main extends Component{
 
     logPos(){
         console.log(JSON.stringify(this.state.positions))
+    }
+
+    clearOrders(symbol, orderID){
+        if (orderID == null){
+            this.positions[symbol]["orders"]= null
+        }else{
+            delete this.positions[symbol]["orders"][orderID]
+        }
+
     }
 
 

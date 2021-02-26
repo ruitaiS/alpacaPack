@@ -132,6 +132,7 @@ class BumpStrat extends Component{
                     </div>
 
                     <PriceBtn text={this.state.status} click={this.click} value={this.props.value}/>
+                    <button onClick={()=>this.props.api.cancel((msg)=>console.log(msg))}>Cancel All</button>
                     
                 </fieldset>
             </div>
