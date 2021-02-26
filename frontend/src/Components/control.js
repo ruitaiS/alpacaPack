@@ -76,12 +76,16 @@ class Control extends Component{
 
               <div>
               <label htmlFor="key">Key ID:</label>
+              {this.props.connected ?
+              <input disabled style={{float:"right", width:"350px", textAlign:"center"}} id="key" value={this.props.key_id} onChange={this.props.idChange}/>
+              :
               <input style={{float:"right", width:"350px", textAlign:"center"}} id="key" value={this.props.key_id} onChange={this.props.idChange}/>
+              }
               </div>
               
               <div>
               <label htmlFor="secret">Secret Key:</label>
-              {this.props.stream === "forex" ? 
+              {this.props.stream === "forex" || this.props.connected ? 
                 <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" disabled value="N/A"/>
                 :
                 <input style={{float:"right", width:"350px", textAlign:"center"}} id="secret" value={this.props.secret_key} onChange={this.props.skChange}/>
@@ -90,15 +94,18 @@ class Control extends Component{
 
               <div>
               <label htmlFor="stream">Stream:</label>
-              <select id="stream" style={{float:"right", width:"350px", textAlign:"center"}} value={this.props.stream} onChange={this.props.streamChange}>
+              <select disabled id="stream" style={{float:"right", width:"350px", textAlign:"center"}} value={this.props.stream} onChange={this.props.streamChange}>
               <option value="stocks">Stocks</option>
               <option value="forex">Forex</option>
               </select>
               </div>
 
               {streamParams}
-
+              {this.props.connected ?
+              <button disabled style={{float:"right", width:"350px", textAlign:"center"}} onClick={this.props.connect}>Connect</button>
+              :
               <button style={{float:"right", width:"350px", textAlign:"center"}} onClick={this.props.connect}>Connect</button>
+              }
           </fieldset>
         </div>
       );
