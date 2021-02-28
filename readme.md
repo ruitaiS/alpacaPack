@@ -1,3 +1,7 @@
+### Feb 28
+Working on conversion to finnhub stream
+Seems to be connected, but priceListener needs some tweaking to properly parse the incoming data
+
 ### Feb 24
 
 Alpaca is phasing out polygon, I can get a free month but after i'll have to pay 200 a month, so I really need to get this going.

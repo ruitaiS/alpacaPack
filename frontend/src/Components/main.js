@@ -30,6 +30,8 @@ class Main extends Component{
         this.connect = this.connect.bind(this);
         this.updatePositions = this.updatePositions.bind(this);
 
+        this.fhConnect = this.fhConnect.bind(this);
+
         this.storeConfig = this.storeConfig.bind(this);
 
         this.testClick = this.testClick.bind(this);
@@ -106,17 +108,21 @@ class Main extends Component{
     //#endregion
 
     //TODO: This will most likely need to be re-done using the finnhub spec
-    priceListener(msg){ //
+    priceListener(msg){
         console.log(msg)
 
         //TODO: Parse return msg data from finnhub / confirm this works
-        let data = JSON.parse(msg).data
+        let data = JSON.parse(msg.data)
         for (let datum of data){
-            if (this.positions[datum.s] === null){
-                //initialize the entry with null price if doesn't already exist
-                this.positions[datum.s] = {value: null}
+            if (data.type === "trade"){
+                if (this.positions[datum.s] === null){
+                    //initialize the entry with null price if doesn't already exist
+                    this.positions[datum.s] = {value: null}
+                }else{
+                    this.positions[datum.s]["value"] = datum.p
+                }
             }else{
-                this.positions[datum.s]["value"] = datum.p
+                console.log(`Finnhub says: ${msg}`)
             }
         }
         this.setState({positions: this.positions})
@@ -241,6 +247,14 @@ class Main extends Component{
         window.open(res);
     }
 
+    fhConnect(){
+        //New for Feb 28
+        //Previously only done on polygon ws auth confirm
+        this.ws.subscribe(this.state.ticker)
+        this.updatePositions()
+        this.setState({connected: true})
+    }
+
 
 
     connect(){
@@ -248,14 +262,7 @@ class Main extends Component{
         if (this.state.stream === "stocks"){
             this.positions[`${this.state.ticker}`] = {value: null}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=bvqgf2n48v6qg460kck0', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
-            
-            //New for Feb 28
-            //Previously only done on polygon ws auth confirm
-            this.ws.subscribe(this.state.ticker)
-            this.updatePositions()
-            
-            this.setState({connected: true})
+            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=bvqgf2n48v6qg460kck0', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener, this.fhConnect)
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})

@@ -10,7 +10,7 @@
 
 class Stream{
     //constructor(key_id, url, callback){
-    constructor(key_id, secret_key, finnhubURL, alpacaURL, finnhubCallback, alpacaCallback){
+    constructor(key_id, secret_key, finnhubURL, alpacaURL, finnhubCallback, alpacaCallback, fhConnect){
         this.finnhub = new WebSocket(finnhubURL) //Live Price Stream
         this.alpaca = new WebSocket(alpacaURL) //Trade Status Updates Stream
 
@@ -20,11 +20,12 @@ class Stream{
         //Send Authentication Message On Open:
         //TODO: Error handling on failure to authenticate        
         this.finnhub.onopen = () => {
-            console.log("Authenticating Price Stream")
+            console.log("Connected to FinnHub Price Stream")
+            fhConnect()
             //this.polygon.send(JSON.stringify({"action":"auth","params": key_id}))
         }
         this.alpaca.onopen = () => {
-            console.log("Authenticating Trade Updates Stream")
+            console.log("Authenticating Alpaca Trade Updates Stream")
             this.alpaca.send(JSON.stringify({"action":"authenticate","data": {"key_id": key_id, "secret_key":secret_key}}))
         }
 
