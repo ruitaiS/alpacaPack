@@ -1,8 +1,8 @@
 //Based on:
 //https://dev.to/finallynero/using-websockets-in-react-4fkp
 
-//Uses the finnhub websocket for trades
-//https://finnhub.io/docs/api/websocket-trades
+//Uses the Polygon websocket for trades rather than the alpaca one. Documentation here:
+//https://polygon.io/sockets
 
 
 //TODO: This will need different methods depending on which websocket is being used, since they all seem to have different formats and standards
@@ -10,8 +10,8 @@
 
 class Stream{
     //constructor(key_id, url, callback){
-    constructor(key_id, secret_key, finnhubURL, alpacaURL, finnhubCallback, alpacaCallback){
-        this.finnhub = new WebSocket(finnhubURL) //Live Price Stream
+    constructor(key_id, secret_key, polygonURL, alpacaURL, polygonCallback, alpacaCallback){
+        this.polygon = new WebSocket(polygonURL) //Live Price Stream
         this.alpaca = new WebSocket(alpacaURL) //Trade Status Updates Stream
 
 
@@ -19,9 +19,9 @@ class Stream{
 
         //Send Authentication Message On Open:
         //TODO: Error handling on failure to authenticate        
-        this.finnhub.onopen = () => {
+        this.polygon.onopen = () => {
             console.log("Authenticating Price Stream")
-            //this.polygon.send(JSON.stringify({"action":"auth","params": key_id}))
+            this.polygon.send(JSON.stringify({"action":"auth","params": key_id}))
         }
         this.alpaca.onopen = () => {
             console.log("Authenticating Trade Updates Stream")
@@ -29,8 +29,8 @@ class Stream{
         }
 
         //TODO: Could I just use onmessage = callback(msg)?
-        this.finnhub.onmessage = msg => {
-            finnhubCallback(msg)
+        this.polygon.onmessage = msg => {
+            polygonCallback(msg)
         }
         this.alpaca.onmessage = msg => {
             //msg.data is a blob containing a promise
@@ -41,7 +41,7 @@ class Stream{
             })
         }
 
-        this.finnhub.onclose = () =>{
+        this.polygon.onclose = () =>{
             console.log("Disconnected from Price Stream")
         }
         this.alpaca.onclose = () =>{
@@ -51,15 +51,15 @@ class Stream{
 
     //For Trade Stream Only:
     subscribe(ticker){
-        this.finnhub.send(JSON.stringify({'type':'subscribe', 'symbol': ticker}))
+        this.polygon.send(JSON.stringify({"action":"subscribe","params":"T."+ticker}))
     }
 
     unsubscribe(ticker){
-        this.finnhub.send(JSON.stringify({'type':'unsubscribe', 'symbol': ticker}))
+        this.polygon.send(JSON.stringify({"action":"unsubscribe","params":"T."+ticker}))
     }
 
     disconnect(){
-        this.finnhub.close()
+        this.polygon.close()
         this.alpaca.close()
     }
 }

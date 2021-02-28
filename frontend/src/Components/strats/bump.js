@@ -50,7 +50,7 @@ class BumpStrat extends Component{
         //Functions that need to get bound to this instance
         this.deltaChange = this.deltaChange.bind(this);
         this.click = this.click.bind(this);
-        this.orderConfirm = this.orderConfirm.bind(this);
+        this.apiConfirm = this.apiConfirm.bind(this);
         this.openOrders = {}
         this.state = {
             capital: 10000,
@@ -85,9 +85,12 @@ class BumpStrat extends Component{
         }
     }
 
-    orderConfirm(msg){
+    apiConfirm(msg){
         //API buy callback; stores the confirmation info
-        //alert("Got Order")
+        //TODO: make sure it works for cancellations too
+        console.log(msg)
+
+
         let data = JSON.parse(msg)
         this.openOrders[data.id]= {[data.side]: data.qty, price: data.limit_price}
         this.setState({openOrders: this.openOrders})
@@ -105,7 +108,7 @@ class BumpStrat extends Component{
             let qty = Math.floor(this.state.capital / price)
             let type = "limit"
             let time_in_force = "gtc"
-            this.props.api.buy((msg)=>this.orderConfirm(msg), symbol, qty, type, price, time_in_force)
+            this.props.api.buy((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
             
         }else if (this.state.status === "in"){
             //Place limit sell
@@ -148,7 +151,7 @@ class BumpStrat extends Component{
                     </div>
 
                     <PriceBtn text={this.state.status} click={this.click} value={this.props.value}/>
-                    <button onClick={()=>this.props.api.cancel((msg)=>console.log(msg))}>Cancel All</button>
+                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
                     
                 </fieldset>
             </div>
