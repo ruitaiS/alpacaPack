@@ -105,9 +105,25 @@ class Main extends Component{
     }
     //#endregion
 
-    
-    priceListener(msg){ //Polygon websocket callback; parses incoming data and updates state
-        //console.log(msg)
+    //TODO: This will most likely need to be re-done using the finnhub spec
+    priceListener(msg){ //
+        console.log(msg)
+
+        //TODO: Parse return msg data from finnhub / confirm this works
+        let data = JSON.parse(msg).data
+        for (let datum of data){
+            if (this.positions[datum.s] === null){
+                //initialize the entry with null price if doesn't already exist
+                this.positions[datum.s] = {value: null}
+            }else{
+                this.positions[datum.s]["value"] = datum.p
+            }
+        }
+        this.setState({positions: this.positions})
+
+
+
+        /*
         let data = JSON.parse(msg.data)
         if (data[0].message != null){
             console.log(`Polygon says ${data[0].message}`)
@@ -136,7 +152,7 @@ class Main extends Component{
             }
             //alert("Setting Positions")
             this.setState({positions: this.positions})
-        }
+        }*/
     }
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
@@ -233,6 +249,12 @@ class Main extends Component{
             this.positions[`${this.state.ticker}`] = {value: null}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
             this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=bvqgf2n48v6qg460kck0', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
+            
+            //New for Feb 28
+            //Previously only done on polygon ws auth confirm
+            this.ws.subscribe(this.state.ticker)
+            this.updatePositions()
+            
             this.setState({connected: true})
         }else{
             alert("Forex support coming soon!")
