@@ -232,7 +232,7 @@ class Main extends Component{
         if (this.state.stream === "stocks"){
             this.positions[`${this.state.ticker}`] = {value: null}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://socket.polygon.io/stocks', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
+            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=bvqgf2n48v6qg460kck0', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener)
             this.setState({connected: true})
         }else{
             alert("Forex support coming soon!")
