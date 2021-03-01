@@ -52,10 +52,12 @@ class Stream{
 
     //For Trade Stream Only:
     subscribe(ticker){
+        console.log(`Subscribing to ${ticker}`)
         this.finnhub.send(JSON.stringify({'type':'subscribe', 'symbol': ticker}))
     }
 
     unsubscribe(ticker){
+        console.log(`Unsubscribing from ${ticker}`)
         this.finnhub.send(JSON.stringify({'type':'unsubscribe', 'symbol': ticker}))
     }
 

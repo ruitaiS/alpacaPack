@@ -28,6 +28,7 @@ class Main extends Component{
         this.tradeStatusListener = this.tradeStatusListener.bind(this);
         this.apiPositionListener = this.apiPositionListener.bind(this);
         this.connect = this.connect.bind(this);
+        this.disconnect = this.disconnect.bind(this);
         this.updatePositions = this.updatePositions.bind(this);
 
         this.fhConnect = this.fhConnect.bind(this);
@@ -109,10 +110,23 @@ class Main extends Component{
 
     //TODO: This will most likely need to be re-done using the finnhub spec
     priceListener(msg){
-        console.log(msg)
+        //console.log(msg)
+        //console.log(JSON.parse(msg.data).data[0])
+
+        let data = JSON.parse(msg.data)
+        if (data.type === "trade"){
+            for (let datum of data.data){
+                console.log(`${datum.s} traded at ${datum.p} per share`)
+                this.positions[datum.s]["value"] = datum.p
+            }
+        }
+        this.setState({positions: this.positions})
 
         //TODO: Parse return msg data from finnhub / confirm this works
-        let data = JSON.parse(msg.data)
+        //let data = JSON.parse(msg.data).data
+        //console.log(JSON.stringify(data[0]))
+
+        /*
         for (let datum of data){
             if (data.type === "trade"){
                 if (this.positions[datum.s] === null){
@@ -122,10 +136,11 @@ class Main extends Component{
                     this.positions[datum.s]["value"] = datum.p
                 }
             }else{
-                console.log(`Finnhub says: ${msg}`)
+                //console.log(`Finnhub says: ${JSON.stringify(msg)}`)
             }
         }
         this.setState({positions: this.positions})
+        */
 
 
 
@@ -262,7 +277,7 @@ class Main extends Component{
         if (this.state.stream === "stocks"){
             this.positions[`${this.state.ticker}`] = {value: null}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
-            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=bvqgf2n48v6qg460kck0', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener, this.fhConnect)
+            this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=c0ui7on48v6r6g576j60', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener, this.fhConnect)
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})
@@ -272,9 +287,12 @@ class Main extends Component{
     }
 
     disconnect(){
-        //TODO
-        //this.ws.disconnect()
-
+        for (let symbol in this.positions){
+            this.ws.unsubscribe(symbol)
+        }
+        this.ws.disconnect()
+        this.setState({positions: null})
+        this.setState({connected: false})
     }
 
     testClick(){
@@ -310,7 +328,7 @@ class Main extends Component{
                 */}
 
                 <div className="centered">                
-                    <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect} connected={this.state.connected}/>
+                    <Control key_id={this.state.key_id} secret_key={this.state.secret_key} ticker={this.state.ticker} stream={this.state.stream} p1={this.state.p1} p2={this.state.p2} idChange={this.idChange} skChange={this.skChange} tickerChange={this.tickerChange} streamChange={this.streamChange} p1Change={this.p1Change} p2Change={this.p2Change} pairSwap={this.pairSwap} connect={this.connect} disconnect={this.disconnect} connected={this.state.connected}/>
                     
                     {/*Display Strat box only after price feed is live */}
                     {this.state.positions != null &&

@@ -1,3 +1,6 @@
+### Mar 1
+FinnHub stream is hella slow compared to polygon :(
+
 ### Feb 28
 Working on conversion to finnhub stream
 Seems to be connected, but priceListener needs some tweaking to properly parse the incoming data

@@ -102,7 +102,7 @@ class Control extends Component{
 
               {streamParams}
               {this.props.connected ?
-              <button disabled style={{float:"right", width:"350px", textAlign:"center"}} onClick={this.props.connect}>Connect</button>
+              <button style={{float:"right", width:"350px", textAlign:"center"}} onClick={this.props.disconnect}>Disconnect</button>
               :
               <button style={{float:"right", width:"350px", textAlign:"center"}} onClick={this.props.connect}>Connect</button>
               }
