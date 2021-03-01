@@ -116,64 +116,11 @@ class Main extends Component{
         let data = JSON.parse(msg.data)
         if (data.type === "trade"){
             for (let datum of data.data){
-                console.log(`${datum.s} traded at ${datum.p} per share`)
+                //console.log(`${datum.s} traded at ${datum.p} per share`)
                 this.positions[datum.s]["value"] = datum.p
             }
         }
         this.setState({positions: this.positions})
-
-        //TODO: Parse return msg data from finnhub / confirm this works
-        //let data = JSON.parse(msg.data).data
-        //console.log(JSON.stringify(data[0]))
-
-        /*
-        for (let datum of data){
-            if (data.type === "trade"){
-                if (this.positions[datum.s] === null){
-                    //initialize the entry with null price if doesn't already exist
-                    this.positions[datum.s] = {value: null}
-                }else{
-                    this.positions[datum.s]["value"] = datum.p
-                }
-            }else{
-                //console.log(`Finnhub says: ${JSON.stringify(msg)}`)
-            }
-        }
-        this.setState({positions: this.positions})
-        */
-
-
-
-        /*
-        let data = JSON.parse(msg.data)
-        if (data[0].message != null){
-            console.log(`Polygon says ${data[0].message}`)
-            //initialize positions after authentication confirmation
-            if (data[0].message === 'authenticated'){
-                //TODO: How to handle the active window?
-                this.ws.subscribe(this.state.ticker)
-
-                //Get Position List After Websocket Confirm
-                //alert("Getting Positions")
-                this.updatePositions()
-            }
-        }else{//Message is null, so we assume we're subscribed, and getting price data
-            //console.log(JSON.stringify(data))
-            //this.setState({streamData: data})
-
-            //Data from WS comes in Asynchronously, so we update the position dict
-            for (let datum of data){
-                if (this.positions[datum.sym] === null){
-                    //initialize the entry with null price if doesn't already exist
-                    this.positions[datum.sym] = {value: null}
-                }else{
-                    this.positions[datum.sym]["value"] = datum.p
-                }
-                
-            }
-            //alert("Setting Positions")
-            this.setState({positions: this.positions})
-        }*/
     }
 
     tradeStatusListener(msg){ //Alpaca trade updates websocket Listener
