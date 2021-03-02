@@ -1,5 +1,24 @@
+### Mar 2
+In main there is
+    this.positions = {}
+    and then inside of state of main, I have
+    positions: null
+
+and I just now did a similar thing with openOrders inside of bump.
+
+>>Is this really necessary? Why not just establish one thing and put it into the state? I think the original reason was something to do with the tradepositions API callback that necessitated this. I can't really remember what it was, but openOrders wasn't working so I just copied the format I used in main. Maybe come back to this later on.
+
+----
+bump.js:
+Orders filling does not update openOrders
+Cancel orders does not work properly if no orders to cancel
+
 ### Mar 1
 FinnHub stream is hella slow compared to polygon :(
+
+Or like.. it updates weirdly. There are laggy moments where there aren't a lot of updates, and then suddenly a bunch of them will come through. So I guess not as smooth as polygon.
+
+
 
 ### Feb 28
 Working on conversion to finnhub stream

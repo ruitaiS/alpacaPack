@@ -51,11 +51,13 @@ class BumpStrat extends Component{
         this.deltaChange = this.deltaChange.bind(this);
         this.click = this.click.bind(this);
         this.apiConfirm = this.apiConfirm.bind(this);
+        this.logOrders = this.logOrders.bind(this);
         this.openOrders = {}
         this.state = {
             capital: 10000,
             delta: 0.01,
 
+            openOrders: null,
             status: "out", //out, in, waiting-entry, waiting-exit
 
             
@@ -83,12 +85,32 @@ class BumpStrat extends Component{
         if (prevProps.test !== this.props.test){
             console.log(`Test value changed from ${prevProps.test} to ${this.props.test}`)
         }
+
+        //Check if any orders went from open to closed
+    }
+
+    logOrders(){
+        //console.log(this.state.openOrders)
+        if (this.state.openOrders === null){
+            console.log(`No open orders for ${this.props.ticker}`)
+        }
+        else if (Object.keys(this.state.openOrders).length !== 0){
+            console.log(`Currently Open Orders for ${this.props.ticker}: ${JSON.stringify(this.state.openOrders)}`)
+        }
     }
 
     apiConfirm(msg){
         //API buy callback; stores the confirmation info
         //TODO: make sure it works for cancellations too
-        console.log(msg)
+
+        //When cancelling, I think it gives an empty array if there are no orders to cancel
+
+        if (msg === "[]"){
+            console.log("No message")
+        }else{
+            console.log(msg)
+        }
+        
 
 
         let data = JSON.parse(msg)
@@ -97,7 +119,8 @@ class BumpStrat extends Component{
 
 
         console.log(`Confirm ${data.id} : ${data.side} ${data.qty} shares of ${data.symbol} for ${data.limit_price}`)
-        console.log(`Currently Open Orders for ${this.props.ticker}: ${JSON.stringify(this.state.openOrders)}`)
+
+        this.logOrders()
     }
 
     click(price){
@@ -151,6 +174,7 @@ class BumpStrat extends Component{
                     </div>
 
                     <PriceBtn text={this.state.status} click={this.click} value={this.props.value}/>
+                    <button onClick={this.logOrders}>Log Open Orders</button>
                     <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
                     
                 </fieldset>

@@ -48,9 +48,9 @@ class Main extends Component{
         this.positions = {} // Symbol: [qty, price]
 
         this.state = {
-            key_id: 'PKE06IXOHYSCN0DKRU3M',
+            key_id: 'PKKMJYHRKIO1FWSG9IE6',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: '1Hv5IIH4niKxwe6uvMSHzVyslejRSwhoiamYCSLQ',
+            secret_key: 'XkS1gt38J3Run3OvdCjkozud78P6O7bUiGPj89e6',
 
             
             positions: null, //array of [Ticker, qty, avg price] arrays
@@ -279,7 +279,7 @@ class Main extends Component{
                     
                     {/*Display Strat box only after price feed is live */}
                     {this.state.positions != null &&
-                    <BumpStrat test={this.state.test} api={this.api} ticker={this.state.ticker} value={this.state.positions[this.state.ticker]["value"]}/>
+                    <BumpStrat test={this.state.test} api={this.api} ticker={this.state.ticker} value={this.state.positions[this.state.ticker]["value"]} positions={this.state.positions[this.state.ticker]}/>
                     }
 
                     <div className="centeredRow">
