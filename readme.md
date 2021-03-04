@@ -3,7 +3,17 @@ Calling updatePositions after fills, partial fills, and cancels
 
 This clears the order dict as well, since the updatePositions always places a blank dict.
 
+Got kind of a janky workaround going for detecting when orders are open vs. closed
 
+componentDidUpdate will notice when an order is closed out, but not when an order is first opened.
+But - you can detect when an order is first opened by seeing if the this.props.positions.orders has values in it or not
+
+So rn the thought is:
+
+
+---
+
+Connecting does not get the open orders if there already were some prior to starting.
 
 
 

@@ -102,6 +102,15 @@ class API {
     xhr.send()
   }
 
+  cancelOrder(id, callback){
+    let xhr = new XMLHttpRequest()
+    xhr.addEventListener('load', ()=>callback(xhr.responseText))
+    xhr.open('DELETE', `${this.url}/v2/orders/${id}`)
+    xhr.setRequestHeader("APCA-API-KEY-ID", this.key_id)
+    xhr.setRequestHeader("APCA-API-SECRET-KEY", this.secret_key)
+    xhr.send()
+  }
+
   //Position Related Documentation & Functions
   //https://alpaca.markets/docs/api-documentation/api-v2/positions/
   //https://alpaca.markets/docs/api-documentation/api-v2/positions/#position-entity

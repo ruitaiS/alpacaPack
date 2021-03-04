@@ -88,7 +88,8 @@ class BumpStrat extends Component{
     //Ideally you want to call a function in bump from the parent component
     componentDidUpdate(prevProps){
 
-        //AFAIK this only fires when an order is filled, partially filled, or cancelled
+        //Not sure why, but this seems to only fire when an order is filled, partially filled, or cancelled
+        //Eg. When an order is closed
         if (prevProps.positions !== this.props.positions){
             alert("Orders changed")
             console.log(`Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
@@ -147,6 +148,41 @@ class BumpStrat extends Component{
     }
 
     click(price){
+
+        //if waiting to complete an order, then clicking will cancel it
+        //if not in a position, then it will place a buy
+        //if in a position, then it will place a sell
+
+        if (Object.keys(this.props.positions.orders).length !== 0){
+            //TODO: Cancel by order ID, rather than cancel all
+            //this.props.api.cancel((msg)=>this.apiConfirm(msg))
+
+            //Mar 4
+            //This isn't iterating:
+            for (let id of this.props.positions["orders"]){
+                alert(id)
+            }
+
+            //Rather than cancel, you could instead update the order to use the most recent price
+            //We already have a seperate cancel button
+        }else{
+            //TODO: Check position size, rather than depend on state
+            if (this.state.status === "out"){
+                //Place a limit buy order
+                //On completion, place limit sell @ delta
+                let symbol = this.props.ticker
+                let qty = Math.floor(this.state.capital / price)
+                let type = "limit"
+                let time_in_force = "gtc"
+                this.props.api.buy((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
+                
+            }else{
+                //place a limit sell
+                console.log(`pretend we're selling at ${price}`)
+            }    
+        }
+
+        /*
         if (this.state.status === "out"){
             //Place a limit buy order
             //On completion, place limit sell @ delta
@@ -165,11 +201,17 @@ class BumpStrat extends Component{
         }else if (this.state.status === "waiting-exit"){
             //Cancel sell order
             //
-
-        }
+        }*/
     }
 
     render(){
+        let buttonText
+        if (Object.keys(this.props.positions.orders).length !== 0){
+            buttonText = "Cancel"
+        }else{
+            //Todo: format this
+            buttonText = "Enter/Exit"
+        }
 
         return(
             <div>
@@ -199,7 +241,7 @@ class BumpStrat extends Component{
                         <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
                     </div>
 
-                    <PriceBtn text={this.state.status} click={this.click} value={this.props.value}/>
+                    <PriceBtn text={buttonText} click={this.click} value={this.props.value}/>
                     <button onClick={this.logOrders}>Log Open Orders</button>
                     <button onClick={this.test}>Test Function</button>
                     <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
