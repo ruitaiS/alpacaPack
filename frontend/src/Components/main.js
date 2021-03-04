@@ -48,9 +48,9 @@ class Main extends Component{
         this.positions = {} // Symbol: [qty, price]
 
         this.state = {
-            key_id: 'PKKMJYHRKIO1FWSG9IE6',
+            key_id: 'PKWH1PPQKIQAN9BGAEWJ',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: 'XkS1gt38J3Run3OvdCjkozud78P6O7bUiGPj89e6',
+            secret_key: 'NGefAbZaumWB6dmkftjukQrDwiGAxNyu3t8kODLs',
 
             
             positions: null, //array of [Ticker, qty, avg price] arrays
@@ -158,14 +158,18 @@ class Main extends Component{
             }else if (data.event === "fill"){
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
                 //update order status with fill price
+                this.updatePositions()
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, fill_price:data.order.filled_avg_price, status: "closed"}
             
             //TODO: These two
             }else if(data.event === "partial_fill"){
+                //This logic doesn't work properly afaik
                 alert("Partial Order Fill")
+                this.updatePositions()
                 console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
             }else if (data.event === "canceled"){
                 console.log(`Order ${data.order.id} was canceled`)
+                this.updatePositions()
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "canceled"}
                 //Log the cancellation; don't delete outright
                 //Child components will listen for updates & update positions once they see them

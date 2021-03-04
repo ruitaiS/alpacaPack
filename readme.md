@@ -1,3 +1,20 @@
+### Mar 4
+Calling updatePositions after fills, partial fills, and cancels
+
+This clears the order dict as well, since the updatePositions always places a blank dict.
+
+
+
+
+
+### Mar 3
+Bug on startup where it can't set the order ID property. Next time it happens definitely keep an eye on it and tryt o figure out why it happens. AFAIK this is only after resetting your account, and it only happens once. Subsequent runs work fine
+
+Still trying to sort out the behavior between cancellations.
+
+When you cancel, it cancels all active orders, so I think it gives back a list of confirmations
+When you just place one order, it gives only that one element.
+
 ### Mar 2
 In main there is
     this.positions = {}

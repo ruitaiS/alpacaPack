@@ -45,6 +45,8 @@ class BumpStrat extends Component{
         //api - alpaca trade api
         //ticker - symbol that we're trading on
         //value - current price of the asset
+
+        //positions
         
 
         //Functions that need to get bound to this instance
@@ -52,6 +54,9 @@ class BumpStrat extends Component{
         this.click = this.click.bind(this);
         this.apiConfirm = this.apiConfirm.bind(this);
         this.logOrders = this.logOrders.bind(this);
+
+        this.test = this.test.bind(this);
+
         this.openOrders = {}
         this.state = {
             capital: 10000,
@@ -64,8 +69,8 @@ class BumpStrat extends Component{
         }
     }
 
-    function(){
-        console.log("Hi! :)")
+    test(){
+        console.log(this.props.positions)
     }
 
     deltaChange(e){
@@ -82,8 +87,11 @@ class BumpStrat extends Component{
     //This is kind of shitty because it will do it even when it's just the price data changing
     //Ideally you want to call a function in bump from the parent component
     componentDidUpdate(prevProps){
-        if (prevProps.test !== this.props.test){
-            console.log(`Test value changed from ${prevProps.test} to ${this.props.test}`)
+
+        //AFAIK this only fires when an order is filled, partially filled, or cancelled
+        if (prevProps.positions !== this.props.positions){
+            alert("Orders changed")
+            console.log(`Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
         }
 
         //Check if any orders went from open to closed
@@ -105,22 +113,37 @@ class BumpStrat extends Component{
 
         //When cancelling, I think it gives an empty array if there are no orders to cancel
 
+        //AFAIK, if it returns an empty message it means nothing happened, so whatever you tried to do didn't work
+        //In these scenarios it returns false and exist
+        //Otherwise it updates the openorders, 
+
         if (msg === "[]"){
             console.log("No message")
+            return false
         }else{
-            console.log(msg)
+
+            console.log(`Alpaca API Callback: ${msg}`)
+            let data = JSON.parse(msg)
+            if (!Array.isArray(data)){
+                data = [data]
+            }
+
+            for (let datum of data){
+                //Cancel response nests the info within the body, so we need to extract
+                if(datum.body != null){
+                    this.openOrders[datum.id]= {[datum.body.side]: datum.body.qty, price: datum.body.limit_price, status: datum.body.status}
+                    console.log(`Order ${datum.id} : ${datum.body.side} ${datum.body.qty} shares of ${datum.body.symbol} for ${datum.body.limit_price}. Status: ${datum.body.status}`)                    
+                }else{
+                    this.openOrders[datum.id]= {[datum.side]: datum.qty, price: datum.limit_price, status: datum.status}
+                    console.log(`Order ${datum.id} : ${datum.side} ${datum.qty} shares of ${datum.symbol} for ${datum.limit_price}. Status: ${datum.status}`)
+                }
+                this.setState({openOrders: this.openOrders})
+            }
+
+            //this.logOrders()
+
+            return true
         }
-        
-
-
-        let data = JSON.parse(msg)
-        this.openOrders[data.id]= {[data.side]: data.qty, price: data.limit_price}
-        this.setState({openOrders: this.openOrders})
-
-
-        console.log(`Confirm ${data.id} : ${data.side} ${data.qty} shares of ${data.symbol} for ${data.limit_price}`)
-
-        this.logOrders()
     }
 
     click(price){
@@ -146,9 +169,7 @@ class BumpStrat extends Component{
         }
     }
 
-    render(){  
-
-
+    render(){
 
         return(
             <div>
@@ -156,6 +177,11 @@ class BumpStrat extends Component{
                 <fieldset className="inputBox">
                     <legend>{`Current Price: $${this.props.value}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
+
+                    {Object.keys(this.props.positions.orders).length === 0 ?
+                    "No Open Orders"
+                    :
+                    `Status: ${JSON.stringify(this.props.positions.orders)}`}
 
                     <div>
                         <label htmlFor="slider">Capital Allocation: ${this.state.capital}</label>
@@ -175,6 +201,7 @@ class BumpStrat extends Component{
 
                     <PriceBtn text={this.state.status} click={this.click} value={this.props.value}/>
                     <button onClick={this.logOrders}>Log Open Orders</button>
+                    <button onClick={this.test}>Test Function</button>
                     <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
                     
                 </fieldset>
