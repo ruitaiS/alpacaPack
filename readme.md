@@ -19,7 +19,10 @@ When the order is successfully filled or cancelled, we call updateOrders from ma
 componentDidUpdate then looks through it's openOrders - if it is missing from the new props.positions.orders, then it is removed from openOrders
     -> Doesn't updateOrders always clear the orders? What if you had one order fill, and the rest did not? The order list would still be empty *** This would be something to double check tomorrow
 
-    
+Things to work on for next week:
+    - Shit's broken if you try to start it without being in a position. Workaround is to open a position using alpaca. I think because the value prop passed to bump is unreadable if you're not in a position; some sort of interplay between how the price websocket updates prices and how it's related to the position updater is fucked. Crucially bump should not display unless there is a value in the value prop, whether that's coming from the price stream or from the position lister
+    - Spend some more time sifting through the code. Idk, it's really really hard to buckle down and actually start working on stuff before 12; in the morning I'm actually so useless, idk. But then at 12 I have to go to work, so it's kinda like ffffufutfuntfuntfuntf.
+    - 
 
 ### Mar 4
 Calling updatePositions after fills, partial fills, and cancels
