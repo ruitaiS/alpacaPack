@@ -91,8 +91,8 @@ class BumpStrat extends Component{
         //Not sure why, but this seems to only fire when an order is filled, partially filled, or cancelled
         //Eg. When an order is closed
         if (prevProps.positions !== this.props.positions){
-            alert("Orders changed")
-            console.log(`Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
+            alert("bump/componentDidUpdate: Orders changed")
+            console.log(`bump/componentDidUpdate: Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
         }
 
         //Check if any orders went from open to closed
@@ -101,10 +101,10 @@ class BumpStrat extends Component{
     logOrders(){
         //console.log(this.state.openOrders)
         if (this.state.openOrders === null){
-            console.log(`No open orders for ${this.props.ticker}`)
+            console.log(`bump/logOrders: No open orders for ${this.props.ticker}`)
         }
         else if (Object.keys(this.state.openOrders).length !== 0){
-            console.log(`Currently Open Orders for ${this.props.ticker}: ${JSON.stringify(this.state.openOrders)}`)
+            console.log(`bump/logOrders: Currently Open Orders for ${this.props.ticker}: ${JSON.stringify(this.state.openOrders)}`)
         }
     }
 
@@ -118,12 +118,12 @@ class BumpStrat extends Component{
         //In these scenarios it returns false and exist
         //Otherwise it updates the openorders, 
 
-        if (msg === "[]"){
-            console.log("No message")
+        if (msg === "" || msg === "[]"){
+            console.log("bump/apiConfirm: No message")
             return false
         }else{
 
-            console.log(`Alpaca API Callback: ${msg}`)
+            console.log(`bump/apiConfirm: Alpaca API Callback: ${msg}`)
             let data = JSON.parse(msg)
             if (!Array.isArray(data)){
                 data = [data]
@@ -133,10 +133,10 @@ class BumpStrat extends Component{
                 //Cancel response nests the info within the body, so we need to extract
                 if(datum.body != null){
                     this.openOrders[datum.id]= {[datum.body.side]: datum.body.qty, price: datum.body.limit_price, status: datum.body.status}
-                    console.log(`Order ${datum.id} : ${datum.body.side} ${datum.body.qty} shares of ${datum.body.symbol} for ${datum.body.limit_price}. Status: ${datum.body.status}`)                    
+                    console.log(`bump/apiConfirm: Order ${datum.id} : ${datum.body.side} ${datum.body.qty} shares of ${datum.body.symbol} for ${datum.body.limit_price}. Status: ${datum.body.status}`)                    
                 }else{
                     this.openOrders[datum.id]= {[datum.side]: datum.qty, price: datum.limit_price, status: datum.status}
-                    console.log(`Order ${datum.id} : ${datum.side} ${datum.qty} shares of ${datum.symbol} for ${datum.limit_price}. Status: ${datum.status}`)
+                    console.log(`bump/apiConfirm: Order ${datum.id} : ${datum.side} ${datum.qty} shares of ${datum.symbol} for ${datum.limit_price}. Status: ${datum.status}`)
                 }
                 this.setState({openOrders: this.openOrders})
             }
@@ -153,15 +153,20 @@ class BumpStrat extends Component{
         //if not in a position, then it will place a buy
         //if in a position, then it will place a sell
 
-        if (Object.keys(this.props.positions.orders).length !== 0){
+        if (this.state.openOrders !== null){
             //TODO: Cancel by order ID, rather than cancel all
             //this.props.api.cancel((msg)=>this.apiConfirm(msg))
 
-            //Mar 4
-            //This isn't iterating:
-            for (let id of this.props.positions["orders"]){
-                alert(id)
+            //Not sure why this version doesn't iterate,
+            //since it's the same one used elsewhere to iterate keys...
+            //for (let id of this.state.openOrders){
+
+            for (let id of Object.keys(this.state.openOrders)){
+                console.log(`bump/click: Cancelling order: ${id}`)
+                this.props.api.cancelOrder(id, this.apiConfirm)
             }
+
+            console.log(`bump/click: ${this.state.openOrders}`)
 
             //Rather than cancel, you could instead update the order to use the most recent price
             //We already have a seperate cancel button
@@ -178,7 +183,7 @@ class BumpStrat extends Component{
                 
             }else{
                 //place a limit sell
-                console.log(`pretend we're selling at ${price}`)
+                console.log(`bump/click: pretend we're selling at ${price}`)
             }    
         }
 
@@ -206,7 +211,7 @@ class BumpStrat extends Component{
 
     render(){
         let buttonText
-        if (Object.keys(this.props.positions.orders).length !== 0){
+        if (this.state.openOrders !== null){
             buttonText = "Cancel"
         }else{
             //Todo: format this

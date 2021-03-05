@@ -1,3 +1,13 @@
+### Mar 5
+
+It's getting a lil (a lot) convoluted rn, so I think I'm just gonna take some time and figure out how everything works.
+
+control:
+    -user key and secret key
+    -main window ticker symbol
+
+    Disconnect keeps the existing apiHandler; a new one is created on re-connect, but the old one is still there.
+
 ### Mar 4
 Calling updatePositions after fills, partial fills, and cancels
 

@@ -20,12 +20,12 @@ class Stream{
         //Send Authentication Message On Open:
         //TODO: Error handling on failure to authenticate        
         this.finnhub.onopen = () => {
-            console.log("Connected to FinnHub Price Stream")
+            console.log("stream/finnhub.onopen: Connected to FinnHub Price Stream")
             fhConnect()
             //this.polygon.send(JSON.stringify({"action":"auth","params": key_id}))
         }
         this.alpaca.onopen = () => {
-            console.log("Authenticating Alpaca Trade Updates Stream")
+            console.log("stream/alpaca.onopen: Authenticating Alpaca Trade Updates Stream")
             this.alpaca.send(JSON.stringify({"action":"authenticate","data": {"key_id": key_id, "secret_key":secret_key}}))
         }
 
@@ -43,21 +43,21 @@ class Stream{
         }
 
         this.finnhub.onclose = () =>{
-            console.log("Disconnected from Price Stream")
+            console.log("stream/finnhub.onclose: Disconnected from Price Stream")
         }
         this.alpaca.onclose = () =>{
-            console.log("Disconnected from Trade Updates Stream")
+            console.log("stream/alpaca.onclose: Disconnected from Trade Updates Stream")
         }
     }
 
     //For Trade Stream Only:
     subscribe(ticker){
-        console.log(`Subscribing to ${ticker}`)
+        console.log(`stream/subscribe: Subscribing to ${ticker}`)
         this.finnhub.send(JSON.stringify({'type':'subscribe', 'symbol': ticker}))
     }
 
     unsubscribe(ticker){
-        console.log(`Unsubscribing from ${ticker}`)
+        console.log(`stream/unsubscribe: Unsubscribing from ${ticker}`)
         this.finnhub.send(JSON.stringify({'type':'unsubscribe', 'symbol': ticker}))
     }
 

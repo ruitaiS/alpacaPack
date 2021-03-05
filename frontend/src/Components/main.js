@@ -129,13 +129,13 @@ class Main extends Component{
         //console.log(msg)
         let data = JSON.parse(msg).data
         if(data.status != null){
-            console.log(`Alpaca says ${data.status}`)
+            console.log(`main/tradeStatusListener: Alpaca says ${data.status}`)
             if(data.status === "authorized"){
                 //Subscribe to trade status stream
                 this.ws.alpaca.send(JSON.stringify({"action":"listen","data":{"streams":["trade_updates"]}}))
             }
         }else if(data.streams != null){
-            data.streams.forEach(x => {console.log(`Alpaca is listening to ${x}`)})
+            data.streams.forEach(x => {console.log(`main/tradeStatusListener: Alpaca is listening to ${x}`)})
         }else{
 
             /*
@@ -152,11 +152,11 @@ class Main extends Component{
             //console.log(`Symbol: ${data.order.symbol}`)
             
             if(data.event === 'new'){
-                console.log(`New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
+                console.log(`main/tradeStatusListener: New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "open"}
                 //this.positions[data.order.symbol]["orders"].push({[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id})
             }else if (data.event === "fill"){
-                console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
+                console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
                 //update order status with fill price
                 this.updatePositions()
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, fill_price:data.order.filled_avg_price, status: "closed"}
@@ -166,9 +166,9 @@ class Main extends Component{
                 //This logic doesn't work properly afaik
                 alert("Partial Order Fill")
                 this.updatePositions()
-                console.log(`${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
+                console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
             }else if (data.event === "canceled"){
-                console.log(`Order ${data.order.id} was canceled`)
+                console.log(`main/tradeStatusListener: Order ${data.order.id} was canceled`)
                 this.updatePositions()
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "canceled"}
                 //Log the cancellation; don't delete outright
@@ -178,7 +178,7 @@ class Main extends Component{
                 //done_for_day
                 //replaced
                 //Or could be some other stuff
-                console.log(data.event)
+                console.log(`main/tradeStatusListener: ${data.event}`)
             }
         }
     }

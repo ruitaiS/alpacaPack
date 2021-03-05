@@ -42,15 +42,14 @@ class Control extends Component{
         streamParams =               
         (<div>
         <label htmlFor="tck">Ticker:</label>
-        {/*Disable changing ticker symbol after connection */}
+        {/*Disable ticker symbol input box after connection */}
         {this.props.connected ?
           <input disabled style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
           :
           <input style={{float:"right", width:"350px", textAlign:"center"}} id="tck" value={this.props.ticker} onChange={this.props.tickerChange}/>
         }
-        
         </div>)
-      }else{
+      }else{ //Currently unused Forex control
         //janky right margin on the second select box to make it centered
         streamParams =(
         <div>
