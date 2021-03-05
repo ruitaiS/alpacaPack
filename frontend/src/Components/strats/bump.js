@@ -91,16 +91,23 @@ class BumpStrat extends Component{
         //Not sure why, but this seems to only fire when an order is filled, partially filled, or cancelled
         //Eg. When an order is closed
         if (prevProps.positions !== this.props.positions){
-            alert("bump/componentDidUpdate: Orders changed")
+            console.log("bump/componentDidUpdate: Orders changed")
             console.log(`bump/componentDidUpdate: Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
+            for (let id of Object.keys(this.openOrders)){
+                if (this.props.positions.orders.id == null){
+                    console.log(`bump/componentDidUpdate: Removing order ${id} from openOrders`)
+                    delete this.openOrders[id]
+                }
+            }
+            this.setState({openOrders: this.openOrders})
         }
 
         //Check if any orders went from open to closed
     }
 
     logOrders(){
-        //console.log(this.state.openOrders)
-        if (this.state.openOrders === null){
+        console.log(`bump/logOrders: ${JSON.stringify(this.state.openOrders)}`)
+        if (this.state.openOrders == null){
             console.log(`bump/logOrders: No open orders for ${this.props.ticker}`)
         }
         else if (Object.keys(this.state.openOrders).length !== 0){
@@ -153,7 +160,7 @@ class BumpStrat extends Component{
         //if not in a position, then it will place a buy
         //if in a position, then it will place a sell
 
-        if (this.state.openOrders !== null){
+        if (this.state.openOrders != null){
             //TODO: Cancel by order ID, rather than cancel all
             //this.props.api.cancel((msg)=>this.apiConfirm(msg))
 
@@ -166,7 +173,7 @@ class BumpStrat extends Component{
                 this.props.api.cancelOrder(id, this.apiConfirm)
             }
 
-            console.log(`bump/click: ${this.state.openOrders}`)
+            console.log(`bump/click: Open Orders: ${JSON.stringify(this.state.openOrders)}`)
 
             //Rather than cancel, you could instead update the order to use the most recent price
             //We already have a seperate cancel button
@@ -211,11 +218,14 @@ class BumpStrat extends Component{
 
     render(){
         let buttonText
-        if (this.state.openOrders !== null){
-            buttonText = "Cancel"
+        
+        //Mar 5: This text won't reset after exiting positions
+        if (this.state.openOrders == null){
+            buttonText = "Enter/Exit"
         }else{
             //Todo: format this
-            buttonText = "Enter/Exit"
+            buttonText = "Cancel"
+            
         }
 
         return(

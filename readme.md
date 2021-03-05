@@ -8,6 +8,19 @@ control:
 
     Disconnect keeps the existing apiHandler; a new one is created on re-connect, but the old one is still there.
 
+yeah ok so everything is super janky, but it sorta works.
+
+bump.click places the order if there aren't open positions (theoretically; it doesn't get out of the cancel state properly)
+
+the order gets logged in bump's openOrders. Main has a callback that edits the position state.
+
+When the order is successfully filled or cancelled, we call updateOrders from main. This triggers componentDidUpdate in bump (strangely, when orders are placed, this does not trigger...)
+
+componentDidUpdate then looks through it's openOrders - if it is missing from the new props.positions.orders, then it is removed from openOrders
+    -> Doesn't updateOrders always clear the orders? What if you had one order fill, and the rest did not? The order list would still be empty *** This would be something to double check tomorrow
+
+    
+
 ### Mar 4
 Calling updatePositions after fills, partial fills, and cancels
 
