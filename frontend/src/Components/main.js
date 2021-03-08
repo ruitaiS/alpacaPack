@@ -48,9 +48,9 @@ class Main extends Component{
         this.positions = {} // Symbol: [qty, price]
 
         this.state = {
-            key_id: 'PKWH1PPQKIQAN9BGAEWJ',
+            key_id: 'PKJX3QZPBCM5552BL3BC',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: 'NGefAbZaumWB6dmkftjukQrDwiGAxNyu3t8kODLs',
+            secret_key: 'MACvJwFIGE2FGmIAR6h94sADRH5GbmEh9jMCRuU2',
 
             
             positions: null, //array of [Ticker, qty, avg price] arrays

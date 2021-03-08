@@ -1,7 +1,10 @@
 ### Mar 8
 After completing a buy or sell, we need to get the value of the fill price in order to update the capital allocation.
 
-
+Okay so it sort of works, but is very very glitchy. Some things I've noticed:
+    - If you're already in a position when you open the program, it falsely believes you're starting without anything. Can fix this by running a check on start if props.position.qty == 0
+    - If you cancel midway through the autosell process (I'm not sure where) sometimes it gets really glitchy
+    - Alpaca seems to have some issues with liquidity and fulfilling orders
 
 ### Mar 5
 
