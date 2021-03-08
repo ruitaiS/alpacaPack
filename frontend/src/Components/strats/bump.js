@@ -63,10 +63,12 @@ class BumpStrat extends Component{
 
         this.openOrders = {}
         this.state = {
+            //This assumes we start out *not* in a position
+            //It will fuck up & double count if we already are in a position
             capital: 10000,
             shares: 0,
 
-            autoSell: false,
+            autoSell: true,
             fracShares: false,
             delta: 0.01,
 
@@ -120,6 +122,7 @@ class BumpStrat extends Component{
                     let type = "limit"
                     let price = this.props.positions.entry_price + this.state.delta
                     let time_in_force = "day"
+                    console.log(`bump/componentDidUpdate: Placing AutoSell Order for ${qty} shares of ${symbol} at $${price} per share`)
                     this.props.api.sell((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
                 }
 

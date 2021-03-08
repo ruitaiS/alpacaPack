@@ -161,7 +161,7 @@ class Main extends Component{
                 //if sell, then check if we've liquidated
                 if(data.order.side === "sell" && this.positions[data.order.symbol].qty === data.order.filled_qty){
                     //alert("Sell filled")
-                    this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: data.order.filled_avg_price, value: null, orders: {}}
+                    this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: parseFloat(data.order.filled_avg_price), value: null, orders: {}}
                 }
 
                 this.updatePositions()
@@ -202,7 +202,7 @@ class Main extends Component{
 
             //Price defaults to last day price; will get overwritten by WS stream if live
             //alert(`Quantity: ${position.qty}`)
-            this.positions[position.symbol] = {qty: position.qty, entry_price: position.avg_entry_price, exit_price: null, value: position.lastday_price, orders: {}}
+            this.positions[position.symbol] = {qty: position.qty, entry_price: parseFloat(position.avg_entry_price), exit_price: null, value: position.lastday_price, orders: {}}
         }
 
         this.setState({positions: this.positions})
