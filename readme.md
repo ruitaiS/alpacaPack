@@ -2,9 +2,17 @@
 After completing a buy or sell, we need to get the value of the fill price in order to update the capital allocation.
 
 Okay so it sort of works, but is very very glitchy. Some things I've noticed:
-    - If you're already in a position when you open the program, it falsely believes you're starting without anything. Can fix this by running a check on start if props.position.qty == 0
-    - If you cancel midway through the autosell process (I'm not sure where) sometimes it gets really glitchy
+    - If you're already in a position when you open the program, it falsely believes you're starting without anything. Can fix this by running a check on start if props.position.qty == 0 >>> I think this is fixed
+    ***- If you cancel midway through the autosell process (I'm not sure where) sometimes it gets really glitchy
     - Alpaca seems to have some issues with liquidity and fulfilling orders
+
+Moving forward:
+    - manual order submissions using boring ass typing
+    - Order patching. Be able to change the buy in price, the exit price (whether through the delta, or through changing)
+
+later can start thinking about keyboard support, holding down a button to let it run, inverting the strategy.
+
+***For now the main focus should be stomping out bugs and mopping up. 
 
 ### Mar 5
 

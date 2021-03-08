@@ -62,11 +62,19 @@ class BumpStrat extends Component{
         this.test = this.test.bind(this);
 
         this.openOrders = {}
+
+        let startCapital
+        if(this.props.positions.qty !== 0){
+            startCapital = 0
+        }else{
+            startCapital = 10000
+        }
+
         this.state = {
             //This assumes we start out *not* in a position
             //It will fuck up & double count if we already are in a position
-            capital: 10000,
-            shares: 0,
+            capital: startCapital,
+            shares: this.props.positions.qty,
 
             autoSell: true,
             fracShares: false,
