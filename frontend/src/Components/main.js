@@ -152,14 +152,20 @@ class Main extends Component{
             //console.log(`Symbol: ${data.order.symbol}`)
             
             if(data.event === 'new'){
-                console.log(`main/tradeStatusListener: New order created at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
+                console.log(`main/tradeStatusListener: New order created to ${data.order.side} at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "open"}
                 //this.positions[data.order.symbol]["orders"].push({[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id})
             }else if (data.event === "fill"){
                 console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
                 //update order status with fill price
+                //if sell, then check if we've liquidated
+                if(data.order.side === "sell" && this.positions[data.order.symbol].qty === data.order.filled_qty){
+                    alert("Sell filled")
+                    this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: data.order.filled_avg_price, value: null, orders: {}}
+                }
+
                 this.updatePositions()
-                this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, fill_price:data.order.filled_avg_price, status: "closed"}
+                //this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, fill_price:data.order.filled_avg_price, status: "closed"}
             
             //TODO: These two
             }else if(data.event === "partial_fill"){
@@ -169,8 +175,8 @@ class Main extends Component{
                 console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
             }else if (data.event === "canceled"){
                 console.log(`main/tradeStatusListener: Order ${data.order.id} was canceled`)
+                this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: null, value: null, orders: {}}
                 this.updatePositions()
-                this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "canceled"}
                 //Log the cancellation; don't delete outright
                 //Child components will listen for updates & update positions once they see them
             }else{
@@ -196,7 +202,7 @@ class Main extends Component{
 
             //Price defaults to last day price; will get overwritten by WS stream if live
             //alert(`Quantity: ${position.qty}`)
-            this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, value: position.lastday_price, orders: {}}
+            this.positions[position.symbol] = {qty: position.qty, entry_price: position.avg_entry_price, exit_price: null, value: position.lastday_price, orders: {}}
         }
 
         this.setState({positions: this.positions})
@@ -226,7 +232,7 @@ class Main extends Component{
     connect(){
         //Creates new connections to API and Stream
         if (this.state.stream === "stocks"){
-            this.positions[`${this.state.ticker}`] = {value: null}
+            this.positions[`${this.state.ticker}`] = {qty: 0, entry_price: null, exit_price: null, value: null, orders: {}}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
             this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=c0ui7on48v6r6g576j60', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener, this.fhConnect)
         }else{
@@ -257,6 +263,7 @@ class Main extends Component{
     }
 
     logPos(){
+        this.updatePositions()
         console.log(JSON.stringify(this.state.positions))
     }
 

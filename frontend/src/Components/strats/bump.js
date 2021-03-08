@@ -62,7 +62,7 @@ class BumpStrat extends Component{
             capital: 10000,
             delta: 0.01,
 
-            openOrders: null,
+            openOrders: {},
             status: "out", //out, in, waiting-entry, waiting-exit
 
             
@@ -90,7 +90,7 @@ class BumpStrat extends Component{
 
         //Not sure why, but this seems to only fire when an order is filled, partially filled, or cancelled
         //Eg. When an order is closed
-        if (prevProps.positions.orders !== this.props.positions.orders){
+        if (prevProps.positions !== this.props.positions){
             console.log("bump/componentDidUpdate: Orders changed")
             console.log(`bump/componentDidUpdate: Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
             for (let id of Object.keys(this.openOrders)){
@@ -161,7 +161,7 @@ class BumpStrat extends Component{
         //if not in a position, then it will place a buy
         //if in a position, then it will place a sell
 
-        if (this.state.openOrders != null){
+        if (Object.keys(this.state.openOrders).length !== 0){
             //TODO: Cancel by order ID, rather than cancel all
             //this.props.api.cancel((msg)=>this.apiConfirm(msg))
 
@@ -179,7 +179,7 @@ class BumpStrat extends Component{
             //Rather than cancel, you could instead update the order to use the most recent price
             //We already have a seperate cancel button
         }else{
-            if (this.props.positions.qty !== 0){
+            if (this.props.positions.qty === 0){
                 //Place a limit buy order
                 //On completion, place limit sell @ delta
                 let symbol = this.props.ticker
@@ -190,7 +190,11 @@ class BumpStrat extends Component{
                 
             }else{
                 //place a limit sell
-                console.log(`bump/click: pretend we're selling at ${price}`)
+                let symbol = this.props.ticker
+                let qty = this.props.positions.qty
+                let type = "limit"
+                let time_in_force = "day"
+                this.props.api.sell((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
             }    
         }
 
@@ -220,8 +224,13 @@ class BumpStrat extends Component{
         let buttonText
         
         //Mar 5: This text won't reset after exiting positions
-        if (this.state.openOrders == null){
-            buttonText = "Enter/Exit"
+        if (Object.keys(this.state.openOrders).length === 0){
+            if(this.props.positions.qty === 0){
+                buttonText = "Enter"    
+            }else{
+                buttonText = "Exit"
+            }
+            
         }else{
             //Todo: format this
             buttonText = "Cancel"

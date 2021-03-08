@@ -1,0 +1,4 @@
+
+main.js
+(Also passed to bump as this.props.positions)
+this.positions[position.symbol] = {qty: position.qty, cost: position.avg_entry_price, value: position.lastday_price, orders: {}}
