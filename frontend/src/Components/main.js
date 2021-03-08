@@ -160,7 +160,7 @@ class Main extends Component{
                 //update order status with fill price
                 //if sell, then check if we've liquidated
                 if(data.order.side === "sell" && this.positions[data.order.symbol].qty === data.order.filled_qty){
-                    alert("Sell filled")
+                    //alert("Sell filled")
                     this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: data.order.filled_avg_price, value: null, orders: {}}
                 }
 

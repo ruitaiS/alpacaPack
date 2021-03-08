@@ -51,6 +51,10 @@ class BumpStrat extends Component{
 
         //Functions that need to get bound to this instance
         this.deltaChange = this.deltaChange.bind(this);
+        this.capChange = this.capChange.bind(this);
+        this.autoSellChange = this.autoSellChange.bind(this);
+
+
         this.click = this.click.bind(this);
         this.apiConfirm = this.apiConfirm.bind(this);
         this.logOrders = this.logOrders.bind(this);
@@ -60,6 +64,10 @@ class BumpStrat extends Component{
         this.openOrders = {}
         this.state = {
             capital: 10000,
+            shares: 0,
+
+            autoSell: false,
+            fracShares: false,
             delta: 0.01,
 
             openOrders: {},
@@ -84,6 +92,11 @@ class BumpStrat extends Component{
         //Reset the statistics too
     }
 
+    autoSellChange(e){
+        this.setState({autoSell: e.target.checked})
+        console.log(`AutoSell set to ${e.target.checked}`)
+    }
+
     //This is kind of shitty because it will do it even when it's just the price data changing
     //Ideally you want to call a function in bump from the parent component
     componentDidUpdate(prevProps){
@@ -91,8 +104,32 @@ class BumpStrat extends Component{
         //Not sure why, but this seems to only fire when an order is filled, partially filled, or cancelled
         //Eg. When an order is closed
         if (prevProps.positions !== this.props.positions){
-            console.log("bump/componentDidUpdate: Orders changed")
-            console.log(`bump/componentDidUpdate: Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
+            //console.log("bump/componentDidUpdate: Orders changed")
+            //console.log(`bump/componentDidUpdate: Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
+
+            
+            if(prevProps.positions.qty === 0 && this.props.positions.qty !== 0){
+                console.log(`bump/componentDidUpdate: Bought ${this.props.positions.qty} shares at ${this.props.positions.entry_price} per share`)
+                this.setState({capital: this.state.capital - (this.props.positions.qty * this.props.positions.entry_price)})
+                this.setState({shares: this.props.positions.qty})
+
+                //Place Sell Order Immediately If AutoSell enabled:
+                if (this.state.autoSell){
+                    let symbol = this.props.ticker
+                    let qty = this.props.positions.qty
+                    let type = "limit"
+                    let price = this.props.positions.entry_price + this.state.delta
+                    let time_in_force = "day"
+                    this.props.api.sell((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
+                }
+
+            }else if (prevProps.positions.qty !== 0 && this.props.positions.qty === 0){
+                console.log(`bump/componentDidUpdate: Sold ${prevProps.positions.qty} shares at ${this.props.positions.exit_price} per share`)
+                this.setState({capital: this.state.capital + (prevProps.positions.qty * this.props.positions.exit_price)})
+                this.setState({shares: 0})
+            }
+
+
             for (let id of Object.keys(this.openOrders)){
                 if (this.props.positions.orders.id == null){
                     console.log(`bump/componentDidUpdate: Removing order ${id} from openOrders`)
@@ -186,7 +223,11 @@ class BumpStrat extends Component{
                 let qty = Math.floor(this.state.capital / price)
                 let type = "limit"
                 let time_in_force = "day"
-                this.props.api.buy((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
+                if(qty === 0){
+                    alert("Not Enough Capital to Purchase any Shares")
+                }else{
+                    this.props.api.buy((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
+                }
                 
             }else{
                 //place a limit sell
@@ -244,19 +285,23 @@ class BumpStrat extends Component{
                     <legend>{`Current Price: $${this.props.value}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
 
-                    {Object.keys(this.props.positions.orders).length === 0 ?
-                    "No Open Orders"
-                    :
-                    `Status: ${JSON.stringify(this.props.positions.orders)}`}
+                    Capital: ${this.state.capital}
+                    <br></br>
+                    Shares: {this.props.positions.qty}
 
                     <div>
-                        <label htmlFor="slider">Capital Allocation: ${this.state.capital}</label>
+                        <label htmlFor="slider">Capital Allocation</label>
                         {/*Conditionally disable if we're in a position */}
-                        {this.state.status === "out" ? 
+                        {(Object.keys(this.state.openOrders).length === 0 && this.props.positions.qty === 0) ? 
                             <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.capital} onChange={this.capChange}/>
                             :
                             <input disabled style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.capital} onChange={this.capChange}/>
                         }
+                    </div>
+
+                    <div>
+                    <label>Auto Sell:</label>
+                        <input style={{float:"right", width:"150px", textAlign:"center"}} name="autoSell" type="checkbox" checked={this.state.autoSell} onChange={this.autoSellChange} />
                     </div>
 
                     <div>
