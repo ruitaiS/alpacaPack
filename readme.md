@@ -1,3 +1,8 @@
+### Mar 8
+After completing a buy or sell, we need to get the value of the fill price in order to update the capital allocation.
+
+
+
 ### Mar 5
 
 It's getting a lil (a lot) convoluted rn, so I think I'm just gonna take some time and figure out how everything works.

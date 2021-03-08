@@ -59,7 +59,8 @@ class API {
       "qty" : qty,
       "type": type,
       "limit_price": price,
-      "time_in_force": time_in_force
+      "time_in_force": time_in_force,
+      "extended_hours": true
     }
 
     xhr.send(JSON.stringify(order))

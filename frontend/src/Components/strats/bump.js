@@ -90,7 +90,7 @@ class BumpStrat extends Component{
 
         //Not sure why, but this seems to only fire when an order is filled, partially filled, or cancelled
         //Eg. When an order is closed
-        if (prevProps.positions !== this.props.positions){
+        if (prevProps.positions.orders !== this.props.positions.orders){
             console.log("bump/componentDidUpdate: Orders changed")
             console.log(`bump/componentDidUpdate: Positions changed from ${JSON.stringify(prevProps.positions)} to ${JSON.stringify(this.props.positions)}`)
             for (let id of Object.keys(this.openOrders)){
@@ -106,6 +106,7 @@ class BumpStrat extends Component{
     }
 
     logOrders(){
+
         console.log(`bump/logOrders: ${JSON.stringify(this.state.openOrders)}`)
         if (this.state.openOrders == null){
             console.log(`bump/logOrders: No open orders for ${this.props.ticker}`)
@@ -178,14 +179,13 @@ class BumpStrat extends Component{
             //Rather than cancel, you could instead update the order to use the most recent price
             //We already have a seperate cancel button
         }else{
-            //TODO: Check position size, rather than depend on state
-            if (this.state.status === "out"){
+            if (this.props.positions.qty !== 0){
                 //Place a limit buy order
                 //On completion, place limit sell @ delta
                 let symbol = this.props.ticker
                 let qty = Math.floor(this.state.capital / price)
                 let type = "limit"
-                let time_in_force = "gtc"
+                let time_in_force = "day"
                 this.props.api.buy((msg)=>this.apiConfirm(msg), symbol, qty, type, price, time_in_force)
                 
             }else{
