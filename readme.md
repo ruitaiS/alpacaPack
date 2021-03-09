@@ -1,3 +1,10 @@
+### Mar 9
+Bug: If there is a pre-existing order at launch, it will not be read.
+
+Fix: Use get_orders alongside get_positions in API to populate the position list in main. If the quantity is 0, then do not subscribe to that stream.
+
+fix 2: seperate orders from the position list. For active positions, have a list of order ID's. Have a seperate order hash with ID's as keys.
+
 ### Mar 8
 After completing a buy or sell, we need to get the value of the fill price in order to update the capital allocation.
 

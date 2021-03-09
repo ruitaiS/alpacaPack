@@ -235,6 +235,9 @@ class Main extends Component{
             this.positions[`${this.state.ticker}`] = {qty: 0, entry_price: null, exit_price: null, value: null, orders: {}}
             this.api = new API(this.state.key_id, this.state.secret_key, 'https://paper-api.alpaca.markets')
             this.ws = new Stream(this.state.key_id, this.state.secret_key, 'wss://ws.finnhub.io?token=c0ui7on48v6r6g576j60', 'wss://paper-api.alpaca.markets/stream', this.priceListener, this.tradeStatusListener, this.fhConnect)
+
+            //TODO: Update with existing orders. For now just log
+            this.api.get_orders((msg)=>console.log(`main/connect: Existing Orders: ${msg}`))
         }else{
             alert("Forex support coming soon!")
             this.setState({stream: "stocks"})

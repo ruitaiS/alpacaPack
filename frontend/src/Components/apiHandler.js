@@ -33,8 +33,6 @@ class API {
     //List of required parameters
     //https://alpaca.markets/docs/api-documentation/api-v2/orders/
 
-
-
   get_orders(callback){
       let xhr = new XMLHttpRequest()
       xhr.addEventListener('load', ()=>callback(xhr.responseText))

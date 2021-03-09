@@ -78,6 +78,7 @@ class BumpStrat extends Component{
 
             autoSell: true,
             fracShares: false,
+            limit: null,
             delta: 0.01,
 
             openOrders: {},
@@ -210,13 +211,6 @@ class BumpStrat extends Component{
         //if in a position, then it will place a sell
 
         if (Object.keys(this.state.openOrders).length !== 0){
-            //TODO: Cancel by order ID, rather than cancel all
-            //this.props.api.cancel((msg)=>this.apiConfirm(msg))
-
-            //Not sure why this version doesn't iterate,
-            //since it's the same one used elsewhere to iterate keys...
-            //for (let id of this.state.openOrders){
-
             for (let id of Object.keys(this.state.openOrders)){
                 console.log(`bump/click: Cancelling order: ${id}`)
                 this.props.api.cancelOrder(id, this.apiConfirm)
@@ -296,13 +290,13 @@ class BumpStrat extends Component{
                     <legend>{`Current Price: $${this.props.value}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
 
-                    Capital: ${this.state.capital}
+                    Cash on Hand: ${this.state.capital}
                     <br></br>
                     Shares: {this.props.positions.qty}
 
                     <div>
                         <label htmlFor="slider">Capital Allocation</label>
-                        {/*Conditionally disable if we're in a position */}
+                        {/*Only enable if no pending orders and no shares held */}
                         {(Object.keys(this.state.openOrders).length === 0 && this.props.positions.qty === 0) ? 
                             <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.capital} onChange={this.capChange}/>
                             :
@@ -321,11 +315,21 @@ class BumpStrat extends Component{
                         <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
                     </div>
 
+                    <div>
+                        <label htmlFor="textbox">Manual {this.props.positions.qty === 0 ? `Entry` : `Exit`}</label>
+                        <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
+                    </div>
+
                     <PriceBtn text={buttonText} click={this.click} value={this.props.value}/>
                     <button onClick={this.logOrders}>Log Open Orders</button>
                     <button onClick={this.test}>Test Function</button>
-                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
-                    
+                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>                    
+                </fieldset>
+
+                <fieldset className="inputBox">
+                <legend>Manual Control</legend>
+
+
                 </fieldset>
             </div>
         )
