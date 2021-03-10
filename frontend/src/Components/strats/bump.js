@@ -53,6 +53,7 @@ class BumpStrat extends Component{
         this.deltaChange = this.deltaChange.bind(this);
         this.capChange = this.capChange.bind(this);
         this.autoSellChange = this.autoSellChange.bind(this);
+        this.limitChange = this.limitChange.bind(this);
 
 
         this.click = this.click.bind(this);
@@ -78,7 +79,7 @@ class BumpStrat extends Component{
 
             autoSell: true,
             fracShares: false,
-            limit: null,
+            limit: '',
             delta: 0.01,
 
             openOrders: {},
@@ -93,8 +94,13 @@ class BumpStrat extends Component{
     }
 
     deltaChange(e){
-        this.setState({delta: e.target.value})
+        this.setState({delta: parseFloat(e.target.value)})
         console.log(`New Delta: ${this.state.delta}`)
+    }
+
+    limitChange(e){
+        this.setState({limit: e.target.value})
+        console.log(`New Limit: ${this.state.limit}`)
     }
 
     capChange(e){
@@ -189,10 +195,10 @@ class BumpStrat extends Component{
             for (let datum of data){
                 //Cancel response nests the info within the body, so we need to extract
                 if(datum.body != null){
-                    this.openOrders[datum.id]= {[datum.body.side]: datum.body.qty, price: datum.body.limit_price, status: datum.body.status}
+                    this.openOrders[datum.id]= {side: datum.body.side, qty: datum.body.qty, price: datum.body.limit_price, status: datum.body.status}
                     console.log(`bump/apiConfirm: Order ${datum.id} : ${datum.body.side} ${datum.body.qty} shares of ${datum.body.symbol} for ${datum.body.limit_price}. Status: ${datum.body.status}`)                    
                 }else{
-                    this.openOrders[datum.id]= {[datum.side]: datum.qty, price: datum.limit_price, status: datum.status}
+                    this.openOrders[datum.id]= {side: datum.side, qty: datum.qty, price: datum.limit_price, status: datum.status}
                     console.log(`bump/apiConfirm: Order ${datum.id} : ${datum.side} ${datum.qty} shares of ${datum.symbol} for ${datum.limit_price}. Status: ${datum.status}`)
                 }
                 this.setState({openOrders: this.openOrders})
@@ -272,14 +278,14 @@ class BumpStrat extends Component{
         //Mar 5: This text won't reset after exiting positions
         if (Object.keys(this.state.openOrders).length === 0){
             if(this.props.positions.qty === 0){
-                buttonText = "Enter"    
+                buttonText = "Enter at"   
             }else{
-                buttonText = "Exit"
+                buttonText = "Exit at"
             }
             
         }else{
-            //Todo: format this
-            buttonText = "Cancel"
+            //assumes we only have one order in openOrders
+            buttonText = `Cancel ${this.openOrders[Object.keys(this.openOrders)[0]].side} at $${this.openOrders[Object.keys(this.openOrders)[0]].price}`
             
         }
 
@@ -315,11 +321,6 @@ class BumpStrat extends Component{
                         <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
                     </div>
 
-                    <div>
-                        <label htmlFor="textbox">Manual {this.props.positions.qty === 0 ? `Entry` : `Exit`}</label>
-                        <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
-                    </div>
-
                     <PriceBtn text={buttonText} click={this.click} value={this.props.value}/>
                     <button onClick={this.logOrders}>Log Open Orders</button>
                     <button onClick={this.test}>Test Function</button>
@@ -328,7 +329,8 @@ class BumpStrat extends Component{
 
                 <fieldset className="inputBox">
                 <legend>Manual Control</legend>
-
+                    <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.limit} onChange={this.limitChange}/>
+                    <button onClick={()=>this.click(this.state.limit)}>{buttonText}: ${this.state.limit}</button>
 
                 </fieldset>
             </div>

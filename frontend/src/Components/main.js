@@ -48,9 +48,9 @@ class Main extends Component{
         this.positions = {} // Symbol: [qty, price]
 
         this.state = {
-            key_id: 'PKJX3QZPBCM5552BL3BC',
+            key_id: 'PKW3I9RKUMW268FBKY4H',
             //key_id: 'bvqgf2n48v6qg460kck0',
-            secret_key: 'MACvJwFIGE2FGmIAR6h94sADRH5GbmEh9jMCRuU2',
+            secret_key: 'Bvctrlb0EdjfBiX12zWNoS0mwG9qd33V2kgRNusJ',
 
             
             positions: null, //array of [Ticker, qty, avg price] arrays
@@ -58,7 +58,7 @@ class Main extends Component{
 
             stream: 'stocks',
             //stream: 'forex',
-            ticker: 'TSLA', // Ticker is the active window ticker symbol
+            ticker: 'XPEV', // Ticker is the active window ticker symbol
 
             p1: "USD",
             p2: "CAD",
@@ -159,7 +159,7 @@ class Main extends Component{
                 console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
                 //update order status with fill price
                 //if sell, then check if we've liquidated
-                if(data.order.side === "sell" && this.positions[data.order.symbol].qty === data.order.filled_qty){
+                if(data.order.side === "sell" && this.positions[data.order.symbol].qty <= data.order.filled_qty){
                     //alert("Sell filled")
                     this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: parseFloat(data.order.filled_avg_price), value: null, orders: {}}
                 }
@@ -170,7 +170,7 @@ class Main extends Component{
             //TODO: These two
             }else if(data.event === "partial_fill"){
                 //This logic doesn't work properly afaik
-                alert("Partial Order Fill")
+                console.log("main/tradeStatusListener: Partial Order Fill")
                 this.updatePositions()
                 console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
             }else if (data.event === "canceled"){

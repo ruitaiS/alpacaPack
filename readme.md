@@ -1,4 +1,34 @@
 ### Mar 9
+Playing around with the semi-functional but buggy version today. Major features I'd like to have:
+    - Manual entry price, with auto entry tickbox
+    - Be able to patch or adjust the limit price / delta on the fly
+    - Liquidate position button
+
+Also would be nice to place I trail orders. Eg. let it run up, sell when it cracks off by a certain percentage. 
+
+
+Note: bump/openOrders doesn't really seem to be used for anything other than to just check if the length is more than 1.
+---
+Bug: Partial Order fill
+
+pt 1: When there is a partial order fill, followed by a complete fill, it doesn't properly exit the position. I believe this is because the exit message says it filled the entire quantity, but we're expecting it to equal the number of *remaining* shares. I set this line to be greater than or equal to:
+if(data.order.side === "sell" && this.positions[data.order.symbol].qty <= data.order.filled_qty)
+and hopefully that fixes things.
+
+pt 2: Now having an issue updating the cash value. There's two sides - partial order fill on the buy side, and partial fills on the sell side.
+
+buy side: quantity goes from 0 to some value less than the fill quantity. We automatically place a sell order for that in-between quantity.
+    -> what happens if the rest of the order doesn't fill?
+    -> What happens if the rest of the order fills?
+        -> pretty sure the trade confirmation will give the original *full* quantity
+
+sell side: quantity goes from fill quantity to something greater than zero.
+    -> 
+
+--
+Bug: Somehow I got to negative 12 shares at some point today. I think it was because of the partial order fill - it first filled 3, then it filled the rest, but when it did the rest, I think it subtracted 15 from the count? It said -12 on Alpaca too though, sooooooo I'm not totally sure how that happened.
+
+---
 Bug: If there is a pre-existing order at launch, it will not be read.
 
 Fix: Use get_orders alongside get_positions in API to populate the position list in main. If the quantity is 0, then do not subscribe to that stream.
