@@ -29,3 +29,4 @@ __pycache__/
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
 frontend/.eslintcache
+node_modules
