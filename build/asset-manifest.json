@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/ruitaiS/alpacaPack/static/css/main.abd6b110.chunk.css",
+    "main.js": "/ruitaiS/alpacaPack/static/js/main.0d060c0a.chunk.js",
+    "main.js.map": "/ruitaiS/alpacaPack/static/js/main.0d060c0a.chunk.js.map",
+    "runtime-main.js": "/ruitaiS/alpacaPack/static/js/runtime-main.4ad3b25c.js",
+    "runtime-main.js.map": "/ruitaiS/alpacaPack/static/js/runtime-main.4ad3b25c.js.map",
+    "static/js/2.066fefbb.chunk.js": "/ruitaiS/alpacaPack/static/js/2.066fefbb.chunk.js",
+    "static/js/2.066fefbb.chunk.js.map": "/ruitaiS/alpacaPack/static/js/2.066fefbb.chunk.js.map",
+    "static/js/3.d245e29b.chunk.js": "/ruitaiS/alpacaPack/static/js/3.d245e29b.chunk.js",
+    "static/js/3.d245e29b.chunk.js.map": "/ruitaiS/alpacaPack/static/js/3.d245e29b.chunk.js.map",
+    "index.html": "/ruitaiS/alpacaPack/index.html",
+    "static/css/main.abd6b110.chunk.css.map": "/ruitaiS/alpacaPack/static/css/main.abd6b110.chunk.css.map",
+    "static/js/2.066fefbb.chunk.js.LICENSE.txt": "/ruitaiS/alpacaPack/static/js/2.066fefbb.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4ad3b25c.js",
+    "static/js/2.066fefbb.chunk.js",
+    "static/css/main.abd6b110.chunk.css",
+    "static/js/main.0d060c0a.chunk.js"
+  ]
+}
