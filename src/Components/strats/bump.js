@@ -323,7 +323,8 @@ class BumpStrat extends Component{
                 <legend>Manual Control</legend>
                     <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.limit} onChange={this.limitChange}/>
                     <button onClick={()=>this.click(this.state.limit)}>{buttonText}: ${this.state.limit}</button>
-                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
+                    <br></br>
+                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All Open Orders</button>
 
                 </fieldset>
             </div>
