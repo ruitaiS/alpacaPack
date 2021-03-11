@@ -254,16 +254,6 @@ class Main extends Component{
         this.setState({connected: false})
     }
 
-    testClick(){
-        if (this.state.test){
-            this.setState({test:false})
-            console.log("Set to false")
-        }else{
-            this.setState({test:true})
-            console.log("Set to true")
-        }
-    }
-
     logPos(){
         this.updatePositions()
         console.log(JSON.stringify(this.state.positions))
@@ -296,8 +286,6 @@ class Main extends Component{
                     }
 
                     <div className="centeredRow">
-                        {/*Test for updating props */}
-                        <button onClick={this.testClick}>Test</button>
                         {/*Show Positions in Console */}
                         <button onClick={this.logPos}>Log Positions</button>
                     </div>

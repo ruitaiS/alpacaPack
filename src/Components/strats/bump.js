@@ -60,8 +60,6 @@ class BumpStrat extends Component{
         this.apiConfirm = this.apiConfirm.bind(this);
         this.logOrders = this.logOrders.bind(this);
 
-        this.test = this.test.bind(this);
-
         this.openOrders = {}
 
         let startCapital
@@ -87,10 +85,6 @@ class BumpStrat extends Component{
 
             
         }
-    }
-
-    test(){
-        console.log(this.props.positions)
     }
 
     deltaChange(e){
@@ -295,11 +289,6 @@ class BumpStrat extends Component{
                 <fieldset className="inputBox">
                     <legend>{`Current Price: $${this.props.value}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
-
-                    Cash on Hand: ${this.state.capital}
-                    <br></br>
-                    Shares: {this.props.positions.qty}
-
                     <div>
                         <label htmlFor="slider">Capital Allocation</label>
                         {/*Only enable if no pending orders and no shares held */}
@@ -321,16 +310,20 @@ class BumpStrat extends Component{
                         <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.delta} onChange={this.deltaChange}/>
                     </div>
 
+                    Cash on Hand: ${this.state.capital}
+                    <br></br>
+                    Shares: {this.props.positions.qty}
+
                     <PriceBtn text={buttonText} click={this.click} value={this.props.value}/>
                     <button onClick={this.logOrders}>Log Open Orders</button>
-                    <button onClick={this.test}>Test Function</button>
-                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>                    
+                                        
                 </fieldset>
 
                 <fieldset className="inputBox">
                 <legend>Manual Control</legend>
                     <input style={{float:"right", width:"150px", textAlign:"center"}} value={this.state.limit} onChange={this.limitChange}/>
                     <button onClick={()=>this.click(this.state.limit)}>{buttonText}: ${this.state.limit}</button>
+                    <button onClick={()=>this.props.api.cancel((msg)=>this.apiConfirm(msg))}>Cancel All</button>
 
                 </fieldset>
             </div>
