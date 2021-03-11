@@ -1,4 +1,5 @@
 .gitignore
+devlog.md
 *.swp
 *.pyc
 /historical

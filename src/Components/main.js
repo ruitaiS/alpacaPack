@@ -30,23 +30,13 @@ class Main extends Component{
 
         this.fhConnect = this.fhConnect.bind(this);
 
-        //this.storeConfig = this.storeConfig.bind(this);
-
-        this.testClick = this.testClick.bind(this);
         this.logPos = this.logPos.bind(this);
         this.clearOrders = this.clearOrders.bind(this);
-
-        //this.subscribe = this.subscribe.bind(this);
-        //this.unsubscribe = this.unsubscribe.bind(this);
-
-        //this.initPositions = this.initPositions.bind(this);
-        //this.get_price = this.get_price.bind(this);
 
         this.positions = {} // Symbol: [qty, price]
 
         this.state = {
             key_id: 'PKW3I9RKUMW268FBKY4H',
-            //key_id: 'bvqgf2n48v6qg460kck0',
             secret_key: 'Bvctrlb0EdjfBiX12zWNoS0mwG9qd33V2kgRNusJ',
 
             
@@ -67,9 +57,6 @@ class Main extends Component{
     }
 
     //#region Onchange Functions (Called from Control Panel)
-    //TODO: May need to update the websocket stream & also the api handler
-    //NOTE: Using this.state.[whatever] after setState doesn't seem to update it until the next iteration;
-    //Need to directly use e.target.value
     tickerChange(e) {
         this.setState({ticker: e.target.value})
     }
@@ -105,7 +92,6 @@ class Main extends Component{
     }
     //#endregion
 
-    //TODO: This will most likely need to be re-done using the finnhub spec
     priceListener(msg){
         //console.log(msg)
         //console.log(JSON.parse(msg.data).data[0])
@@ -113,7 +99,6 @@ class Main extends Component{
         let data = JSON.parse(msg.data)
         if (data.type === "trade"){
             for (let datum of data.data){
-                //console.log(`${datum.s} traded at ${datum.p} per share`)
                 this.positions[datum.s]["value"] = datum.p
             }
         }
@@ -142,16 +127,10 @@ class Main extends Component{
 
                 Could there maybe be a situation where the child isn't able to process the fill orders before it gets wiped?
             */
-
-
-            //console.log(`Second branch Alpaca says ${msg}`)
-            //console.log(`Event Type: ${data.event} ${data.order.side}`)
-            //console.log(`Symbol: ${data.order.symbol}`)
             
             if(data.event === 'new'){
                 console.log(`main/tradeStatusListener: New order created to ${data.order.side} at ${data.order.limit_price} per share, for ${data.order.qty} shares`)
                 this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, status: "open"}
-                //this.positions[data.order.symbol]["orders"].push({[data.order.side]: data.order.qty, price: data.order.limit_price, id: data.order.id})
             }else if (data.event === "fill"){
                 console.log(`main/tradeStatusListener: ${data.order.filled_qty} orders filled at ${data.order.filled_avg_price}`)
                 //update order status with fill price
@@ -160,9 +139,7 @@ class Main extends Component{
                     //alert("Sell filled")
                     this.positions[data.order.symbol] = {qty: 0, entry_price: null, exit_price: parseFloat(data.order.filled_avg_price), value: null, orders: {}}
                 }
-
                 this.updatePositions()
-                //this.positions[data.order.symbol]["orders"][data.order.id] = {[data.order.side]: data.order.qty, price: data.order.limit_price, fill_price:data.order.filled_avg_price, status: "closed"}
             
             //TODO: These two
             }else if(data.event === "partial_fill"){
@@ -186,19 +163,14 @@ class Main extends Component{
         }
     }
 
-    
     apiPositionListener(msg){
-        //alert("API position listener called")
-
         //Get Alpaca positions list
         for (let position of JSON.parse(msg)){
             //Only subscribe to ws streams if not already subscribed
             if(this.positions[position.symbol] == null){
                 this.ws.subscribe(position.symbol)
             }
-
             //Price defaults to last day price; will get overwritten by WS stream if live
-            //alert(`Quantity: ${position.qty}`)
             this.positions[position.symbol] = {qty: position.qty, entry_price: parseFloat(position.avg_entry_price), exit_price: null, value: position.lastday_price, orders: {}}
         }
 
@@ -225,8 +197,6 @@ class Main extends Component{
         this.updatePositions()
         this.setState({connected: true})
     }
-
-
 
     connect(){
         //Creates new connections to API and Stream
@@ -267,7 +237,6 @@ class Main extends Component{
         }
 
     }
-
 
     render(){
         return(
