@@ -285,9 +285,8 @@ class BumpStrat extends Component{
 
         return(
             <div>
-                Bump Strat
                 <fieldset className="inputBox">
-                    <legend>{`Current Price: $${this.props.value}`}</legend>
+                    <legend>{`${this.props.ticker} Current Price: $${this.props.value}`}</legend>
                     <PCTBar pctChange="0.1" width="500" height="50"/>
                     <div>
                         <label htmlFor="slider">Capital Allocation</label>
