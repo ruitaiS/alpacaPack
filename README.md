@@ -16,6 +16,8 @@ If you choose to create your own account, I highly recommend using a paper accou
 
 In addition to the API key and secret key, you will also need to specificy which stock ticker symbol you'd like to follow. The app will attempt to connect using the credentials provided, and if successful, it should bring you to the trading screen.
 
+Note that you will only be able to connect during market hours, between 9:30AM and 4PM, Monday-Friday. 
+
 #### Trading Screen
 The current price of the stock is displayed at the top.
 
