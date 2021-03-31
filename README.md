@@ -1,13 +1,10 @@
-[Live version](https://ruitais.github.io/alpacaPack/)
-
-
-### About This Project
+## [Alpaca Pack](https://ruitais.github.io/alpacaPack/)
 
 This is a small web application written using React to place trades on the Alpaca online brokerage through their API. It's currently in the very early stages of development, so there are still a number of bugs to be ironed out (see section on known bugs), and a LOT of missing features.
 
-### Useage
+### Useage:
 
-#### Connecting
+#### Connecting:
 You will need an API key and a secret key from Alpaca in order to place trades on their brokerage. You can set up your own account by going to https://alpaca.markets/, or, if you just want to play around with the functionality, feel free to use the default login credentials (they're linked to my personal paper trading account).
 
 Alpaca distinguishes between paper trading and live trading accounts. Paper accounts only simulate trades, whereas live accounts place real trades and are funded with actual money. If you're using your own account, I highly recommend using a paper account due to the aforementioned bugs.
@@ -16,7 +13,7 @@ In addition to the API key and secret key, you will also need to specify which s
 
 (Note that you will only be able to connect during regular market hours, which are between 9:30AM and 4PM, Monday through Friday.)
 
-#### Trading Screen
+#### Trading Screen:
 The current price of the stock is displayed at the top.
 
 The capital allocation input box defines the maximum amount of capital to use for each trade. When entering a position, the app will attempt to purchase as many shares as possible, up to the maximum allocation. When exiting a position, the maximum allocation is automatically updated to reflect the changes resulting from the previous trade (eg. if you lost $100 on the last trade, then the capital allocation will go down by $100). You can only adjust the allocation when you aren't currently holding any stocks and there are no open orders.
@@ -39,7 +36,7 @@ At the bottom there is also a manual entry / exit button along with an input box
 
 
 
-### Known Bugs / Issues
+### Known Bugs / Issues:
 - Due to market conditions, sometimes an order will only be partially filled. For example, if you place an order to buy 300 shares at a certain price, it may be that only 100 shares are available for sale at that price, so the app will buy up those 100 shares, but you will still have an outstanding order for another 200 shares. The logic for handling this situation hasn't been implemented yet (the app assumes all orders will always be completely filled), so this causes some strange behavior
 
 - Log Open Orders does not display pre-existing orders that were already in place when the app opened (orders that had been left open from the past session, or initialized from the Alpaca web page instead of the app)
